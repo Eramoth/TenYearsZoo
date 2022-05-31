@@ -228,6 +228,7 @@ void Zoo::withdrawAnimal(IAnimal* w_animal)
     cout << "There's no such animal in this Zoo." << endl;
 }
 
+// delete animal, withdraw it from it's cage, and cry a bit
 void Zoo::killAnimal(IAnimal *animal)
 {
     withdrawAnimal(animal);
