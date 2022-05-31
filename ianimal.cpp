@@ -1,0 +1,162 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include "zoo.h"
+#include "ianimal.h"
+#include "config.h"
+#include "cage.h"
+
+using namespace std;
+
+// ask for a name, then create an object animal with name, age, gender
+IAnimal::IAnimal(int age, int gender)
+{
+    cout << "New animal name ? " << endl;
+    cin >> _name;
+    cout << _name << " is waiting in the zoo."
+         << "\n"
+         << endl;
+    _age = age;
+    _gender = gender;
+    _month_since_meal = 0;
+    _gestation_month = 0;
+    _is_sick = false;
+    _fresh_new = true;
+}
+
+IAnimal::~IAnimal()
+{
+    cout << _name << " has been deleted." << endl;
+}
+
+// will delete the animal from the zoo, then erase it from memory
+void IAnimal::kill(Zoo *zoo)
+{
+    zoo->withdrawAnimal(this);
+    delete this;
+}
+
+// return name of animal
+string IAnimal::getName()
+{
+    return _name;
+}
+
+// return the age (month) of the animal
+int IAnimal::getAge()
+{
+    return _age;
+}
+
+//return gender of animal
+string IAnimal::getGender()
+{
+    if (_gender == 1)
+    {
+        return "male";
+    }
+    else
+    {
+        return "female";
+    }
+}
+
+// escape from the zoo (animal is then killed)
+void IAnimal::escape()
+{
+    cout << getName() << " escaped from the zoo." << endl;
+    // delete this;
+}
+
+// ----- TIGER -----
+Tiger::Tiger(int age, int gender) : IAnimal(age, gender) {}
+
+// will print the type, age and gender of the animal
+void Tiger::showAnimal()
+{
+    cout << "Tiger, " << getGender() << ", " << getAge() << " month(s), " << endl;
+}
+
+// return true if animal is up for reproduce, false if not
+bool Tiger::canReproduce()
+{
+    // if male
+    if (_gender == 1)
+    {
+        if (_age >= MALE_TIGER_MATURITY && _age < MALE_TIGER_UNFERTILITY_AGE)
+        {
+            return true;
+        }
+    }
+    // if female
+    else if (_gender == 2)
+    {
+        if (_age >= FEMALE_TIGER_MATURITY && _age < FEMALE_TIGER_UNFERTILITY_AGE && _gestation_month == 0)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+// ----- EAGLE -----
+Eagle::Eagle(int age, int gender) : IAnimal(age, gender) {}
+
+// will print the type, age and gender of the animal
+void Eagle::showAnimal()
+{
+    cout << "Eagle, " << getGender() << ", " << getAge() << " month(s), " << endl;
+}
+
+// return true if animal is up for reproduction, false if not
+bool Eagle::canReproduce()
+{
+    // if male
+    if (_gender == 1)
+    {
+        if (_age >= MALE_EAGLE_MATURITY && _age < MALE_EAGLE_UNFERTILITY_AGE)
+        {
+            return true;
+        }
+    }
+    // if female
+    else if (_gender == 2)
+    {
+        if (_age >= FEMALE_EAGLE_MATURITY && _age < FEMALE_EAGLE_UNFERTILITY_AGE && _gestation_month == 0)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+// ----- CHICKEN ------
+Chicken::Chicken(int age, int gender) : IAnimal(age, gender) {}
+
+// will print the type, age and gender of the animal
+void Chicken::showAnimal()
+{
+    cout << "Chicken, " << getGender() << ", " << getAge() << " month(s), " << endl;
+}
+
+// return true if animal is up for reproduction, false if not
+bool Chicken::canReproduce()
+{
+    // if male
+    if (_gender == 1)
+    {
+        if (_age >= ROOSTER_MATURITY && _age < ROOSTER_UNFERTILITY_AGE)
+        {
+            return true;
+        }
+    }
+    // if female
+    else if (_gender == 2)
+    {
+        if (_age >= HEN_MATURITY && _age < HEN_UNFERTILITY_AGE && _gestation_month == 0)
+        {
+            return true;
+        }
+    }
+    return false;
+}
