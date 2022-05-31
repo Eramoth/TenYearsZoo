@@ -28,6 +28,9 @@ public:
     void buyCage();
     // void buyFood();
     void showAnimalToBuy();
+    void showAnimalToSell();
+    void sellAnimalMenu();
+    // void sellCage()
 };
 
 #endif

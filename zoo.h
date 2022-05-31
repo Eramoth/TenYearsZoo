@@ -35,6 +35,8 @@ public:
     void newMeatStock(int change);
     void killAnimal(IAnimal* animal);
     void deleteCage(Cage* cage, int cage_idx);
+    vector<IAnimal*> getAnimalListByAge(string type_name, int min_age, int max_age);
+    vector<IAnimal*> getAnimalListByGender(string type_name, string gender);
 };
 
 

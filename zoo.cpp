@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <typeinfo>
 #include "zoo.h"
 #include "ianimal.h"
 #include "cage.h"
@@ -244,4 +245,40 @@ void Zoo::deleteCage(Cage *cage, int cage_idx)
         killAnimal(animal);
     }
     _cage_list.push_back(_cage_list[cage_idx]);
+}
+
+// retrieve animals based on type & age (works with IAnimal type)
+vector<IAnimal*> Zoo::getAnimalListByAge(string type_name, int min_age, int max_age)
+{
+    vector<IAnimal*> result;
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            string animal_type = typeid(animal).name();
+            if (animal_type.find(type_name) && animal->getAge() >= min_age && animal->getAge() <= max_age)
+            {
+                cout << "I'm in" << endl;
+                result.push_back(animal);
+            }
+        }
+    }
+    return result;
+}
+
+// retrieve animals based on type & gender (work with IAnimal type)
+vector<IAnimal*> Zoo::getAnimalListByGender(string type_name, string gender)
+{
+    vector<IAnimal*> result;
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            if (typeid(animal).name() == type_name && animal->getGender() == gender)
+            {
+                result.push_back(animal);
+            }
+        }
+    }
+    return result;
 }
