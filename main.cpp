@@ -35,6 +35,8 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <chrono>
+#include <thread>
 #include "config.h"
 #include "game.h"
 #include "ianimal.h"
@@ -44,6 +46,7 @@ using namespace std;
 
 int main()
 {
+    system("cls");
     // initialization
     Game* game = new Game();
     game->startGame();
@@ -57,6 +60,7 @@ int main()
              << endl;
 
         game->getZoo()->monthlyUpdate();
+        this_thread::sleep_for(chrono::seconds(3));
         game->menu();
 
         game->nextTurn();

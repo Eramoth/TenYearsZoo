@@ -11,7 +11,7 @@ using namespace std;
 // ask for a name, then create an object animal with name, age, gender
 IAnimal::IAnimal(int age, int gender)
 {
-    cout << "New animal name ? " << endl;
+    cout << ">> New animal name : ";
     cin >> _name;
     cout << _name << " is waiting in the zoo."
          << "\n"

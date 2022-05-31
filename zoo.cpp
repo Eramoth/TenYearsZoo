@@ -1,11 +1,20 @@
 #include <iostream>
 #include <vector>
+#include <random>
 #include "zoo.h"
 #include "ianimal.h"
 #include "cage.h"
 #include "config.h"
 
 using namespace std;
+
+int randint(int min,int max)
+{
+    random_device rd; // obtain a random number from hardware
+    mt19937 gen(rd()); // seed the generator
+    uniform_int_distribution<> distr(min, max); 
+    return distr(gen);
+}
 
 Zoo::Zoo()
 {
@@ -25,8 +34,12 @@ void Zoo::monthlyUpdate()
     checkForEvent();
     checkForDisease();
     feedAnimals();
-    cout << "There are " << population() << " animal(s) in your zoo." << endl;
-    cout << "Zoo is up to date."
+    if (population() == 0) {
+        cout << ">> There are no animals in your zoo" << endl;
+    } else {
+        cout << ">> There are " << population() << " animal(s) in your zoo" << endl;
+    }
+    cout << "The zoo is up to date."
          << "\n"
          << endl;
 }
@@ -34,19 +47,44 @@ void Zoo::monthlyUpdate()
 // feed the animals
 void Zoo::feedAnimals()
 {
-    cout << "Animals have been fed." << endl;
+    cout << ">> Animals have been fed." << endl;
 }
 
 // check if any accident happened
 void Zoo::checkForEvent()
 {
-    cout << "No event has occured this month." << endl;
+    int event = randint(1,100);
+    if (event <= 1)
+    {
+        int type = randint(0,1);
+        if (type == 0) {
+            
+            cout << ">> There was a fire in the zoo. (You loose 1 cage)" << endl;
+            return;
+        } else {
+            cout << ">> Someone stole one of your animals. (You loose 1 animal)" << endl;
+            return;
+        }
+    }
+    event = randint(1,100);
+    if (event <= 20)
+    {
+        cout << ">> There is some pests in your zoo. (You loose 10% of your seeds)" << endl;
+        return;
+    }
+    event = randint(1,100);
+    if (event <= 10)
+    {
+        cout << ">> The meats in your zoo is rotten. (You loose 20% of your meats)" << endl;
+        return;
+    }
+    cout << ">> No event has occured this month." << endl;
 }
 
 // check if new disease has spread
 void Zoo::checkForDisease()
 {
-    cout << "No new disease have been declared." << endl;
+    cout << ">> No new disease have been declared." << endl;
 }
 
 // add a cage to the zoo

@@ -1,8 +1,12 @@
 #include <iostream>
 #include <string>
+#include <chrono>
+#include <thread>
 #include "game.h"
 #include "zoo.h"
 #include "config.h"
+
+using namespace std;
 
 int Game::getMonth()
 {
@@ -22,8 +26,11 @@ Zoo* Game::getZoo()
 // run at the start, return true for new game, false to close the app
 void Game::startGame()
 {
-    cout << "Welcome to ZOO SIMULATOR 3000 !" << endl;
+    cout << "*---------------------------------*" << endl;
+    cout << "| Welcome to ZOO SIMULATOR 3000 ! |" << endl;
+    cout << "*---------------------------------*" << endl;
     _zoo = new Zoo();
+    this_thread::sleep_for(std::chrono::seconds(2));
 }
 
 // date in full letters
@@ -97,14 +104,15 @@ void Game::menu()
     int action = 0;
     while (action != 6)
     {
-        cout << "Money :" << _money << endl;
+        cout << "** Your Money : " << _money << " **"<< endl;
         cout << "You can do the following actions :" << endl; 
         cout << "1) Buy new animals" << endl;
         cout << "2) Sell animals" << endl;
         cout << "3) Buy food" << endl;
         cout << "4) Buy new cages" << endl;
         cout << "5) Sell cages" << endl;
-        cout << "6) End turn" << endl << endl << endl;
+        cout << "6) End turn" << endl << endl;
+        cout << "> ";
 
         cin >> action;
         switch (action)
@@ -128,7 +136,7 @@ void Game::menu()
             cout << "Turn ended." << endl;
             break;
         default:
-            cout << "Wrong input, try again." << endl;
+            cout << ">>> Wrong input, try again." << endl;
             break;
         }
     }
@@ -137,8 +145,6 @@ void Game::menu()
 // buy an animal and add  it to the zoo
 void Game::buyAnimal()
 {
-    cout << "\n-- ANIMAL MARKET --\n"
-         << endl;
     int price = 0;
     int action = 0;
     string type = "";
@@ -147,8 +153,11 @@ void Game::buyAnimal()
 
     while (true)
     {
+        system("cls");
+        cout << "\n-- ANIMAL MARKET --" << endl;
+        cout << "** Your Money : " << _money << " **\n"<< endl;
         showAnimalToBuy();
-        cout << "Action ?" << endl;
+        cout << "> ";
         cin >> action;
 
         // define the animal depending on the player's choice
@@ -197,22 +206,24 @@ void Game::buyAnimal()
             price = YOUNG_ROOSTER_BUY_PRICE;
             break;
         case 9:
-            cout << "Exited animal market."
+            cout << ">> Exited animal market."
                  << "\n"
                  << endl;
             return;
         default:
-            cout << "Wrong input, try again."
+            cout << ">>> Wrong input, try again."
                  << "\n"
                  << endl;
+                 this_thread::sleep_for(std::chrono::seconds(1));
             continue;
         }
 
         if (_money < price)
         {
-            cout << "You don't have enough money."
+            cout << ">> You don't have enough money."
                  << "\n"
                  << endl;
+                 this_thread::sleep_for(std::chrono::seconds(1));
             continue;
         }
         else
@@ -227,16 +238,19 @@ void Game::buyAnimal()
                  << "\n"
                  << "1) Male"
                  << "\n"
-                 << "2) Female" << endl;
+                 << "2) Female" << endl
+                 << "> ";
             cin >> gender;
+            cout << endl;
             while (gender != 1 && gender != 2)
             {
-                cout << "Wrong input. Try again :" << endl;
+                cout << ">>> Wrong input. Try again : ";
                 cin >> gender;
             }
         }
 
         // create the animal
+
         if (type == "Tiger")
         {
             Tiger *newAnimal = new Tiger(age, gender);
@@ -253,6 +267,7 @@ void Game::buyAnimal()
             _zoo->addAnimal(newAnimal);
         }
         cout << endl;
+        this_thread::sleep_for(std::chrono::seconds(3));
     }
 }
 
