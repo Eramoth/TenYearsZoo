@@ -13,5 +13,6 @@ void newYear(int *year, int *month);
 void playerActions(Zoo *zoo , int *money);
 void buyAnimal(Zoo *zoo, int *money);
 void buyCage(Zoo *zoo, int *money);
+void sellAnimal(Zoo *zoo, int *money);
 void showAnimalToBuy();
 #endif

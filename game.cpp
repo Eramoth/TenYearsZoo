@@ -182,13 +182,17 @@ void buyAnimal(Zoo *zoo, int *money)
                  << endl;
             return;
         default:
-            cout << "Wrong input, try again." << "\n" << endl;
+            cout << "Wrong input, try again."
+                 << "\n"
+                 << endl;
             continue;
         }
 
         if (*money < price)
         {
-            cout << "You don't have enough money." << "\n" << endl;
+            cout << "You don't have enough money."
+                 << "\n"
+                 << endl;
             continue;
         }
         else
@@ -296,16 +300,15 @@ void buyCage(Zoo *zoo, int *money)
 
 void showAnimalToBuy()
 {
-    cout << "Available animals :"
-         << "\n"
-         << "1) Tiger, 6 months : " << YOUNG_TIGER_BUY_PRICE << "\n"
-         << "2) Tiger, 4 years old : " << ADULT_TIGER_BUY_PRICE << "\n"
-         << "3) Tiger, 14 years old : " << OLD_TIGER_BUY_PRICE << "\n"
-         << "4) Eagle, 6 months : " << YOUNG_EAGLE_BUY_PRICE << "\n"
-         << "5) Eagle, 4 years : " << ADULT_EAGLE_BUY_PRICE << "\n"
-         << "6) Eagle, 14 years old : " << OLD_EAGLE_BUY_PRICE << "\n"
-         << "7) Hen, 6 months : " << YOUNG_HEN_BUY_PRICE << "\n"
-         << "8) Rooster, 6 months : " << YOUNG_ROOSTER_BUY_PRICE << "\n"
+    cout << "Available animals :" << endl
+         << "1) Tiger, 6 months : " << YOUNG_TIGER_BUY_PRICE << endl
+         << "2) Tiger, 4 years old : " << ADULT_TIGER_BUY_PRICE << endl
+         << "3) Tiger, 14 years old : " << OLD_TIGER_BUY_PRICE << endl
+         << "4) Eagle, 6 months : " << YOUNG_EAGLE_BUY_PRICE << endl
+         << "5) Eagle, 4 years : " << ADULT_EAGLE_BUY_PRICE << endl
+         << "6) Eagle, 14 years old : " << OLD_EAGLE_BUY_PRICE << endl
+         << "7) Hen, 6 months : " << YOUNG_HEN_BUY_PRICE << endl
+         << "8) Rooster, 6 months : " << YOUNG_ROOSTER_BUY_PRICE << endl
          << "9) Exit animal market"
          << "\n"
          << endl;
