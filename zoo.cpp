@@ -266,8 +266,20 @@ void Zoo::withdrawAnimal(IAnimal* w_animal)
     cout << "There's no such animal in this Zoo." << endl;
 }
 
+// delete animal, withdraw it from it's cage, and cry a bit
 void Zoo::killAnimal(IAnimal *animal)
 {
     withdrawAnimal(animal);
+    cout << animal->getName() << " has been killed :(((((" << endl;
     delete animal;
+}
+
+// delete a cage and all the animals in it, and remove it from _cage_list
+void Zoo::deleteCage(Cage *cage, int cage_idx)
+{
+    for (auto animal : cage->getAnimalList())
+    {
+        killAnimal(animal);
+    }
+    _cage_list.push_back(_cage_list[cage_idx]);
 }
