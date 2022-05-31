@@ -2,6 +2,7 @@
 #define ZOO_H
 
 #include <vector>
+#include <string>
 #include "ianimal.h"
 #include "cage.h"
 
@@ -22,12 +23,12 @@ public:
     void addCage(Cage* newCage);
     void addAnimal(IAnimal* newAnimal);
     void withdrawAnimal(IAnimal* w_animal);
-    void feedAnimals();
-    void checkForEvent();
-    void checkForDisease();
+    string feedAnimals();
+    string checkForEvent();
+    string checkForDisease();
     int population();
     vector<Cage*> getCageList();
-    void monthlyUpdate();
+    string monthlyUpdate();
     void showCageList();
     void buyFood(int *money);
     void showFoodStock();

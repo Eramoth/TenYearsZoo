@@ -29,29 +29,28 @@ Zoo::~Zoo()
 }
 
 // structure and call everything that can happen between two month
-void Zoo::monthlyUpdate()
+string Zoo::monthlyUpdate()
 {
-    checkForEvent();
-    checkForDisease();
-    feedAnimals();
+    string res = checkForEvent();
+    res += checkForDisease();
+    res += feedAnimals();
     if (population() == 0) {
-        cout << ">> There are no animals in your zoo" << endl;
+        res += ">> There are no animals in your zoo\n";
     } else {
-        cout << ">> There are " << population() << " animal(s) in your zoo" << endl;
+        res += ">> There are " + to_string(population()) + " animal(s) in your zoo\n";
     }
-    cout << "The zoo is up to date."
-         << "\n"
-         << endl;
+    res += "The zoo is up to date.\n";
+    return res;
 }
 
 // feed the animals
-void Zoo::feedAnimals()
+string Zoo::feedAnimals()
 {
-    cout << ">> Animals have been fed." << endl;
+    return ">> The animals are fed.\n";
 }
 
 // check if any accident happened
-void Zoo::checkForEvent()
+string Zoo::checkForEvent()
 {
     int event = randint(1,100);
     if (event <= 1)
@@ -59,32 +58,28 @@ void Zoo::checkForEvent()
         int type = randint(0,1);
         if (type == 0) {
             
-            cout << ">> There was a fire in the zoo. (You loose 1 cage)" << endl;
-            return;
+            return ">> There was a fire in the zoo. (You loose 1 cage)\n";
         } else {
-            cout << ">> Someone stole one of your animals. (You loose 1 animal)" << endl;
-            return;
+            return">> Someone stole one of your animals. (You loose 1 animal)\n";
         }
     }
     event = randint(1,100);
     if (event <= 20)
     {
-        cout << ">> There is some pests in your zoo. (You loose 10% of your seeds)" << endl;
-        return;
+        return ">> There is some pests in your zoo. (You loose 10% of your seeds)\n";
     }
     event = randint(1,100);
     if (event <= 10)
     {
-        cout << ">> The meats in your zoo is rotten. (You loose 20% of your meats)" << endl;
-        return;
+        return ">> The meats in your zoo is rotten. (You loose 20% of your meats)\n";
     }
-    cout << ">> No event has occured this month." << endl;
+    return ">> No event has occured this month.\n";
 }
 
 // check if new disease has spread
-void Zoo::checkForDisease()
+string Zoo::checkForDisease()
 {
-    cout << ">> No new disease have been declared." << endl;
+    return ">> No new disease have been declared.\n";
 }
 
 // add a cage to the zoo

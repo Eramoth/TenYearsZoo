@@ -2,6 +2,7 @@
 #include <string>
 #include <chrono>
 #include <thread>
+#include <conio.h>
 #include "game.h"
 #include "zoo.h"
 #include "config.h"
@@ -99,45 +100,77 @@ void Game::nextTurn()
 }
 
 // player actions during turn. Loop untill skip turn
-void Game::menu()
+void Game::menu(string update)
 {
     int action = 0;
-    while (action != 6)
+    while (1)
     {
-        cout << "** Your Money : " << _money << " **"<< endl;
-        cout << "You can do the following actions :" << endl; 
-        cout << "1) Buy new animals" << endl;
-        cout << "2) Sell animals" << endl;
-        cout << "3) Buy food" << endl;
-        cout << "4) Buy new cages" << endl;
-        cout << "5) Sell cages" << endl;
-        cout << "6) End turn" << endl << endl;
-        cout << "> ";
+        system("cls");
+        cout << "\n----------------\n"
+             << parseDate() << "\n"
+             << endl;
 
-        cin >> action;
-        switch (action)
+        cout << update << endl;
+        cout << "** Your Money : " << _money << " **"<< endl;
+        cout << "You can do the following actions :" << endl;
+        if (action == 0) {cout << "> Buy new animals" << endl;}
+        else {cout << "  Buy new animals" << endl;}
+        if (action == 1) {cout << "> Sell animals" << endl;}
+        else {cout << "  Sell animals" << endl;}
+        if (action == 2) {cout << "> Buy food" << endl;}
+        else {cout << "  Buy food" << endl;}
+        if (action == 3) {cout << "> Buy new cages" << endl;}
+        else {cout << "  Buy new cages" << endl;}
+        if (action == 4) {cout << "> Sell cages" << endl;}
+        else {cout << "  Sell cages" << endl;}
+        if (action == 5) {cout << "> End turn" << endl;}
+        else {cout << "  End turn" << endl;}
+        cout << "\nUse arrow keys to navigate and press enter to accept" << endl;
+        int key = _getch();
+        if (key == 72)
         {
-        case 1:
-            buyAnimal();
-            break;
-        // case 2:
-        //     sellAnimal(zoo, money);
-        //     break;
-        // case 3:
-        //     buyFood();
-        //     break;
-        case 4:
-            buyCage();
-            break;
-        // case 5 :
-        //     sellCage(zoo, _money);
-        //     break;
-        case 6:
-            cout << "Turn ended." << endl;
-            break;
-        default:
-            cout << ">>> Wrong input, try again." << endl;
-            break;
+            if (action == 0) {continue;}
+            else {action -= 1;}
+        }
+
+        else if (key == 80)
+        {
+            if (action == 5) {continue;}
+            else {action += 1;}
+        }
+
+        else if (key == 13)
+        {
+            switch (action+1)
+            {
+            case 1:
+                buyAnimal();
+                break;
+            // case 2:
+            //     sellAnimal(zoo, money);
+            //     break;
+            // case 3:
+            //     buyFood();
+            //     break;
+            case 4:
+                buyCage();
+                break;
+            // case 5 :
+            //     sellCage(zoo, _money);
+            //     break;
+            case 6:
+                cout << "Turn ended." << endl;
+                return;
+            default:
+                cout << ">>> Wrong input, try again." << endl;
+                break;
+            }
+        }
+
+        else if (key == 27)
+        {
+            cout << ">>> You have quit the game." << endl;
+            exit(0);
         }
     }
 }
@@ -146,8 +179,8 @@ void Game::menu()
 void Game::buyAnimal()
 {
     int price = 0;
-    int action = 0;
-    string type = "";
+    int action = 1;
+    string type = "";   
     int age = 0;
     int gender = 0;
 
@@ -156,11 +189,29 @@ void Game::buyAnimal()
         system("cls");
         cout << "\n-- ANIMAL MARKET --" << endl;
         cout << "** Your Money : " << _money << " **\n"<< endl;
-        showAnimalToBuy();
-        cout << "> ";
-        cin >> action;
+        showAnimalToBuy(action);
+        int key = _getch();
+        if (key == 72)
+        {
+            if (action == 1) {continue;}
+            else {action -= 1;}
+        }
 
-        // define the animal depending on the player's choice
+        else if (key == 80)
+        {
+            if (action == 9) {continue;}
+            else {action += 1;}
+        }
+
+        else if (key == 27)
+        {
+            cout << ">>> You have quit the game." << endl;
+            exit(0);
+        }
+
+        else if (key == 13)
+        {
+                    // define the animal depending on the player's choice
         switch (action)
         {
         case 1:
@@ -214,8 +265,8 @@ void Game::buyAnimal()
             cout << ">>> Wrong input, try again."
                  << "\n"
                  << endl;
-                 this_thread::sleep_for(std::chrono::seconds(1));
-            continue;
+                //  this_thread::sleep_for(std::chrono::seconds(1));
+                continue;
         }
 
         if (_money < price)
@@ -223,52 +274,70 @@ void Game::buyAnimal()
             cout << ">> You don't have enough money."
                  << "\n"
                  << endl;
-                 this_thread::sleep_for(std::chrono::seconds(1));
+                //  this_thread::sleep_for(std::chrono::seconds(1));
             continue;
         }
         else
         {
             _money -= price;
         }
-
-        // if gender is not defined, define it (1 for male, 2 for female):
-        if (gender == 0)
-        {
-            cout << "Gender :"
-                 << "\n"
-                 << "1) Male"
-                 << "\n"
-                 << "2) Female" << endl
-                 << "> ";
-            cin >> gender;
-            cout << endl;
-            while (gender != 1 && gender != 2)
+                // if gender is not defined, define it (1 for male, 2 for female):
+        int action2 = 0;
+            while (1)
             {
-                cout << ">>> Wrong input. Try again : ";
-                cin >> gender;
+                system("cls");
+                cout << "\n-- ANIMAL MARKET --" << endl;
+                cout << "** Your Money : " << _money << " **\n"<< endl;
+                showAnimalToBuy(action);
+                cout << "Gender:" << endl;
+                if (action2 == 0) {cout << "> Male" << endl;}
+                else {cout << "  Male" << endl;}
+                if (action2 == 1) {cout << "> Female" << endl;}
+                else {cout << "  Female" << endl;}
+                int key2 = _getch();
+                if (key2 == 72)
+                {
+                    if (action2 == 0) {continue;}
+                    else {action2 -= 1;}
+                }
+
+                else if (key2 == 80)
+                {
+                    if (action2 == 2) {continue;}
+                    else {action2 += 1;}
+                }
+
+                else if (key2 == 27)
+                {
+                    cout << ">>> You have quit the game." << endl;
+                    exit(0);
+                }
+
+                else if (key2 == 13)
+                {
+                     // create the animal
+                    if (type == "Tiger")
+                    {
+                        Tiger *newAnimal = new Tiger(age, gender+1);
+                        _zoo->addAnimal(newAnimal);
+                    }
+                    else if (type == "Eagle")
+                    {
+                        Eagle *newAnimal = new Eagle(age, gender+1);
+                        _zoo->addAnimal(newAnimal);
+                    }
+                    else if (type == "Chicken")
+                    {
+                        Chicken *newAnimal = new Chicken(age, gender+1);
+                        _zoo->addAnimal(newAnimal);
+                    }
+                    cout << endl;
+                    this_thread::sleep_for(std::chrono::seconds(3));
+                    break;
+                }
+                }
             }
         }
-
-        // create the animal
-
-        if (type == "Tiger")
-        {
-            Tiger *newAnimal = new Tiger(age, gender);
-            _zoo->addAnimal(newAnimal);
-        }
-        else if (type == "Eagle")
-        {
-            Eagle *newAnimal = new Eagle(age, gender);
-            _zoo->addAnimal(newAnimal);
-        }
-        else if (type == "Chicken")
-        {
-            Chicken *newAnimal = new Chicken(age, gender);
-            _zoo->addAnimal(newAnimal);
-        }
-        cout << endl;
-        this_thread::sleep_for(std::chrono::seconds(3));
-    }
 }
 
 // buy cages depending on player's choice, then add it to the zoo
@@ -333,18 +402,25 @@ void Game::buyCage()
     }
 }
 
-void Game::showAnimalToBuy()
+void Game::showAnimalToBuy(int action)
 {
-    cout << "Available animals :" << endl
-         << "1) Tiger, 6 months : " << YOUNG_TIGER_BUY_PRICE << endl
-         << "2) Tiger, 4 years old : " << ADULT_TIGER_BUY_PRICE << endl
-         << "3) Tiger, 14 years old : " << OLD_TIGER_BUY_PRICE << endl
-         << "4) Eagle, 6 months : " << YOUNG_EAGLE_BUY_PRICE << endl
-         << "5) Eagle, 4 years : " << ADULT_EAGLE_BUY_PRICE << endl
-         << "6) Eagle, 14 years old : " << OLD_EAGLE_BUY_PRICE << endl
-         << "7) Hen, 6 months : " << YOUNG_HEN_BUY_PRICE << endl
-         << "8) Rooster, 6 months : " << YOUNG_ROOSTER_BUY_PRICE << endl
-         << "9) Exit animal market"
-         << "\n"
-         << endl;
+    if (action == 1) {cout << "> Tiger, 6 months : " << YOUNG_TIGER_BUY_PRICE << endl;}
+    else {cout << "  Tiger, 6 months : " << YOUNG_TIGER_BUY_PRICE << endl;}
+    if (action == 2) {cout << "> Tiger, 4 years old : " << ADULT_TIGER_BUY_PRICE << endl;}
+    else {cout << "  Tiger, 4 years old : " << ADULT_TIGER_BUY_PRICE << endl;}
+    if (action == 3) {cout << "> Tiger, 14 years old : " << OLD_TIGER_BUY_PRICE << endl;}
+    else {cout << "  Tiger, 14 years old : " << OLD_TIGER_BUY_PRICE << endl;}
+    if (action == 4) {cout << "> Eagle, 6 months : " << YOUNG_EAGLE_BUY_PRICE << endl;}
+    else {cout << "  Eagle, 6 months : " << YOUNG_EAGLE_BUY_PRICE << endl;}
+    if (action == 5) {cout << "> Eagle, 4 years : " << ADULT_EAGLE_BUY_PRICE << endl;}
+    else {cout << "  Eagle, 4 years : " << ADULT_EAGLE_BUY_PRICE << endl;}
+    if (action == 6) {cout << "> Eagle, 14 years old : " << OLD_EAGLE_BUY_PRICE << endl;}
+    else {cout << "  Eagle, 14 years old : " << OLD_EAGLE_BUY_PRICE << endl;}
+    if (action == 7) {cout << "> Hen, 6 months : " << YOUNG_HEN_BUY_PRICE << endl;}
+    else {cout << "  Hen, 6 months : " << YOUNG_HEN_BUY_PRICE << endl;}
+    if (action == 8) {cout << "> Rooster, 6 months : " << YOUNG_ROOSTER_BUY_PRICE << endl;}
+    else {cout << "  Rooster, 6 months : " << YOUNG_ROOSTER_BUY_PRICE << endl;}
+    if (action == 9) {cout << "> Exit animal market" << endl;}
+    else {cout << "  Exit animal market" << endl;}
+    cout << endl << endl;
 }

@@ -59,9 +59,10 @@ int main()
              << game->parseDate() << "\n"
              << endl;
 
-        game->getZoo()->monthlyUpdate();
+        string update = game->getZoo()->monthlyUpdate();
+        cout << update << endl;
         this_thread::sleep_for(chrono::seconds(3));
-        game->menu();
+        game->menu(update);
 
         game->nextTurn();
     }
