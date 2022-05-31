@@ -45,34 +45,20 @@ using namespace std;
 int main()
 {
     // initialization
-    bool start_game = startGame();
-    int money;
-    int year;
-    int month;
-    Zoo *zoo;
-    if (start_game)
-    {
-        zoo = new Zoo();
-        money = BUDGET;
-        year = STARTING_YEAR;
-        month = STARTING_MONTH;
-    }
+    Game* game = new Game();
+    game->startGame();
 
     // turn loop
 
-    while (month + year * 12 <= LAST_MONTH + LAST_YEAR * 12)
+    while (game->getMonth() + game->getYear() * 12 <= LAST_MONTH + LAST_YEAR * 12)
     {
-        if (month > 12)
-        {
-            newYear(&year, &month);
-        }
         cout << "\n----------------\n"
-             << date(&year, &month) << "\n"
+             << game->parseDate() << "\n"
              << endl;
 
-        zoo->monthlyUpdate();
-        playerActions(zoo, &money);
+        game->getZoo()->monthlyUpdate();
+        game->menu();
 
-        month++;
+        game->nextTurn();
     }
 }

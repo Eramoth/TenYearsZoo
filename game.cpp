@@ -4,27 +4,33 @@
 #include "zoo.h"
 #include "config.h"
 
-// run at the start, return true for new game, false to close the app
-bool startGame()
+int Game::getMonth()
 {
-    cout << "Welcome to ZOO SIMULATOR 3000 ! Do you want to start a game ? y/n" << endl;
-    string start;
-    cin >> start;
-    if (start == "y")
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
+    return _currentMonth;
+}
+
+int Game::getYear()
+{
+    return _currentYear;
+}
+
+Zoo* Game::getZoo()
+{
+    return _zoo;
+}
+
+// run at the start, return true for new game, false to close the app
+void Game::startGame()
+{
+    cout << "Welcome to ZOO SIMULATOR 3000 !" << endl;
+    _zoo = new Zoo();
 }
 
 // date in full letters
-string date(int *year, int *month)
+string Game::parseDate()
 {
     string date;
-    switch (*month)
+    switch (_currentMonth)
     {
     case 1:
         date = "JANUARY";
@@ -64,45 +70,59 @@ string date(int *year, int *month)
         break;
     }
 
-    date += ", YEAR " + to_string(*year);
+    date += ", YEAR " + to_string(_currentYear);
     return date;
 }
 
 // happy new year !
-void newYear(int *year, int *month)
+void Game::newYear()
 {
-    *month = 1;
-    *year += 1;
+    _currentMonth = 1;
+    _currentYear += 1;
     cout << "Hapy New Year !" << endl;
 }
 
+void Game::nextTurn()
+{
+    _currentMonth += 1;
+    if (_currentMonth > 12)
+    {
+        newYear();
+    }
+}
+
 // player actions during turn. Loop untill skip turn
-void playerActions(Zoo *zoo, int *money)
+void Game::menu()
 {
     int action = 0;
     while (action != 6)
     {
-        cout << "Money :" << *money << endl;
-        cout << "You can do the following actions :\n1) Buy new animals\n2) Sell animals\n3) Buy food\n4) Buy new cages\n5) Sell cages\n6) End turn\n\n"
-             << endl;
+        cout << "Money :" << _money << endl;
+        cout << "You can do the following actions :" << endl; 
+        cout << "1) Buy new animals" << endl;
+        cout << "2) Sell animals" << endl;
+        cout << "3) Buy food" << endl;
+        cout << "4) Buy new cages" << endl;
+        cout << "5) Sell cages" << endl;
+        cout << "6) End turn" << endl << endl << endl;
 
         cin >> action;
         switch (action)
         {
         case 1:
-            buyAnimal(zoo, money);
+            buyAnimal();
             break;
         // case 2:
         //     sellAnimal(zoo, money);
         //     break;
-        case 3:
-            zoo->buyFood(money);
-            break;
+        // case 3:
+        //     buyFood();
+        //     break;
         case 4:
-            buyCage(zoo, money);
+            buyCage();
             break;
         // case 5 :
-        //     sellCage(zoo, money);
+        //     sellCage(zoo, _money);
         //     break;
         case 6:
             cout << "Turn ended." << endl;
@@ -115,7 +135,7 @@ void playerActions(Zoo *zoo, int *money)
 }
 
 // buy an animal and add  it to the zoo
-void buyAnimal(Zoo *zoo, int *money)
+void Game::buyAnimal()
 {
     cout << "\n-- ANIMAL MARKET --\n"
          << endl;
@@ -182,18 +202,22 @@ void buyAnimal(Zoo *zoo, int *money)
                  << endl;
             return;
         default:
-            cout << "Wrong input, try again." << "\n" << endl;
+            cout << "Wrong input, try again."
+                 << "\n"
+                 << endl;
             continue;
         }
 
-        if (*money < price)
+        if (_money < price)
         {
-            cout << "You don't have enough money." << "\n" << endl;
+            cout << "You don't have enough money."
+                 << "\n"
+                 << endl;
             continue;
         }
         else
         {
-            *money -= price;
+            _money -= price;
         }
 
         // if gender is not defined, define it (1 for male, 2 for female):
@@ -216,24 +240,24 @@ void buyAnimal(Zoo *zoo, int *money)
         if (type == "Tiger")
         {
             Tiger *newAnimal = new Tiger(age, gender);
-            zoo->addAnimal(newAnimal);
+            _zoo->addAnimal(newAnimal);
         }
         else if (type == "Eagle")
         {
             Eagle *newAnimal = new Eagle(age, gender);
-            zoo->addAnimal(newAnimal);
+            _zoo->addAnimal(newAnimal);
         }
         else if (type == "Chicken")
         {
             Chicken *newAnimal = new Chicken(age, gender);
-            zoo->addAnimal(newAnimal);
+            _zoo->addAnimal(newAnimal);
         }
         cout << endl;
     }
 }
 
 // buy cages depending on player's choice, then add it to the zoo
-void buyCage(Zoo *zoo, int *money)
+void Game::buyCage()
 {
     // show available items
     int action = 0;
@@ -281,31 +305,30 @@ void buyCage(Zoo *zoo, int *money)
         }
 
         // add cages if possible
-        if (type != "" && *money >= price)
+        if (type != "" && _money >= price)
         {
             Cage *newCage = new Cage(type);
-            zoo->addCage(newCage);
-            *money -= price;
+            _zoo->addCage(newCage);
+            _money -= price;
         }
-        else if (*money < price)
+        else if (_money < price)
         {
             cout << "You don't have enough money." << endl;
         }
     }
 }
 
-void showAnimalToBuy()
+void Game::showAnimalToBuy()
 {
-    cout << "Available animals :"
-         << "\n"
-         << "1) Tiger, 6 months : " << YOUNG_TIGER_BUY_PRICE << "\n"
-         << "2) Tiger, 4 years old : " << ADULT_TIGER_BUY_PRICE << "\n"
-         << "3) Tiger, 14 years old : " << OLD_TIGER_BUY_PRICE << "\n"
-         << "4) Eagle, 6 months : " << YOUNG_EAGLE_BUY_PRICE << "\n"
-         << "5) Eagle, 4 years : " << ADULT_EAGLE_BUY_PRICE << "\n"
-         << "6) Eagle, 14 years old : " << OLD_EAGLE_BUY_PRICE << "\n"
-         << "7) Hen, 6 months : " << YOUNG_HEN_BUY_PRICE << "\n"
-         << "8) Rooster, 6 months : " << YOUNG_ROOSTER_BUY_PRICE << "\n"
+    cout << "Available animals :" << endl
+         << "1) Tiger, 6 months : " << YOUNG_TIGER_BUY_PRICE << endl
+         << "2) Tiger, 4 years old : " << ADULT_TIGER_BUY_PRICE << endl
+         << "3) Tiger, 14 years old : " << OLD_TIGER_BUY_PRICE << endl
+         << "4) Eagle, 6 months : " << YOUNG_EAGLE_BUY_PRICE << endl
+         << "5) Eagle, 4 years : " << ADULT_EAGLE_BUY_PRICE << endl
+         << "6) Eagle, 14 years old : " << OLD_EAGLE_BUY_PRICE << endl
+         << "7) Hen, 6 months : " << YOUNG_HEN_BUY_PRICE << endl
+         << "8) Rooster, 6 months : " << YOUNG_ROOSTER_BUY_PRICE << endl
          << "9) Exit animal market"
          << "\n"
          << endl;

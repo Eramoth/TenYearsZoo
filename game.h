@@ -4,14 +4,30 @@
 #include <iostream>
 #include <string>
 #include "zoo.h"
+#include "config.h"
 
 using namespace std;
 
-bool startGame();
-string date(int *year, int *month);
-void newYear(int *year, int *month);
-void playerActions(Zoo *zoo , int *money);
-void buyAnimal(Zoo *zoo, int *money);
-void buyCage(Zoo *zoo, int *money);
-void showAnimalToBuy();
+class Game {
+    string _playerName;
+    int _money=BUDGET;
+    int _currentMonth=STARTING_MONTH;
+    int _currentYear=STARTING_YEAR;
+    Zoo* _zoo;
+public:
+    int getMonth();
+    int getYear();
+    Zoo* getZoo();
+
+    void startGame();
+    string parseDate();
+    void newYear();
+    void nextTurn();
+    void menu();
+    void buyAnimal();
+    void buyCage();
+    // void buyFood();
+    void showAnimalToBuy();
+};
+
 #endif
