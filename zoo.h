@@ -33,6 +33,7 @@ public:
     void showFoodStock();
     void newSeedStock(int change);
     void newMeatStock(int change);
+    void killAnimal(IAnimal *animal);
 };
 
 
