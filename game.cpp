@@ -315,6 +315,7 @@ void Game::buyAnimal()
 
                 else if (key2 == 13)
                 {
+                    cout << endl;
                      // create the animal
                     if (type == "Tiger")
                     {
@@ -345,59 +346,78 @@ void Game::buyCage()
 {
     // show available items
     int action = 0;
-    string type = "Eagle";
-    cout << "\n-- CAGE MARKET --\n"
-         << endl;
-    cout << "Cages available :\n"
-         << endl;
-    cout << "1) Tiger cage : " << TIGER_CAGE_BUY_PRICE << endl;
-    cout << "2) Eagle cage : " << EAGLE_CAGE_BUY_PRICE << endl;
-    cout << "3) Chicken cage : " << CHICKEN_CAGE_BUY_PRICE << endl;
-    cout << "4) Exit cage market"
-         << endl;
-
-    // player buy as much as he want/can
+    string type = "";
+    int price = 0;
     while (true)
     {
-        cout << endl;
-        string type = "";
-        int price = 0;
-        cout << "Action : " << endl;
-        cin >> action;
+        system("cls");
+        cout << "\n-- CAGE MARKET --\n" << endl;
+        cout << "** Your Money : " << _money << " **\n" << endl;
+        cout << "Cages available :\n" << endl;
+        if (action == 0) {cout << "> Tiger cage : " << TIGER_CAGE_BUY_PRICE << endl;}
+        else {cout << "  Tiger cage : " << TIGER_CAGE_BUY_PRICE << endl;}
+        if (action == 1) {cout << "> Eagle cage : " << EAGLE_CAGE_BUY_PRICE << endl;}
+        else {cout << "  Eagle cage : " << EAGLE_CAGE_BUY_PRICE << endl;}
+        if (action == 2) {cout << "> Chicken cage : " << CHICKEN_CAGE_BUY_PRICE << endl;}
+        else {cout << "  Chicken cage : " << CHICKEN_CAGE_BUY_PRICE << endl;}
+        if (action == 3) {cout << "> Exit" << endl;}
+        else {cout << "  Exit" << endl;}
 
-        switch (action)
+        int key = _getch();
+        if (key == 72)
         {
-        case 1:
-            type = "Tiger";
-            price = TIGER_CAGE_BUY_PRICE;
-            break;
-        case 2:
-            type = "Eagle";
-            price = EAGLE_CAGE_BUY_PRICE;
-            break;
-        case 3:
-            type = "Chicken";
-            price = CHICKEN_CAGE_BUY_PRICE;
-            break;
-        case 4:
-            cout << "Exited cage market.\n"
-                 << endl;
-            return;
-        default:
-            cout << "Wrong input, try again." << endl;
-            break;
+            if (action == 0) {continue;}
+            else {action -= 1;}
         }
 
-        // add cages if possible
-        if (type != "" && _money >= price)
+        else if (key == 80)
         {
-            Cage *newCage = new Cage(type);
-            _zoo->addCage(newCage);
-            _money -= price;
+            if (action == 3) {continue;}
+            else {action += 1;}
         }
-        else if (_money < price)
+
+        else if (key == 27)
         {
-            cout << "You don't have enough money." << endl;
+            cout << ">>> You have quit the game." << endl;
+            exit(0);
+        }
+
+        else if (key == 13)
+        {
+            cout << endl;
+            switch (action+1)
+            {
+            case 1:
+                type = "Tiger";
+                price = TIGER_CAGE_BUY_PRICE;
+                break;
+            case 2:
+                type = "Eagle";
+                price = EAGLE_CAGE_BUY_PRICE;
+                break;
+            case 3:
+                type = "Chicken";
+                price = CHICKEN_CAGE_BUY_PRICE;
+                break;
+            case 4:
+                cout << "Exited cage market.\n"
+                    << endl;
+                return;
+            default:
+                cout << "Wrong input, try again." << endl;
+                break;
+            }
+            if (type != "" && _money >= price)
+            {
+                Cage *newCage = new Cage(type);
+                _zoo->addCage(newCage);
+                _money -= price;
+            }
+            else if (_money < price)
+            {
+                cout << "You don't have enough money." << endl;
+            }
+            this_thread::sleep_for(std::chrono::seconds(1));
         }
     }
 }

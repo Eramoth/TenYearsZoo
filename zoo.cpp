@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <conio.h>
 #include <random>
 #include "zoo.h"
 #include "ianimal.h"
@@ -91,38 +92,76 @@ void Zoo::addCage(Cage *newCage)
 // add the animal to a cage, depending on the user's choice
 void Zoo::addAnimal(IAnimal *newAnimal)
 {
-    cout << "In wich cage do you want to put it ?" << endl;
-    showCageList();
-
-    // if you have cages, you can choose to free it ; if you don't, it will escape
+    int choice = 1;
+    int alpha = 0;
     if (_cage_list.size() > 0)
-    {
-        cout << "You can also free it by typing \"0\"" << endl;
-    }
+        {
+            while(true)
+            {
+                int maxIndex = 10;
+            if (_cage_list.size() - alpha * 10 < 10)
+            {
+                maxIndex = _cage_list.size() - alpha * 10;
+            }
+                system("cls");
+                cout << "In wich cage do you want to put it ?" << endl;
+                showCageList(choice,alpha,maxIndex);
+                if (alpha * 10 + maxIndex >= _cage_list.size() && choice == maxIndex + 1){cout << "> Free animal" << endl;}
+                else if (choice == maxIndex + 2) {cout << "> Free animal" << endl;}
+                else {cout << "  Free animal" << endl;}
+
+                int key = _getch();
+                if (key == 72)
+                {
+                    if (alpha != 0 && choice == 0) {continue;}
+                    if (choice == 1 && alpha == 0) {continue;}
+                    else {choice -= 1;}
+                }
+
+                else if (key == 80)
+                {
+                    if (alpha * 10 + maxIndex >= _cage_list.size() && choice == maxIndex + 1) {continue;}
+                    if (choice == maxIndex + 2) {continue;}
+                    else {choice += 1;}
+                }
+
+                else if (key == 27)
+                {
+                    cout << ">>> You have quit the game." << endl;
+                    exit(0);
+                }
+
+                else if (key == 13)
+                {
+                    if (choice == maxIndex + 2 || (alpha * 10 + maxIndex >= _cage_list.size() && choice == maxIndex + 1))
+                    {
+                        newAnimal->escape();
+                        return;
+                    }
+                    if (choice == 0)
+                    {
+                        alpha -= 1;
+                        choice = 10;
+                        continue;
+                    }
+                    if (choice == maxIndex + 1)
+                    {
+                        alpha += 1;
+                        choice = 1;
+                        continue;
+                    }
+                    _cage_list[choice + alpha - 1]->addAnimal(newAnimal);
+                    return;
+                }
+            }
+        }
+    // if you have cages, you can choose to free it ; if you don't, it will escape
     else
     {
         cout << newAnimal->getName() << " ran away." << "\n" << endl;
         // delete newAnimal;
         return;
     }
-    // take input
-    int cage_index = -1;
-    cin >> cage_index;
-
-    // if it chose to free, kill it and break
-    if (cage_index == 0)
-    {
-        newAnimal->escape();
-        return;
-    }
-
-    // error handler
-    while (cage_index < 1 || cage_index > _cage_list.size())
-    {
-        cout << "Wrong input. Try again : " << endl;
-        cin >> cage_index;
-    }
-    _cage_list[cage_index - 1]->addAnimal(newAnimal);
 }
 
 // return the number of animals in the zoo
@@ -137,7 +176,7 @@ int Zoo::population()
 }
 
 // will print all the cage's name, number of animals and capacity
-void Zoo::showCageList()
+void Zoo::showCageList(int index,int alpha,int maxIndex)
 {
     if (_cage_list.size() <= 0)
     {
@@ -145,9 +184,24 @@ void Zoo::showCageList()
         return;
     }
 
-    for (int i = 1; i <= _cage_list.size(); i++)
+    if (alpha != 0)
     {
-        cout << i << ") " << _cage_list[i - 1]->getName() << " : " << _cage_list[i - 1]->numberOfAnimal() << "/" << _cage_list[i - 1]->getCapacity() << endl;
+        if (index == 0) {cout << "> See Less" << endl;}
+        else {cout << "  See Less" << endl;}
+    }
+    for (int i = 1; i <= maxIndex; i++)
+    {
+        if (index == i)
+        {
+            cout << "> " << _cage_list[alpha * 10 + i - 1]->getName() << " : " << _cage_list[alpha * 10 + i - 1]->numberOfAnimal() << "/" << _cage_list[alpha * 10 + i - 1]->getCapacity() << endl;
+        } else {
+            cout << "  " << _cage_list[alpha * 10 + i - 1]->getName() << " : " << _cage_list[alpha * 10 + i - 1]->numberOfAnimal() << "/" << _cage_list[alpha * 10 + i - 1]->getCapacity() << endl;
+        }
+    }
+    if (alpha * 10 + maxIndex < _cage_list.size())
+    {
+        if (index == maxIndex + 1) {cout << "> See More" << endl;}
+        else {cout << "  See More" << endl;}
     }
 }
 

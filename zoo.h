@@ -29,7 +29,7 @@ public:
     int population();
     vector<Cage*> getCageList();
     string monthlyUpdate();
-    void showCageList();
+    void showCageList(int,int,int);
     void buyFood(int *money);
     void showFoodStock();
     void newSeedStock(int change);
