@@ -31,6 +31,7 @@ public:
     void showAnimalToSell();
     void sellAnimalMenu();
     // void sellCage()
+    int stringToInt(string s);
 };
 
 #endif

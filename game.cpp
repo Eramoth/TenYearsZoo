@@ -101,8 +101,8 @@ void Game::nextTurn()
 // player actions during turn. Loop untill skip turn
 void Game::menu()
 {
-    int action = 0;
-    while (action != 6)
+    int choice = 0;
+    while (choice != 6)
     {
         cout << "** Your Money : " << _money << " **"<< endl;
         cout << "You can do the following actions :" << endl; 
@@ -113,8 +113,11 @@ void Game::menu()
         cout << "5) Sell cages" << endl;
         cout << "6) End turn" << endl << endl;
         cout << "> ";
-        cin >> action;
-        switch (action)
+
+        string input;
+        cin >> input;
+        choice = stringToInt(input);
+        switch (choice)
         {
         case 1:
             buyAnimal();
@@ -148,7 +151,7 @@ void Game::buyAnimal()
     {
         // initialization
         int price = 0;
-        int action = 0;
+        int choice = 0;
         string type = "";
         int age = 0;
         int gender = 0;
@@ -158,10 +161,12 @@ void Game::buyAnimal()
         cout << "** Your Money : " << _money << " **\n"<< endl;
         showAnimalToBuy();
         cout << "> ";
-        cin >> action;
+        string input;
+        cin >> input;
+        choice = stringToInt(input);
 
         // define the animal depending on the player's choice
-        switch (action)
+        switch (choice)
         {
         case 1:
             type = "Tiger";
@@ -275,7 +280,6 @@ void Game::buyAnimal()
 void Game::buyCage()
 {
     // show available items
-    int action = 0;
     string type = "Eagle";
     cout << "\n-- CAGE MARKET --\n"
          << endl;
@@ -291,12 +295,14 @@ void Game::buyCage()
     while (true)
     {
         cout << endl;
+        int choice = 0;
         string type = "";
         int price = 0;
         cout << "Action : " << endl;
-        cin >> action;
-
-        switch (action)
+        string input;
+        cin >> input;
+        choice = stringToInt(input);
+        switch (choice)
         {
         case 1:
             type = "Tiger";
@@ -358,13 +364,15 @@ void Game::sellAnimalMenu()
         // show prices
         vector<IAnimal *> chosen_type_list;
         showAnimalToSell();
-        int action = 0;
+        int choice = 0;
         int animal_to_sell = 0;
         int price = 0;
 
         // ask wich type & age of animal
-        cin >> action;
-        switch (action)
+        string input;
+        cin >> input;
+        choice = stringToInt(input);
+        switch (choice)
         {
         case 1:
             chosen_type_list = _zoo->getAnimalListByAge("Tiger", 0, 47);
@@ -460,4 +468,18 @@ void Game::showAnimalToSell()
          << endl;
     cout << "9) Exit animal market" << endl
          << endl;
+}
+
+// check if string can be converted, then convert & return
+int Game::stringToInt(string s)
+{
+    try
+    {
+        int n = stoi(s);
+        return n;
+    }
+    catch (invalid_argument)
+    {
+        return -1;
+    }
 }
