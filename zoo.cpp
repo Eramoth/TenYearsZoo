@@ -164,6 +164,16 @@ void Zoo::addAnimal(IAnimal *newAnimal)
     }
 }
 
+void Zoo::addSeeds(int nb)
+{
+    _seed_stock += nb;
+}
+
+void Zoo::addMeats(int nb)
+{
+    _meat_stock += nb;
+}
+
 // return the number of animals in the zoo
 int Zoo::population()
 {
@@ -202,77 +212,6 @@ void Zoo::showCageList(int index,int alpha,int maxIndex)
     {
         if (index == maxIndex + 1) {cout << "> See More" << endl;}
         else {cout << "  See More" << endl;}
-    }
-}
-
-// buy food depending on the user's choice (type & quantity). Cost money
-void Zoo::buyFood(int *money)
-{
-    cout << "\n-- FOOD MARKET --\n"
-         << endl;
-    int quantity = 0;
-    int action = 0;
-
-    showFoodStock();
-
-    cout << "1) Buy seeds\n2) Buy meat\n3) Exit\n"
-         << endl;
-    while (action != 3)
-    {
-        cout << "Action ?" << endl;
-        cin >> action;
-        while (action < 1 || action > 3)
-        {
-            cout << "Wrong input. Try again : " << endl;
-            cin >> action;
-        }
-        if (action == 1 || action == 2)
-        {
-            cout << "How much ? " << endl;
-            cin >> quantity;
-            // error handler
-            while (quantity < 1)
-            {
-                cout << "Wrong input. Try again :" << endl;
-                cin >> quantity;
-            }
-            // if seed
-            if (action == 1)
-            {
-                int price = SEED_PRICE * quantity;
-                if (price > *money)
-                {
-                    cout << "You don't have enough money." << endl;
-                }
-                else
-                {
-                    _seed_stock += quantity;
-                    *money -= price;
-                    cout << "You succesfully bought " << quantity << " kg of seed.\n"
-                         << endl;
-                }
-            }
-            // if meat
-            else
-            {
-                int price = MEAT_PRICE * quantity;
-                if (price > *money)
-                {
-                    cout << "You don't have enough money." << endl;
-                }
-                else
-                {
-                    _meat_stock += quantity;
-                    *money -= price;
-                    cout << "You succesfully bought " << quantity << " kg of meat.\n"
-                         << endl;
-                }
-            }
-        }
-        else
-        {
-            return;
-        }
     }
 }
 

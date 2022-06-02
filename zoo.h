@@ -22,6 +22,9 @@ public:
     ~Zoo();
     void addCage(Cage* newCage);
     void addAnimal(IAnimal* newAnimal);
+    void addSeeds(int);
+    void addMeats(int);
+
     void withdrawAnimal(IAnimal* w_animal);
     string feedAnimals();
     string checkForEvent();
@@ -30,7 +33,6 @@ public:
     vector<Cage*> getCageList();
     string monthlyUpdate();
     void showCageList(int,int,int);
-    void buyFood(int *money);
     void showFoodStock();
     void newSeedStock(int change);
     void newMeatStock(int change);
