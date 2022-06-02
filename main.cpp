@@ -58,9 +58,15 @@ int main()
         cout << "\n----------------\n"
              << game->parseDate() << "\n"
              << endl;
-
-        game->getZoo()->monthlyUpdate();
-        this_thread::sleep_for(chrono::seconds(3));
+        if (game->getMonth() == STARTING_MONTH && game->getYear() == STARTING_YEAR)
+        {
+            // initialization
+        }
+        else
+        {
+            game->getZoo()->monthlyUpdate();
+            this_thread::sleep_for(chrono::seconds(3));
+        }
         game->menu();
 
         game->nextTurn();

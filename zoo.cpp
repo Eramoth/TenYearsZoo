@@ -250,16 +250,18 @@ void Zoo::newMeatStock(int change)
     _meat_stock += change;
 }
 
-// delete the animal from the zoo
+// find where the animal is in _cage_list and delete it from the zoo
 void Zoo::withdrawAnimal(IAnimal* w_animal)
 {
     for (auto cage : _cage_list)
     {
+        vector<IAnimal*> animal_list = cage->getAnimalList();
         for (auto animal : cage->getAnimalList())
         {
             if (animal == w_animal)
             {
-                cout << animal->getName() << " has been withdrawed from its cage." << endl;
+                cout << w_animal->getName() << " has been withdrawed form its cage." << endl;
+                cage->freeAnimal(w_animal);
                 return;
             }
         }

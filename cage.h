@@ -24,6 +24,7 @@ public:
     int numberOfAnimal();
     vector<IAnimal*> getAnimalList();
     void addAnimal(IAnimal *newAnimal);
+    void freeAnimal(IAnimal *animal);
 
 };
 

@@ -77,3 +77,15 @@ vector<IAnimal*> Cage::getAnimalList()
 {
     return _animal_list;
 }
+
+void Cage::freeAnimal(IAnimal *animal)
+{
+    for (int i = 0; i< _animal_list.size(); i++)
+    {
+        if (_animal_list[i] == animal)
+        {
+            _animal_list.erase(_animal_list.begin() + i);
+            return;
+        }
+    }
+}
