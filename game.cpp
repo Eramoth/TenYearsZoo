@@ -144,14 +144,15 @@ void Game::menu()
 // buy an animal and add  it to the zoo
 void Game::buyAnimal()
 {
-    int price = 0;
-    int action = 0;
-    string type = "";
-    int age = 0;
-    int gender = 0;
-
     while (true)
     {
+        // initialization
+        int price = 0;
+        int action = 0;
+        string type = "";
+        int age = 0;
+        int gender = 0;
+
         system("cls");
         cout << "\n-- ANIMAL MARKET --" << endl;
         cout << "** Your Money : " << _money << " **\n"<< endl;

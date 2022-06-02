@@ -5,7 +5,7 @@
 // ^^^ est-ce que la case de l'array le contenant se vide ?
 // game function : vaut-il mieux les mettre dans zoo ?
 // string/int input error handler
-// achat animal : créer l'objet et vndre des copies ? créer juste les paramètres ?
+// achat animal : créer l'objet et vendre des copies ? créer juste les paramètres ?
 
 // POSSIBLE DE RAJOUTER DES EVENTS/MODIF UN PEU DES TRUCS
 
