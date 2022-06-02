@@ -36,6 +36,18 @@ Cage::~Cage()
     cout << "This cage has been removed from your zoo" << endl;
 }
 
+// return true or false if empty
+bool Cage::isEmpty()
+{
+    if (_animal_list.size() == 0)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 // return true or false if overcrowded
 bool Cage::isOvercrowded()
 {
@@ -68,6 +80,10 @@ int Cage::getCapacity()
     return _capacity;
 }
 
+string Cage::getType()
+{
+    return _type;
+}
 string Cage::getName()
 {
     return _type + " cage";

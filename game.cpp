@@ -81,6 +81,14 @@ string Game::parseDate()
     return date;
 }
 
+//ask for input, return int
+int Game::askInput()
+{
+    string input;
+    cin >> input;
+    return stringToInt(input);
+}
+
 // happy new year !
 void Game::newYear()
 {
@@ -104,19 +112,19 @@ void Game::menu()
     int choice = 0;
     while (choice != 6)
     {
-        cout << "** Your Money : " << _money << " **"<< endl;
-        cout << "You can do the following actions :" << endl; 
+        cout << "** Your Money : " << _money << " **" << endl;
+        cout << "You can do the following actions :" << endl;
         cout << "1) Buy new animals" << endl;
         cout << "2) Sell animals" << endl;
         cout << "3) Buy food" << endl;
         cout << "4) Buy new cages" << endl;
         cout << "5) Sell cages" << endl;
-        cout << "6) End turn" << endl << endl;
+        cout << "6) End turn" << endl
+             << endl;
         cout << "> ";
 
-        string input;
-        cin >> input;
-        choice = stringToInt(input);
+        choice = askInput();
+
         switch (choice)
         {
         case 1:
@@ -131,9 +139,9 @@ void Game::menu()
         case 4:
             buyCage();
             break;
-        // case 5 :
-        //     sellCage(zoo, _money);
-        //     break;
+        case 5:
+            sellCage();
+            break;
         case 6:
             cout << "Turn ended." << endl;
             break;
@@ -151,19 +159,17 @@ void Game::buyAnimal()
     {
         // initialization
         int price = 0;
-        int choice = 0;
         string type = "";
         int age = 0;
         int gender = 0;
 
         system("cls");
         cout << "\n-- ANIMAL MARKET --" << endl;
-        cout << "** Your Money : " << _money << " **\n"<< endl;
+        cout << "** Your Money : " << _money << " **\n"
+             << endl;
         showAnimalToBuy();
         cout << "> ";
-        string input;
-        cin >> input;
-        choice = stringToInt(input);
+        int choice = askInput();
 
         // define the animal depending on the player's choice
         switch (choice)
@@ -219,7 +225,7 @@ void Game::buyAnimal()
             cout << ">>> Wrong input, try again."
                  << "\n"
                  << endl;
-                 this_thread::sleep_for(std::chrono::seconds(1));
+            this_thread::sleep_for(std::chrono::seconds(1));
             continue;
         }
 
@@ -228,7 +234,7 @@ void Game::buyAnimal()
             cout << ">> You don't have enough money."
                  << "\n"
                  << endl;
-                 this_thread::sleep_for(std::chrono::seconds(1));
+            this_thread::sleep_for(std::chrono::seconds(1));
             continue;
         }
         else
@@ -295,13 +301,10 @@ void Game::buyCage()
     while (true)
     {
         cout << endl;
-        int choice = 0;
         string type = "";
         int price = 0;
         cout << "Action : " << endl;
-        string input;
-        cin >> input;
-        choice = stringToInt(input);
+        int choice = askInput();
         switch (choice)
         {
         case 1:
@@ -360,18 +363,15 @@ void Game::sellAnimalMenu()
 {
     while (true)
     {
-        cout << typeid(Tiger*).name() << endl;
+        cout << typeid(Tiger *).name() << endl;
         // show prices
         vector<IAnimal *> chosen_type_list;
         showAnimalToSell();
-        int choice = 0;
         int animal_to_sell = 0;
         int price = 0;
 
         // ask wich type & age of animal
-        string input;
-        cin >> input;
-        choice = stringToInt(input);
+        int choice = askInput();
         switch (choice)
         {
         case 1:
@@ -417,31 +417,34 @@ void Game::sellAnimalMenu()
         }
 
         // if list is empty, continue
-        if (chosen_type_list.size()==0)
+        if (chosen_type_list.size() == 0)
         {
-            cout << "You don't have this type of animal in your zoo." << endl << endl;
+            cout << "You don't have this type of animal in your zoo." << endl
+                 << endl;
             continue;
         }
 
         // show selected animals + "close" option
-        cout << "Who do you wanna sell ?" << endl << endl;
-        for (int i= 0; i<chosen_type_list.size(); i++)
+        cout << "Who do you wanna sell ?" << endl
+             << endl;
+        for (int i = 0; i < chosen_type_list.size(); i++)
         {
-            cout << i+1 << ") " << chosen_type_list[i]->getName() << ", " << chosen_type_list[i]->getGender() << ", " << chosen_type_list[i]->getAge() << endl;
+            cout << i + 1 << ") " << chosen_type_list[i]->getName() << ", " << chosen_type_list[i]->getGender() << ", " << chosen_type_list[i]->getAge() << endl;
         }
-        cout << chosen_type_list.size()+1 << ") Return to animal market" << endl << endl;
+        cout << chosen_type_list.size() + 1 << ") Return to animal market" << endl
+             << endl;
 
         // choose and sell the animal
         cin >> animal_to_sell;
-        if (animal_to_sell == chosen_type_list.size()+1)
+        if (animal_to_sell == chosen_type_list.size() + 1)
         {
             continue;
         }
         else
         {
-            cout << "You sold " << chosen_type_list[animal_to_sell-1]->getName() << " to the meat market for " << price << "$ (you monster ! How could you !)" << endl;
-            _zoo->killAnimal(chosen_type_list[animal_to_sell-1]);
-            _money+=price;
+            cout << "You sold " << chosen_type_list[animal_to_sell - 1]->getName() << " to the meat market for " << price << "$ (you monster ! How could you !)" << endl;
+            _zoo->killAnimal(chosen_type_list[animal_to_sell - 1]);
+            _money += price;
         }
     }
 }
@@ -481,5 +484,78 @@ int Game::stringToInt(string s)
     catch (invalid_argument)
     {
         return -1;
+    }
+}
+
+// sell empty cages depending on player choice. Give money
+void Game::sellCage()
+{
+    while (true)
+    {
+        cout << "-- CAGE MARKET --" << endl;
+        cout << "Cage price : (you can only sell empty cage)" << endl
+             << "Tiger cage price : " << TIGER_CAGE_SELL_PRICE << endl
+             << "Eagle cage price : " << EAGLE_CAGE_SELL_PRICE << endl
+             << "Chicken cage price : " << CHICKEN_CAGE_SELL_PRICE << endl
+             << "Exit cage market" << endl
+             << endl;
+
+        // ask type of cage
+        int choice = askInput();
+        string type;
+        int price;
+
+        switch (choice)
+        {
+        case 1:
+            type = "Tiger";
+            price = TIGER_CAGE_SELL_PRICE;
+            break;
+        case 2:
+            type = "Eagle";
+            price = EAGLE_CAGE_SELL_PRICE;
+            break;
+        case 3:
+            type = "Chicken";
+            price = CHICKEN_CAGE_SELL_PRICE;
+            break;
+        case 4:
+            cout << "Exited cage market." << endl << endl;
+            return;
+        default :
+            cout << "Wrong input. Try again." << endl << endl;
+            continue;
+        }
+
+        // get sellable cages
+        vector<Cage *> cage_list = _zoo->getCageList(type, "empty");
+        if (cage_list.size() == 0)
+        {
+            cout << "You don't have empty " << type << " cages." << endl;
+            continue;
+        }
+
+        // ask how much
+        cout << "You have " << cage_list.size() << " " << type << " cages." << endl
+             << "How much do you wanna sell ?" << endl;
+        int ncage_to_sell = askInput();
+
+        // if not enough cages, abort
+        if (ncage_to_sell > cage_list.size())
+        {
+            cout << "You don't have enough cages." << endl
+                 << endl;
+            continue;
+        }
+        else
+        {
+            _money += price * ncage_to_sell;
+            for (auto cage : cage_list)
+            {
+                _zoo->deleteCage(cage);
+            }
+            cout << "You sold " << ncage_to_sell << " for " << price * ncage_to_sell << " $." << endl
+                 << endl;
+        }
     }
 }

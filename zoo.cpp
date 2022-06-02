@@ -284,7 +284,19 @@ void Zoo::deleteCage(Cage *cage, int cage_idx)
     {
         killAnimal(animal);
     }
-    _cage_list.push_back(_cage_list[cage_idx]);
+    _cage_list.erase(_cage_list.begin() + cage_idx);
+}
+
+// surcharge when you can't have index
+void Zoo::deleteCage(Cage *cage)
+{
+    for (int i = 0; i<_cage_list.size(); i++)
+    {
+        if (_cage_list[i] == cage)
+        {
+            deleteCage(cage, i);
+        }
+    }
 }
 
 // retrieve animals based on type & age (works with IAnimal type)
@@ -319,6 +331,145 @@ vector<IAnimal*> Zoo::getAnimalListByGender(string type_name, string gender)
                 result.push_back(animal);
             }
         }
+    }
+    return result;
+}
+
+// return a vector of Cage*, depending on their type and if they are empty or full ;
+// pass "any" as parameters to get everything 
+vector<Cage*> Zoo::getCageList(string type, string status)
+{
+    vector<Cage*> result;
+    // any type of cage
+    if (type == "any")
+    {
+        if (status == "empty")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getAnimalList().size() == 0)
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+        else if (status == "full")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getAnimalList().size() >= cage->getCapacity())
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+        else if (status == "any")
+        {
+            return _cage_list;
+        }
+    }
+    else if (type == "Tiger")
+    {
+        if (status == "empty")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Tiger" && cage->isEmpty())
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+        else if (status == "full")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Tiger" && cage->isOvercrowded())
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+        else if (status == "any")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Tiger")
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+    }
+    else if (type == "Eagle")
+    {
+        if (status == "empty")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Eagle" && cage->isEmpty())
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+        else if (status == "full")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Eagle" && cage->isOvercrowded())
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+        else if (status == "any")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Eagle")
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+    }
+    else if (type == "Chicken")
+    {
+        if (status == "empty")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Chicken" && cage->isEmpty())
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+        else if (status == "full")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Chicken" && cage->isOvercrowded())
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+        else if (status == "any")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Chicken")
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+    }
+    else
+    {
+        cout << "Wrong parameters." << endl << endl;
     }
     return result;
 }

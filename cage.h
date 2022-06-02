@@ -19,7 +19,9 @@ public:
     Cage(string type);
     ~Cage();
     int getCapacity();
+    string getType();
     string getName();
+    bool isEmpty();
     bool isOvercrowded();
     int numberOfAnimal();
     vector<IAnimal*> getAnimalList();
