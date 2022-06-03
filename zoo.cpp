@@ -32,6 +32,7 @@ Zoo::~Zoo()
 // structure and call everything that can happen between two month
 void Zoo::monthlyUpdate()
 {
+    increaseAnimalAge();
     checkForEvent();
     checkForDisease();
     feedAnimals();
@@ -43,6 +44,18 @@ void Zoo::monthlyUpdate()
     cout << "The zoo is up to date."
          << "\n"
          << endl;
+}
+
+// increase age of each animal
+void Zoo::increaseAnimalAge()
+{
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            animal->increaseAge(this);
+        }
+    }
 }
 
 // feed the animals

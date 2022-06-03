@@ -97,6 +97,7 @@ void Game::newYear()
     cout << "Hapy New Year !" << endl;
 }
 
+// go to next month
 void Game::nextTurn()
 {
     _currentMonth += 1;
@@ -246,9 +247,9 @@ void Game::buyAnimal()
         if (gender == 0)
         {
             cout << "Gender :"
-                 << "\n"
+                 << endl
                  << "1) Male"
-                 << "\n"
+                 << endl
                  << "2) Female" << endl
                  << "> ";
             cin >> gender;

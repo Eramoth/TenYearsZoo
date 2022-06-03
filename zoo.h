@@ -25,6 +25,8 @@ public:
     void feedAnimals();
     void checkForEvent();
     void checkForDisease();
+    void checkDeathByAge();
+    void increaseAnimalAge();
     int population();
     vector<Cage*> getCageList();
     void monthlyUpdate();
@@ -39,7 +41,7 @@ public:
     vector<IAnimal*> getAnimalListByAge(string type_name, int min_age, int max_age);
     vector<IAnimal*> getAnimalListByGender(string type_name, string gender);
     vector<Cage*> getCageList(string type, string status);
-
+    
 };
 
 
