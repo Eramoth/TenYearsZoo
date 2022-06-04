@@ -9,11 +9,11 @@
 
 using namespace std;
 
-int randint(int min,int max)
+int randint(int min, int max)
 {
-    random_device rd; // obtain a random number from hardware
+    random_device rd;  // obtain a random number from hardware
     mt19937 gen(rd()); // seed the generator
-    uniform_int_distribution<> distr(min, max); 
+    uniform_int_distribution<> distr(min, max);
     return distr(gen);
 }
 
@@ -36,9 +36,12 @@ void Zoo::monthlyUpdate()
     checkForEvent();
     checkForDisease();
     feedAnimals();
-    if (population() == 0) {
+    if (population() == 0)
+    {
         cout << ">> There are no animals in your zoo" << endl;
-    } else {
+    }
+    else
+    {
         cout << ">> There are " << population() << " animal(s) in your zoo" << endl;
     }
     cout << "The zoo is up to date."
@@ -67,32 +70,39 @@ void Zoo::feedAnimals()
 // check if any accident happened
 void Zoo::checkForEvent()
 {
-    int event = randint(1,100);
+    bool no_event = true;
+    int event = randint(1, 100);
     if (event <= 1)
     {
-        int type = randint(0,1);
-        if (type == 0) {
-            
-            cout << ">> There was a fire in the zoo. (You loose 1 cage)" << endl;
-            return;
-        } else {
-            cout << ">> Someone stole one of your animals. (You loose 1 animal)" << endl;
-            return;
+        int type = randint(0, 1);
+        if (type == 0)
+        {
+            onFire();
+            no_event = false;
+        }
+        else
+        {
+            stolenAnimal();
+            no_event = false;
         }
     }
-    event = randint(1,100);
+    event = randint(1, 100);
     if (event <= 20)
     {
-        cout << ">> There is some pests in your zoo. (You loose 10% of your seeds)" << endl;
-        return;
+        pests();
+        no_event = false;
     }
-    event = randint(1,100);
+    event = randint(1, 100);
     if (event <= 10)
     {
-        cout << ">> The meats in your zoo is rotten. (You loose 20% of your meats)" << endl;
-        return;
+        avariateMeat();
+        no_event = false;
     }
-    cout << ">> No event has occured this month." << endl;
+    
+    if (no_event)
+    {
+        cout << ">> No event has occured this month." << endl;
+    }
 }
 
 // check if new disease has spread
@@ -120,7 +130,9 @@ void Zoo::addAnimal(IAnimal *newAnimal)
     }
     else
     {
-        cout << newAnimal->getName() << " ran away." << "\n" << endl;
+        cout << newAnimal->getName() << " ran away."
+             << "\n"
+             << endl;
         // delete newAnimal;
         return;
     }
@@ -131,7 +143,7 @@ void Zoo::addAnimal(IAnimal *newAnimal)
     // if it chose to free, kill it and break
     if (cage_index == 0)
     {
-        newAnimal->escape();
+        newAnimal->escape(this);
         return;
     }
 
@@ -247,7 +259,7 @@ void Zoo::showFoodStock()
     cout << "Food stock :" << endl;
     cout << "Meat : " << _meat_stock << "kg" << endl;
     cout << "Seed : " << _seed_stock << "kg"
-         << "\n"
+         << endl
          << endl;
 }
 
@@ -257,18 +269,34 @@ void Zoo::newSeedStock(int change)
     _seed_stock += change;
 }
 
+// seed loss due to pests in the zoo
+void Zoo::pests()
+{
+    _seed_stock -= _seed_stock*SEED_LOSS;
+    cout << ">> There are some pests in your zoo. (You lost 10% of your seeds)" << endl
+         << "New seed stock : " << _seed_stock << endl;
+}
+
 // update meat stock
 void Zoo::newMeatStock(int change)
 {
     _meat_stock += change;
 }
 
+// meat loss due to avariate meat
+void Zoo::avariateMeat()
+{
+    _meat_stock -= _meat_stock*MEAT_LOSS;
+    cout << ">> The meat in your zoo has rotten. (You lost 20% of your meat)" << endl
+         << "New meat stock : " << _meat_stock << endl;
+}
+
 // find where the animal is in _cage_list and delete it from the zoo
-void Zoo::withdrawAnimal(IAnimal* w_animal)
+void Zoo::withdrawAnimal(IAnimal *w_animal)
 {
     for (auto cage : _cage_list)
     {
-        vector<IAnimal*> animal_list = cage->getAnimalList();
+        vector<IAnimal *> animal_list = cage->getAnimalList();
         for (auto animal : cage->getAnimalList())
         {
             if (animal == w_animal)
@@ -303,7 +331,7 @@ void Zoo::deleteCage(Cage *cage, int cage_idx)
 // surcharge when you can't have index
 void Zoo::deleteCage(Cage *cage)
 {
-    for (int i = 0; i<_cage_list.size(); i++)
+    for (int i = 0; i < _cage_list.size(); i++)
     {
         if (_cage_list[i] == cage)
         {
@@ -313,9 +341,9 @@ void Zoo::deleteCage(Cage *cage)
 }
 
 // retrieve animals based on type & age (works with IAnimal type)
-vector<IAnimal*> Zoo::getAnimalListByAge(string type_name, int min_age, int max_age)
+vector<IAnimal *> Zoo::getAnimalListByAge(string type_name, int min_age, int max_age)
 {
-    vector<IAnimal*> result;
+    vector<IAnimal *> result;
     for (auto cage : _cage_list)
     {
         for (auto animal : cage->getAnimalList())
@@ -332,9 +360,9 @@ vector<IAnimal*> Zoo::getAnimalListByAge(string type_name, int min_age, int max_
 }
 
 // retrieve animals based on type & gender (work with IAnimal type)
-vector<IAnimal*> Zoo::getAnimalListByGender(string type_name, string gender)
+vector<IAnimal *> Zoo::getAnimalListByGender(string type_name, string gender)
 {
-    vector<IAnimal*> result;
+    vector<IAnimal *> result;
     for (auto cage : _cage_list)
     {
         for (auto animal : cage->getAnimalList())
@@ -349,10 +377,10 @@ vector<IAnimal*> Zoo::getAnimalListByGender(string type_name, string gender)
 }
 
 // return a vector of Cage*, depending on their type and if they are empty or full ;
-// pass "any" as parameters to get everything 
-vector<Cage*> Zoo::getCageList(string type, string status)
+// pass "any" as parameters to get everything
+vector<Cage *> Zoo::getCageList(string type, string status)
 {
-    vector<Cage*> result;
+    vector<Cage *> result;
     // any type of cage
     if (type == "any")
     {
@@ -482,7 +510,24 @@ vector<Cage*> Zoo::getCageList(string type, string status)
     }
     else
     {
-        cout << "Wrong parameters." << endl << endl;
+        cout << "Wrong parameters." << endl
+             << endl;
     }
     return result;
+}
+
+void Zoo::onFire()
+{
+    cout << ">> There was a fire in the zoo. (You lost 1 cage and all of its animals)" << endl;
+    int cage_lost = randint(0, _cage_list.size());
+    deleteCage(_cage_list[cage_lost]);
+}
+
+// delete a random animal from a random cage
+void Zoo::stolenAnimal()
+{
+    vector<IAnimal *> openedCage = _cage_list[randint(0, _cage_list.size() - 1)]->getAnimalList();
+    IAnimal *stolenAnimal = openedCage[randint(0, openedCage.size())];
+    cout << ">> " << stolenAnimal->getName() << " has been stolen. You lost 1 animal" << endl;
+    killAnimal(stolenAnimal);
 }

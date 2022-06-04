@@ -107,6 +107,9 @@
 #define FEMALE_EAGLE_HUNGDAY 10
 #define HEN_HUNGDAY 1
 #define ROOSTER_HUNGDAY 2
+// food loss multiplicator
+#define MEAT_LOSS 0.2
+#define SEED_LOSS 0.1
 // subvention 
 #define TIGER_BONUS = 43800
 #define EAGLE_BONUS = 2190

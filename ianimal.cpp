@@ -74,10 +74,10 @@ void IAnimal::increaseAge(Zoo *zoo)
 }
 
 // escape from the zoo (animal is then killed)
-void IAnimal::escape()
+void IAnimal::escape(Zoo *zoo)
 {
     cout << getName() << " escaped from the zoo." << endl;
-    // delete this;
+    kill(zoo);
 }
 
 // ----- TIGER -----

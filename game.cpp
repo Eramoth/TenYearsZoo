@@ -134,9 +134,9 @@ void Game::menu()
         case 2:
             sellAnimalMenu();
             break;
-        // case 3:
-        //     buyFood();
-        //     break;
+        case 3:
+            _zoo->buyFood( &_money);
+            break;
         case 4:
             buyCage();
             break;

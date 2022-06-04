@@ -30,7 +30,7 @@ public:
     string getGender();
     int getAge();
     void increaseAge(Zoo *zoo);
-    void escape(); // will be virtual void
+    void escape(Zoo *zoo); // will be virtual void
     virtual void showAnimal() = 0;
     virtual bool canReproduce() = 0;
     // virtual void giveBirth() = 0;
