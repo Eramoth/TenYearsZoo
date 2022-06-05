@@ -153,7 +153,7 @@ void Game::menu()
     }
 }
 
-// buy an animal and add  it to the zoo
+// buy an animal and add it to the zoo
 void Game::buyAnimal()
 {
     while (true)
@@ -252,12 +252,12 @@ void Game::buyAnimal()
                  << endl
                  << "2) Female" << endl
                  << "> ";
-            cin >> gender;
+            gender = askInput();
             cout << endl;
             while (gender != 1 && gender != 2)
             {
                 cout << ">>> Wrong input. Try again : ";
-                cin >> gender;
+                gender = askInput();
             }
         }
 
@@ -343,6 +343,7 @@ void Game::buyCage()
     }
 }
 
+// show items price
 void Game::showAnimalToBuy()
 {
     cout << "Available animals :" << endl
@@ -436,7 +437,7 @@ void Game::sellAnimalMenu()
              << endl;
 
         // choose and sell the animal
-        cin >> animal_to_sell;
+        animal_to_sell = askInput();
         if (animal_to_sell == chosen_type_list.size() + 1)
         {
             continue;
@@ -450,6 +451,7 @@ void Game::sellAnimalMenu()
     }
 }
 
+// show sell price
 void Game::showAnimalToSell()
 {
     cout << endl

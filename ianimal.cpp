@@ -80,6 +80,20 @@ void IAnimal::escape(Zoo *zoo)
     kill(zoo);
 }
 
+// update sick statut
+void IAnimal::getSick()
+{
+    _is_sick = true;
+}
+
+
+
+
+
+
+
+
+
 // ----- TIGER -----
 Tiger::Tiger(int age, int gender) : IAnimal(age, gender, TIGER_LIFESPAWN) {}
 

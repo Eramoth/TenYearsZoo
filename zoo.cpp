@@ -36,6 +36,7 @@ void Zoo::monthlyUpdate()
     checkForEvent();
     checkForDisease();
     feedAnimals();
+    overcrowdSickness();
     if (population() == 0)
     {
         cout << ">> There are no animals in your zoo" << endl;
@@ -98,7 +99,7 @@ void Zoo::checkForEvent()
         avariateMeat();
         no_event = false;
     }
-    
+
     if (no_event)
     {
         cout << ">> No event has occured this month." << endl;
@@ -531,3 +532,21 @@ void Zoo::stolenAnimal()
     cout << ">> " << stolenAnimal->getName() << " has been stolen. You lost 1 animal" << endl;
     killAnimal(stolenAnimal);
 }
+
+// check if each cage is overcrowded, then check if sick
+void Zoo::overcrowdSickness()
+{
+    for (auto cage : _cage_list)
+    {
+        if (cage->isOvercrowded())
+        {
+            cage->setOvercrowdSickness();
+            if (randint(0, 1))
+            {
+                cage->setOvercrowdDeath(this);
+            }
+        }
+    }
+}
+
+

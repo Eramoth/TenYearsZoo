@@ -31,6 +31,7 @@ public:
     int getAge();
     void increaseAge(Zoo *zoo);
     void escape(Zoo *zoo); // will be virtual void
+    void getSick();
     virtual void showAnimal() = 0;
     virtual bool canReproduce() = 0;
     // virtual void giveBirth() = 0;

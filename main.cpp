@@ -10,9 +10,9 @@
 // POSSIBLE DE RAJOUTER DES EVENTS/MODIF UN PEU DES TRUCS
 
 /* actions possibles : 
-    - [WIP] achat/vente animal
+    - [DONE] achat/vente animal
     - [DONE] achat nourriture
-    - [WIP] achat/vente habitat
+    - [DONE] achat/vente habitat
     - [DONE] passer au prochain tour (mois)
 */
 
@@ -20,8 +20,8 @@
     - [WIP] Grossesse
     - Naissance
     - Mort infantile
-    - Fin de vie individu
-    - Surpopulation
+    - [DONE] Fin de vie individu
+    - [WIP] Surpopulation
     - Maladie
 */
 

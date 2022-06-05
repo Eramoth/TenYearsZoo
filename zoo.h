@@ -45,6 +45,7 @@ public:
     vector<Cage*> getCageList(string type, string status);
     void onFire();
     void stolenAnimal();
+    void overcrowdSickness();
 };
 
 
