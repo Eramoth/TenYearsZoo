@@ -107,7 +107,7 @@ string Zoo::checkForEvent()
 
     if (no_event)
     {
-        cout << ">> No event has occured this month." << endl;
+       return ">> No event has occured this month.\n";
     }
 }
 

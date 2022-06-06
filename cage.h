@@ -21,7 +21,6 @@ public:
     int getCapacity();
     string getType();
     string getName();
-    string getType();
     bool isEmpty();
     bool isOvercrowded();
     int numberOfAnimal();
