@@ -17,7 +17,7 @@
 #define EAGLE_CAGE_SELL_PRICE 500
 #define CHICKEN_CAGE_BUY_PRICE 300
 #define CHICKEN_CAGE_SELL_PRICE 50
-#define TIGER_CAGE_CAPACITY 2
+#define TIGER_CAGE_CAPACITY 3
 #define EAGLE_CAGE_CAPACITY 4
 #define CHICKEN_CAGE_CAPACITY 10
 // visitor per month
@@ -43,21 +43,21 @@
 #define TIGER_SICKNESS 20
 #define EAGLE_SICKNESS 10
 #define CHICKEN_SICKNESS 5
-// sickness duration
+#define TIGER_OVERCROWD_SICKNESS 20
+#define EAGLE_OVERCROWD_SICKNESS 10
+#define CHICKEN_OVERCROWD_SICKNESS 5
+// sickness duration (in days, not sure to keep it)
 #define TIGER_SICKNESS_DURATION 15
 #define EAGLE_SICKNESS_DURATION 30
 #define CHICKEN_SICKNESS_DURATION 5
-// age of death (in years)
-#define MALE_TIGER_LIFESPAWN 25
-#define FEMALE_TIGER_LIFESPAWN 25
-#define MALE_EAGLE_LIFESPAWN 25
-#define FEMALE_EAGLE_LIFESPAWN 25
-#define HEN_LIFESPAWN 15
-#define ROOSTER_LIFESPAWN 15
+// age of death (in month)
+#define TIGER_LIFESPAWN 300
+#define EAGLE_LIFESPAWN 300
+#define CHICKEN_LIFESPAWN 180
 // death when overcrowded
-#define CHICKEN_SURPOP_LOSS 1
+#define TIGER_SURPOP_LOSS 1
 #define EAGLE_SURPOP_LOSS 1
-#define TIGER_SURPOP_LOSS 4
+#define CHICKEN_SURPOP_LOSS 4
 // animal price
 #define YOUNG_TIGER_BUY_PRICE 3000
 #define YOUNG_TIGER_SELL_PRICE 1500
@@ -110,6 +110,9 @@
 #define FEMALE_EAGLE_HUNGDAY 10
 #define HEN_HUNGDAY 1
 #define ROOSTER_HUNGDAY 2
+// food loss multiplicator
+#define MEAT_LOSS 0.2
+#define SEED_LOSS 0.1
 // subvention 
 #define TIGER_BONUS = 43800
 #define EAGLE_BONUS = 2190

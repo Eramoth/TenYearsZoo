@@ -9,7 +9,7 @@
 using namespace std;
 
 // ask for a name, then create an object animal with name, age, gender
-IAnimal::IAnimal(int age, int gender)
+IAnimal::IAnimal(int age, int gender, int age_of_death)
 {
     cout << ">> New animal name : ";
     cin >> _name;
@@ -17,6 +17,7 @@ IAnimal::IAnimal(int age, int gender)
          << "\n"
          << endl;
     _age = age;
+    _age_of_death = age_of_death;
     _gender = gender;
     _month_since_meal = 0;
     _gestation_month = 0;
@@ -61,15 +62,40 @@ string IAnimal::getGender()
     }
 }
 
-// escape from the zoo (animal is then killed)
-void IAnimal::escape()
+// add one month to animal age ; if too old, kill it
+void IAnimal::increaseAge(Zoo *zoo)
 {
-    cout << getName() << " escaped from the zoo." << endl;
-    // delete this;
+    _age++;
+    if (_age >= _age_of_death)
+    {
+        cout << _name << " died after a long life." << endl;
+        kill(zoo);
+    }
 }
 
+// escape from the zoo (animal is then killed)
+void IAnimal::escape(Zoo *zoo)
+{
+    cout << getName() << " escaped from the zoo." << endl;
+    kill(zoo);
+}
+
+// update sick statut
+void IAnimal::getSick()
+{
+    _is_sick = true;
+}
+
+
+
+
+
+
+
+
+
 // ----- TIGER -----
-Tiger::Tiger(int age, int gender) : IAnimal(age, gender) {}
+Tiger::Tiger(int age, int gender) : IAnimal(age, gender, TIGER_LIFESPAWN) {}
 
 // will print the type, age and gender of the animal
 void Tiger::showAnimal()
@@ -77,7 +103,7 @@ void Tiger::showAnimal()
     cout << "Tiger, " << getGender() << ", " << getAge() << " month(s), " << endl;
 }
 
-// return true if animal is up for reproduce, false if not
+// return true if animal is up for reproduction, false if not
 bool Tiger::canReproduce()
 {
     // if male
@@ -100,7 +126,7 @@ bool Tiger::canReproduce()
 }
 
 // ----- EAGLE -----
-Eagle::Eagle(int age, int gender) : IAnimal(age, gender) {}
+Eagle::Eagle(int age, int gender) : IAnimal(age, gender, EAGLE_LIFESPAWN) {}
 
 // will print the type, age and gender of the animal
 void Eagle::showAnimal()
@@ -131,7 +157,7 @@ bool Eagle::canReproduce()
 }
 
 // ----- CHICKEN ------
-Chicken::Chicken(int age, int gender) : IAnimal(age, gender) {}
+Chicken::Chicken(int age, int gender) : IAnimal(age, gender, CHICKEN_LIFESPAWN) {}
 
 // will print the type, age and gender of the animal
 void Chicken::showAnimal()

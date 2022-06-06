@@ -5,14 +5,14 @@
 // ^^^ est-ce que la case de l'array le contenant se vide ?
 // game function : vaut-il mieux les mettre dans zoo ?
 // string/int input error handler
-// achat animal : créer l'objet et vndre des copies ? créer juste les paramètres ?
+// achat animal : créer l'objet et vendre des copies ? créer juste les paramètres ?
 
 // POSSIBLE DE RAJOUTER DES EVENTS/MODIF UN PEU DES TRUCS
 
 /* actions possibles : 
-    - [WIP] achat/vente animal
+    - [DONE] achat/vente animal
     - [DONE] achat nourriture
-    - [WIP] achat/vente habitat
+    - [DONE] achat/vente habitat
     - [DONE] passer au prochain tour (mois)
 */
 
@@ -20,8 +20,8 @@
     - [WIP] Grossesse
     - Naissance
     - Mort infantile
-    - Fin de vie individu
-    - Surpopulation
+    - [DONE] Fin de vie individu
+    - [WIP] Surpopulation
     - Maladie
 */
 
@@ -55,13 +55,18 @@ int main()
 
     while (game->getMonth() + game->getYear() * 12 <= LAST_MONTH + LAST_YEAR * 12)
     {
-        cout << "\n----------------\n"
-             << game->parseDate() << "\n"
-             << endl;
-
-        string update = game->getZoo()->monthlyUpdate();
-        cout << update << endl;
-        this_thread::sleep_for(chrono::seconds(3));
+        cout << "\n----------------\n" << game->parseDate() << "\n" << endl;
+        string update;
+        if (game->getMonth() == STARTING_MONTH && game->getYear() == STARTING_YEAR)
+        {
+            // initialization
+        }
+        else
+        {
+            update = game->getZoo()->monthlyUpdate();
+            cout << update << endl;
+            this_thread::sleep_for(chrono::seconds(3));
+        }
         game->menu(update);
 
         game->nextTurn();

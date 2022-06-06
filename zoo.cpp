@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <conio.h>
+#include <typeinfo>
 #include <random>
 #include "zoo.h"
 #include "ianimal.h"
@@ -9,11 +10,11 @@
 
 using namespace std;
 
-int randint(int min,int max)
+int randint(int min, int max)
 {
-    random_device rd; // obtain a random number from hardware
+    random_device rd;  // obtain a random number from hardware
     mt19937 gen(rd()); // seed the generator
-    uniform_int_distribution<> distr(min, max); 
+    uniform_int_distribution<> distr(min, max);
     return distr(gen);
 }
 
@@ -40,8 +41,30 @@ string Zoo::monthlyUpdate()
     } else {
         res += ">> There are " + to_string(population()) + " animal(s) in your zoo\n";
     }
+    increaseAnimalAge();
+    overcrowdSickness();
+    if (population() == 0)
+    {
+        cout << ">> There are no animals in your zoo" << endl;
+    }
+    else
+    {
+        cout << ">> There are " << population() << " animal(s) in your zoo" << endl;
+    }
     res += "The zoo is up to date.\n";
     return res;
+}
+
+// increase age of each animal
+void Zoo::increaseAnimalAge()
+{
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            animal->increaseAge(this);
+        }
+    }
 }
 
 // feed the animals
@@ -53,28 +76,39 @@ string Zoo::feedAnimals()
 // check if any accident happened
 string Zoo::checkForEvent()
 {
-    int event = randint(1,100);
+    bool no_event = true;
+    int event = randint(1, 100);
     if (event <= 1)
     {
-        int type = randint(0,1);
-        if (type == 0) {
-            
-            return ">> There was a fire in the zoo. (You loose 1 cage)\n";
-        } else {
-            return">> Someone stole one of your animals. (You loose 1 animal)\n";
+        int type = randint(0, 1);
+        if (type == 0)
+        {
+            onFire();
+            no_event = false;
+        }
+        else
+        {
+            stolenAnimal();
+            no_event = false;
         }
     }
-    event = randint(1,100);
+    event = randint(1, 100);
     if (event <= 20)
     {
-        return ">> There is some pests in your zoo. (You loose 10% of your seeds)\n";
+        pests();
+        no_event = false;
     }
-    event = randint(1,100);
+    event = randint(1, 100);
     if (event <= 10)
     {
-        return ">> The meats in your zoo is rotten. (You loose 20% of your meats)\n";
+        avariateMeat();
+        no_event = false;
     }
-    return ">> No event has occured this month.\n";
+
+    if (no_event)
+    {
+        cout << ">> No event has occured this month." << endl;
+    }
 }
 
 // check if new disease has spread
@@ -135,7 +169,7 @@ void Zoo::addAnimal(IAnimal *newAnimal)
                 {
                     if (choice == maxIndex + 2 || (alpha * 10 + maxIndex >= _cage_list.size() && choice == maxIndex + 1))
                     {
-                        newAnimal->escape();
+                        newAnimal->escape(this);
                         return;
                     }
                     if (choice == 0)
@@ -158,7 +192,9 @@ void Zoo::addAnimal(IAnimal *newAnimal)
     // if you have cages, you can choose to free it ; if you don't, it will escape
     else
     {
-        cout << newAnimal->getName() << " ran away." << "\n" << endl;
+        cout << newAnimal->getName() << " ran away."
+             << "\n"
+             << endl;
         // delete newAnimal;
         return;
     }
@@ -234,7 +270,7 @@ void Zoo::showFoodStock()
     cout << "Food stock :" << endl;
     cout << "Meat : " << _meat_stock << "kg" << endl;
     cout << "Seed : " << _seed_stock << "kg"
-         << "\n"
+         << endl
          << endl;
 }
 
@@ -244,22 +280,40 @@ void Zoo::newSeedStock(int change)
     _seed_stock += change;
 }
 
+// seed loss due to pests in the zoo
+void Zoo::pests()
+{
+    _seed_stock -= _seed_stock*SEED_LOSS;
+    cout << ">> There are some pests in your zoo. (You lost 10% of your seeds)" << endl
+         << "New seed stock : " << _seed_stock << endl;
+}
+
 // update meat stock
 void Zoo::newMeatStock(int change)
 {
     _meat_stock += change;
 }
 
-// delete the animal from the zoo
-void Zoo::withdrawAnimal(IAnimal* w_animal)
+// meat loss due to avariate meat
+void Zoo::avariateMeat()
+{
+    _meat_stock -= _meat_stock*MEAT_LOSS;
+    cout << ">> The meat in your zoo has rotten. (You lost 20% of your meat)" << endl
+         << "New meat stock : " << _meat_stock << endl;
+}
+
+// find where the animal is in _cage_list and delete it from the zoo
+void Zoo::withdrawAnimal(IAnimal *w_animal)
 {
     for (auto cage : _cage_list)
     {
+        vector<IAnimal *> animal_list = cage->getAnimalList();
         for (auto animal : cage->getAnimalList())
         {
             if (animal == w_animal)
             {
-                cout << animal->getName() << " has been withdrawed from its cage." << endl;
+                cout << w_animal->getName() << " has been withdrawed form its cage." << endl;
+                cage->freeAnimal(w_animal);
                 return;
             }
         }
@@ -282,5 +336,227 @@ void Zoo::deleteCage(Cage *cage, int cage_idx)
     {
         killAnimal(animal);
     }
-    _cage_list.push_back(_cage_list[cage_idx]);
+    _cage_list.erase(_cage_list.begin() + cage_idx);
 }
+
+// surcharge when you can't have index
+void Zoo::deleteCage(Cage *cage)
+{
+    for (int i = 0; i < _cage_list.size(); i++)
+    {
+        if (_cage_list[i] == cage)
+        {
+            deleteCage(cage, i);
+        }
+    }
+}
+
+// retrieve animals based on type & age (works with IAnimal type)
+vector<IAnimal *> Zoo::getAnimalListByAge(string type_name, int min_age, int max_age)
+{
+    vector<IAnimal *> result;
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            string animal_type = typeid(animal).name();
+            if (animal_type.find(type_name) && animal->getAge() >= min_age && animal->getAge() <= max_age)
+            {
+                cout << "I'm in" << endl;
+                result.push_back(animal);
+            }
+        }
+    }
+    return result;
+}
+
+// retrieve animals based on type & gender (work with IAnimal type)
+vector<IAnimal *> Zoo::getAnimalListByGender(string type_name, string gender)
+{
+    vector<IAnimal *> result;
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            if (typeid(animal).name() == type_name && animal->getGender() == gender)
+            {
+                result.push_back(animal);
+            }
+        }
+    }
+    return result;
+}
+
+// return a vector of Cage*, depending on their type and if they are empty or full ;
+// pass "any" as parameters to get everything
+vector<Cage *> Zoo::getCageList(string type, string status)
+{
+    vector<Cage *> result;
+    // any type of cage
+    if (type == "any")
+    {
+        if (status == "empty")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getAnimalList().size() == 0)
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+        else if (status == "full")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getAnimalList().size() >= cage->getCapacity())
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+        else if (status == "any")
+        {
+            return _cage_list;
+        }
+    }
+    else if (type == "Tiger")
+    {
+        if (status == "empty")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Tiger" && cage->isEmpty())
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+        else if (status == "full")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Tiger" && cage->isOvercrowded())
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+        else if (status == "any")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Tiger")
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+    }
+    else if (type == "Eagle")
+    {
+        if (status == "empty")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Eagle" && cage->isEmpty())
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+        else if (status == "full")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Eagle" && cage->isOvercrowded())
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+        else if (status == "any")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Eagle")
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+    }
+    else if (type == "Chicken")
+    {
+        if (status == "empty")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Chicken" && cage->isEmpty())
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+        else if (status == "full")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Chicken" && cage->isOvercrowded())
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+        else if (status == "any")
+        {
+            for (auto cage : _cage_list)
+            {
+                if (cage->getType() == "Chicken")
+                {
+                    result.push_back(cage);
+                }
+            }
+        }
+    }
+    else
+    {
+        cout << "Wrong parameters." << endl
+             << endl;
+    }
+    return result;
+}
+
+void Zoo::onFire()
+{
+    cout << ">> There was a fire in the zoo. (You lost 1 cage and all of its animals)" << endl;
+    int cage_lost = randint(0, _cage_list.size());
+    deleteCage(_cage_list[cage_lost]);
+}
+
+// delete a random animal from a random cage
+void Zoo::stolenAnimal()
+{
+    vector<IAnimal *> openedCage = _cage_list[randint(0, _cage_list.size() - 1)]->getAnimalList();
+    IAnimal *stolenAnimal = openedCage[randint(0, openedCage.size())];
+    cout << ">> " << stolenAnimal->getName() << " has been stolen. You lost 1 animal" << endl;
+    killAnimal(stolenAnimal);
+}
+
+// check if each cage is overcrowded, then check if sick
+void Zoo::overcrowdSickness()
+{
+    for (auto cage : _cage_list)
+    {
+        if (cage->isOvercrowded())
+        {
+            cage->setOvercrowdSickness();
+            if (randint(0, 1))
+            {
+                cage->setOvercrowdDeath(this);
+            }
+        }
+    }
+}
+
+
