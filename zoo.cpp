@@ -164,6 +164,19 @@ void Zoo::addAnimal(IAnimal *newAnimal)
     }
 }
 
+vector<Cage*> Zoo::getCageListByType(string type)
+{
+    vector<Cage*> res;
+    for (int i = 0; i < _cage_list.size(); i++)
+    {
+        if (_cage_list[i]->getType() == type)
+        {
+            res.push_back(_cage_list[i]);
+        }
+    }
+    return res;
+}
+
 void Zoo::addSeeds(int nb)
 {
     _seed_stock += nb;

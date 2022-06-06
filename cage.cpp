@@ -73,6 +73,11 @@ string Cage::getName()
     return _type + " cage";
 }
 
+string Cage::getType()
+{
+    return _type;
+}
+
 vector<IAnimal*> Cage::getAnimalList()
 {
     return _animal_list;

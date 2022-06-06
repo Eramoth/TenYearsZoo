@@ -24,6 +24,7 @@ public:
     void addAnimal(IAnimal* newAnimal);
     void addSeeds(int);
     void addMeats(int);
+    vector<Cage*> getCageListByType(string);
 
     void withdrawAnimal(IAnimal* w_animal);
     string feedAnimals();

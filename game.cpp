@@ -353,6 +353,9 @@ void Game::buyCage()
         system("cls");
         cout << "\n-- CAGE MARKET --\n" << endl;
         cout << "** Your Money : " << _money << " **\n" << endl;
+        cout << ">> You have " << _zoo->getCageListByType("Tiger").size() << " tiger cages." << endl;
+        cout << ">> You have " << _zoo->getCageListByType("Eagle").size() << " eagle cages." << endl;
+        cout << ">> You have " << _zoo->getCageListByType("Chicken").size() << " chicken cages." << endl;
         cout << "Cages available :\n" << endl;
         if (action == 0) {cout << "> Tiger cage : " << TIGER_CAGE_BUY_PRICE << endl;}
         else {cout << "  Tiger cage : " << TIGER_CAGE_BUY_PRICE << endl;}
