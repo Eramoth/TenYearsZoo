@@ -155,18 +155,18 @@ void Game::menu(string update)
             case 1:
                 buyAnimal();
                 break;
-            // case 2:
-            //     sellAnimal(zoo, money);
-            //     break;
+            case 2:
+                sellAnimalMenu();
+                break;
             case 3:
                 buyFood();
                 break;
             case 4:
                 buyCage();
                 break;
-            // case 5 :
-            //     sellCage(zoo, _money);
-            //     break;
+            case 5 :
+                sellCage();
+                break;
             case 6:
                 cout << "Turn ended." << endl;
                 return;
@@ -529,64 +529,6 @@ void Game::buyFood()
             }
         }
     }
-
-    // while (action != 3)
-    // {
-    //     cout << "Action ?" << endl;
-    //     cin >> action;
-    //     while (action < 1 || action > 3)
-    //     {
-    //         cout << "Wrong input. Try again : " << endl;
-    //         cin >> action;
-    //     }
-    //     if (action == 1 || action == 2)
-    //     {
-    //         cout << "How much ? " << endl;
-    //         cin >> quantity;
-    //         // error handler
-    //         while (quantity < 1)
-    //         {
-    //             cout << "Wrong input. Try again :" << endl;
-    //             cin >> quantity;
-    //         }
-    //         // if seed
-    //         if (action == 1)
-    //         {
-    //             int price = SEED_PRICE * quantity;
-    //             if (price > _money)
-    //             {
-    //                 cout << "You don't have enough money." << endl;
-    //             }
-    //             else
-    //             {
-    //                 _zoo->addSeeds(quantity);
-    //                 _money -= price;
-    //                 cout << "You succesfully bought " << quantity << " kg of seed.\n"
-    //                      << endl;
-    //             }
-    //         }
-    //         // if meat
-    //         else
-    //         {
-    //             int price = MEAT_PRICE * quantity;
-    //             if (price > _money)
-    //             {
-    //                 cout << "You don't have enough money." << endl;
-    //             }
-    //             else
-    //             {
-    //                 _zoo->addMeats(quantity);
-    //                 _money -= price;
-    //                 cout << "You succesfully bought " << quantity << " kg of meat.\n"
-    //                      << endl;
-    //             }
-    //         }
-    //     }
-    //     else
-    //     {
-    //         return;
-    //     }
-    // }
 }
 
 void Game::showAnimalToBuy(int action)
@@ -614,117 +556,202 @@ void Game::showAnimalToBuy(int action)
 // trade animals for money depending on player's choice
 void Game::sellAnimalMenu()
 {
+    int choice = 1;
+    int animal_to_sell = 0;
+    int price = 0;
     while (true)
     {
-        cout << typeid(Tiger *).name() << endl;
+        // cout << typeid(Tiger *).name() << endl;
         // show prices
         vector<IAnimal *> chosen_type_list;
-        showAnimalToSell();
-        int animal_to_sell = 0;
-        int price = 0;
+        system("cls");
+        showAnimalToSell(choice);
 
-        // ask wich type & age of animal
-        int choice = askInput();
-        switch (choice)
+        int key = _getch();
+        if (key == 72)
         {
-        case 1:
-            chosen_type_list = _zoo->getAnimalListByAge("Tiger", 0, 47);
-            price = YOUNG_TIGER_SELL_PRICE;
-            break;
-        case 2:
-            chosen_type_list = _zoo->getAnimalListByAge("Tiger", 47, 167);
-            price = ADULT_TIGER_SELL_PRICE;
-            break;
-        case 3:
-            chosen_type_list = _zoo->getAnimalListByAge("Tiger", 168, 999);
-            price = OLD_TIGER_SELL_PRICE;
-            break;
-        case 4:
-            chosen_type_list = _zoo->getAnimalListByAge("Eagle", 0, 47);
-            price = YOUNG_EAGLE_SELL_PRICE;
-            break;
-        case 5:
-            chosen_type_list = _zoo->getAnimalListByAge("Eagle", 47, 168);
-            price = ADULT_EAGLE_SELL_PRICE;
-            break;
-        case 6:
-            chosen_type_list = _zoo->getAnimalListByAge("Eagle", 168, 999);
-            price = OLD_EAGLE_SELL_PRICE;
-            break;
-        case 7:
-            chosen_type_list = _zoo->getAnimalListByGender("Chicken", "female");
-            price = YOUNG_HEN_BUY_PRICE;
-            break;
-        case 8:
-            chosen_type_list = _zoo->getAnimalListByGender("Chicken", "male");
-            price = YOUNG_ROOSTER_SELL_PRICE;
-            break;
-        case 9:
-            cout << "Exited animal market." << endl
-                 << endl;
-            return;
-        default:
-            cout << "Wrong input, try again." << endl
-                 << endl;
-            continue;
+            if (choice == 1) {continue;}
+            else {choice -= 1;}
         }
+
+        else if (key == 80)
+        {
+            if (choice == 9) {continue;}
+            else {choice += 1;}
+        }
+
+        else if (key == 27)
+        {
+            cout << ">>> You have quit the game." << endl;
+            exit(0);
+        }
+
+        else if (key == 13)
+        {
+            switch (choice)
+            {
+            case 1:
+                chosen_type_list = _zoo->getAnimalListByAge("Tiger", 0, 47);
+                price = YOUNG_TIGER_SELL_PRICE;
+                break;
+            case 2:
+                chosen_type_list = _zoo->getAnimalListByAge("Tiger", 47, 167);
+                price = ADULT_TIGER_SELL_PRICE;
+                break;
+            case 3:
+                chosen_type_list = _zoo->getAnimalListByAge("Tiger", 168, 999);
+                price = OLD_TIGER_SELL_PRICE;
+                break;
+            case 4:
+                chosen_type_list = _zoo->getAnimalListByAge("Eagle", 0, 47);
+                price = YOUNG_EAGLE_SELL_PRICE;
+                break;
+            case 5:
+                chosen_type_list = _zoo->getAnimalListByAge("Eagle", 47, 168);
+                price = ADULT_EAGLE_SELL_PRICE;
+                break;
+            case 6:
+                chosen_type_list = _zoo->getAnimalListByAge("Eagle", 168, 999);
+                price = OLD_EAGLE_SELL_PRICE;
+                break;
+            case 7:
+                chosen_type_list = _zoo->getAnimalListByGender("Chicken", "female");
+                price = YOUNG_HEN_BUY_PRICE;
+                break;
+            case 8:
+                chosen_type_list = _zoo->getAnimalListByGender("Chicken", "male");
+                price = YOUNG_ROOSTER_SELL_PRICE;
+                break;
+            case 9:
+                cout << "Exited animal market." << endl
+                    << endl;
+                return;
+            default:
+                cout << "Wrong input, try again." << endl
+                    << endl;
+                continue;
+            }
 
         // if list is empty, continue
         if (chosen_type_list.size() == 0)
         {
-            cout << "You don't have this type of animal in your zoo." << endl
-                 << endl;
+            cout << "You don't have this type of animal in your zoo." << endl << endl;
+            this_thread::sleep_for(std::chrono::seconds(1));
             continue;
         }
 
         // show selected animals + "close" option
-        cout << "Who do you wanna sell ?" << endl
-             << endl;
-        for (int i = 0; i < chosen_type_list.size(); i++)
+        int choice2 = 1;
+        int alpha = 0;
+        while (true)
         {
-            cout << i + 1 << ") " << chosen_type_list[i]->getName() << ", " << chosen_type_list[i]->getGender() << ", " << chosen_type_list[i]->getAge() << endl;
+            int maxIndex = 10;
+            if (chosen_type_list.size() - alpha * 10 < 10)
+            {
+                maxIndex = chosen_type_list.size() - alpha * 10;
+            }
+            system("cls");
+            cout << "Who do you wanna sell ?" << endl << endl;
+            if (alpha != 0)
+            {
+                if (choice2 == 0) {cout << "> See Less" << endl;}
+                else {cout << "  See Less" << endl;}
+            }
+            for (int i = 1; i <= maxIndex; i++)
+            {
+                if (choice2 == i)
+                {
+                    cout << "> " << chosen_type_list[alpha * 10 + i - 1]->getName() << ", " << chosen_type_list[alpha * 10 + i - 1]->getGender() << ", " << chosen_type_list[alpha * 10 + i - 1]->getAge() << endl;
+                } else {
+                    cout << "  " << chosen_type_list[alpha * 10 + i - 1]->getName() << ", " << chosen_type_list[alpha * 10 + i - 1]->getGender() << ", " << chosen_type_list[alpha * 10 + i - 1]->getAge() << endl;
+                }
+            }
+            if (alpha * 10 + maxIndex < chosen_type_list.size())
+            {
+                if (choice2 == maxIndex + 1) {cout << "> See More" << endl;}
+                else {cout << "  See More" << endl;}
+            }
+            if (alpha * 10 + maxIndex >= chosen_type_list.size() && choice2 == maxIndex + 1){cout << "> Return" << endl;}
+            else if (choice2 == maxIndex + 2) {cout << "> Return" << endl;}
+            else {cout << "  Return" << endl;}
+            int key = _getch();
+            if (key == 72)
+            {
+                if (alpha != 0 && choice2 == 0) {continue;}
+                if (choice2 == 1 && alpha == 0) {continue;}
+                else {choice2 -= 1;}
+            }
+            else if (key == 80)
+            {
+                if (alpha * 10 + maxIndex >= chosen_type_list.size() && choice2 == maxIndex + 1) {continue;}
+                if (choice2 == maxIndex + 2) {continue;}
+                else {choice2 += 1;}
+            }
+            else if (key == 27)
+            {
+                cout << ">>> You have quit the game." << endl;
+                exit(0);
+            }
+            else if (key == 13)
+            {
+                if (alpha * 10 + maxIndex >= chosen_type_list.size() && choice2 == maxIndex + 1)
+                {
+                    break;
+                }
+                if (choice2 == maxIndex + 2)
+                {
+                    break;
+                }
+                else
+                {
+                    cout << "You sold " << chosen_type_list[alpha * 10 + choice2 - 1]->getName() << " to the meat market for " << price << "$ (you monster ! How could you !)" << endl;
+                    _zoo->killAnimal(chosen_type_list[alpha * 10 + choice2 - 1]);
+                    _money += price;
+                }
+            }
         }
-        cout << chosen_type_list.size() + 1 << ") Return to animal market" << endl
-             << endl;
+        
+        // for (int i = 0; i < chosen_type_list.size(); i++)
+        // {
+        //     cout << i + 1 << ") " << chosen_type_list[i]->getName() << ", " << chosen_type_list[i]->getGender() << ", " << chosen_type_list[i]->getAge() << endl;
+        // }
+        // cout << chosen_type_list.size() + 1 << ") Return to animal market" << endl
+        //      << endl;
 
-        // choose and sell the animal
-        animal_to_sell = askInput();
-        if (animal_to_sell == chosen_type_list.size() + 1)
-        {
-            continue;
-        }
-        else
-        {
-            cout << "You sold " << chosen_type_list[animal_to_sell - 1]->getName() << " to the meat market for " << price << "$ (you monster ! How could you !)" << endl;
-            _zoo->killAnimal(chosen_type_list[animal_to_sell - 1]);
-            _money += price;
+        // // choose and sell the animal
+        // animal_to_sell = askInput();
         }
     }
 }
 
 // show sell price
-void Game::showAnimalToSell()
+void Game::showAnimalToSell(int action)
 {
-    cout << endl
-         << "----- MEAT MARKET -----" << endl
-         << endl;
+    cout << endl << "----- MEAT MARKET -----" << endl << endl;
+    cout << "** Your Money : " << _money << " **\n" << endl;
     cout << "Those are the animals you can sell : " << endl;
     cout << "TIGERS" << endl;
-    cout << "1) Young tigers : 1500" << endl
-         << "2) Adult tigers : 600000" << endl
-         << "3) Old tigers : 10000" << endl
-         << endl;
+    if (action == 1) {cout << "> Young tigers : " << YOUNG_TIGER_SELL_PRICE << endl;}
+    else {cout << "  Young tigers : " << YOUNG_TIGER_SELL_PRICE << endl;}
+    if (action == 2) {cout << "> Adult tigers : " << ADULT_TIGER_SELL_PRICE << endl;}
+    else {cout << "  Adult tigers : " << ADULT_TIGER_SELL_PRICE << endl;}
+    if (action == 3) {cout << "> Old tigers : " << OLD_TIGER_SELL_PRICE << endl;}
+    else {cout << "  Old tigers : " << OLD_TIGER_SELL_PRICE << endl;}
     cout << "EAGLES" << endl;
-    cout << "4) Young eagles : 500" << endl
-         << "5) Adult eagles : 2000" << endl
-         << "6) Old eagles : 400" << endl
-         << endl;
+    if (action == 4) {cout << "> Young eagles : " << YOUNG_EAGLE_SELL_PRICE << endl;}
+    else {cout << "  Young eagles : " << YOUNG_EAGLE_SELL_PRICE << endl;}
+    if (action == 5) {cout << "> Adult eagles : " << ADULT_EAGLE_SELL_PRICE << endl;}
+    else {cout << "  Adult eagles : " << ADULT_EAGLE_SELL_PRICE << endl;}
+    if (action == 6) {cout << "> Old eagles : " << OLD_EAGLE_SELL_PRICE << endl;}
+    else {cout << "  Old eagles : " << OLD_EAGLE_SELL_PRICE << endl;}
     cout << "CHICKENS" << endl;
-    cout << "7) Hen : 10" << endl
-         << "8) Rooster : 20" << endl
-         << endl;
-    cout << "9) Exit animal market" << endl
-         << endl;
+    if (action == 7) {cout << "> Hens : " << YOUNG_HEN_SELL_PRICE << endl;}
+    else {cout << "  Hens : " << YOUNG_HEN_SELL_PRICE << endl;}
+    if (action == 8) {cout << "> Roosters : " << YOUNG_ROOSTER_SELL_PRICE << endl;}
+    else {cout << "  Roosters : " << YOUNG_ROOSTER_SELL_PRICE << endl;}
+    cout << endl;
+    if (action == 9) {cout << "> Exit animal market" << endl;}
+    else {cout << "  Exit animal market" << endl;}
 }
 
 // check if string can be converted, then convert & return

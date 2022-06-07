@@ -39,17 +39,17 @@ public:
     void showFoodStock();
     void newSeedStock(int change);
     void newMeatStock(int change);
-    void pests();
-    void avariateMeat();
+    string pests();
+    string avariateMeat();
     void killAnimal(IAnimal* animal);
     void deleteCage(Cage* cage);
     void deleteCage(Cage* cage, int cage_idx);
     vector<IAnimal*> getAnimalListByAge(string type_name, int min_age, int max_age);
     vector<IAnimal*> getAnimalListByGender(string type_name, string gender);
     vector<Cage*> getCageList(string type, string status);
-    void onFire();
-    void stolenAnimal();
-    void overcrowdSickness();
+    string onFire();
+    string stolenAnimal();
+    string overcrowdSickness();
 };
 
 

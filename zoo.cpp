@@ -76,39 +76,30 @@ string Zoo::feedAnimals()
 // check if any accident happened
 string Zoo::checkForEvent()
 {
-    bool no_event = true;
     int event = randint(1, 100);
     if (event <= 1)
     {
         int type = randint(0, 1);
         if (type == 0)
         {
-            onFire();
-            no_event = false;
+            return onFire();
         }
         else
         {
-            stolenAnimal();
-            no_event = false;
+            return stolenAnimal();
         }
     }
     event = randint(1, 100);
     if (event <= 20)
     {
-        pests();
-        no_event = false;
+        return pests();
     }
     event = randint(1, 100);
     if (event <= 10)
     {
-        avariateMeat();
-        no_event = false;
+        return avariateMeat();
     }
-
-    if (no_event)
-    {
-       return ">> No event has occured this month.\n";
-    }
+    return ">> No event has occured this month.\n";
 }
 
 // check if new disease has spread
@@ -132,7 +123,7 @@ void Zoo::addAnimal(IAnimal *newAnimal)
         {
             while(true)
             {
-                int maxIndex = 10;
+            int maxIndex = 10;
             if (_cage_list.size() - alpha * 10 < 10)
             {
                 maxIndex = _cage_list.size() - alpha * 10;
@@ -281,11 +272,13 @@ void Zoo::newSeedStock(int change)
 }
 
 // seed loss due to pests in the zoo
-void Zoo::pests()
+string Zoo::pests()
 {
     _seed_stock -= _seed_stock*SEED_LOSS;
-    cout << ">> There are some pests in your zoo. (You lost 10% of your seeds)" << endl
-         << "New seed stock : " << _seed_stock << endl;
+    string string = ">> There are some pests in your zoo. (You lost 10% of your seeds)\nNew seed stock : ";
+    string += to_string(_seed_stock);
+    string += "\n";
+    return string;
 }
 
 // update meat stock
@@ -295,11 +288,13 @@ void Zoo::newMeatStock(int change)
 }
 
 // meat loss due to avariate meat
-void Zoo::avariateMeat()
+string Zoo::avariateMeat()
 {
     _meat_stock -= _meat_stock*MEAT_LOSS;
-    cout << ">> The meat in your zoo has rotten. (You lost 20% of your meat)" << endl
-         << "New meat stock : " << _meat_stock << endl;
+    string string = ">> The meat in your zoo has rotten. (You lost 20% of your meat)\nNew meat stock : ";
+    string += to_string(_meat_stock);
+    string += "\n";
+    return string;
 }
 
 // find where the animal is in _cage_list and delete it from the zoo
@@ -527,36 +522,38 @@ vector<Cage *> Zoo::getCageList(string type, string status)
     return result;
 }
 
-void Zoo::onFire()
+string Zoo::onFire()
 {
-    cout << ">> There was a fire in the zoo. (You lost 1 cage and all of its animals)" << endl;
     int cage_lost = randint(0, _cage_list.size());
     deleteCage(_cage_list[cage_lost]);
+    return ">> There was a fire in the zoo. (You lost 1 cage and all of its animals)";
 }
 
 // delete a random animal from a random cage
-void Zoo::stolenAnimal()
+string Zoo::stolenAnimal()
 {
     vector<IAnimal *> openedCage = _cage_list[randint(0, _cage_list.size() - 1)]->getAnimalList();
     IAnimal *stolenAnimal = openedCage[randint(0, openedCage.size())];
-    cout << ">> " << stolenAnimal->getName() << " has been stolen. You lost 1 animal" << endl;
     killAnimal(stolenAnimal);
+    return ">> " + stolenAnimal->getName() + " has been stolen. You lost 1 animal\n";
 }
 
 // check if each cage is overcrowded, then check if sick
-void Zoo::overcrowdSickness()
+string Zoo::overcrowdSickness()
 {
+    string string;
     for (auto cage : _cage_list)
     {
         if (cage->isOvercrowded())
         {
-            cage->setOvercrowdSickness();
+            string += cage->setOvercrowdSickness() + "\n";
             if (randint(0, 1))
             {
-                cage->setOvercrowdDeath(this);
+                string += cage->setOvercrowdDeath(this) + "\n";
             }
         }
     }
+    return string;
 }
 
 

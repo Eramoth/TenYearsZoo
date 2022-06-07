@@ -29,8 +29,7 @@ public:
     void buyCage();
     void buyFood();
     void showAnimalToBuy(int);
-    void showAnimalToBuy();
-    void showAnimalToSell();
+    void showAnimalToSell(int);
     void sellAnimalMenu();
     void sellCage();
     int stringToInt(string s);

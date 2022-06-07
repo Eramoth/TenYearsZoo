@@ -27,8 +27,8 @@ public:
     vector<IAnimal*> getAnimalList();
     void addAnimal(IAnimal *newAnimal);
     void freeAnimal(IAnimal *animal);
-    void setOvercrowdSickness();
-    void setOvercrowdDeath(Zoo* zoo);
+    string setOvercrowdSickness();
+    string setOvercrowdDeath(Zoo* zoo);
 };
 
 #endif
