@@ -2,20 +2,13 @@
 #include <vector>
 #include <typeinfo>
 #include <random>
+#include "functions.h"
 #include "zoo.h"
 #include "ianimal.h"
 #include "cage.h"
 #include "config.h"
 
 using namespace std;
-
-int randint(int min, int max)
-{
-    random_device rd;  // obtain a random number from hardware
-    mt19937 gen(rd()); // seed the generator
-    uniform_int_distribution<> distr(min, max);
-    return distr(gen);
-}
 
 Zoo::Zoo()
 {
@@ -72,10 +65,10 @@ void Zoo::feedAnimals()
 void Zoo::checkForEvent()
 {
     bool no_event = true;
-    int event = randint(1, 100);
+    int event = randInt(1, 100);
     if (event <= 1)
     {
-        int type = randint(0, 1);
+        int type = randInt(0, 1);
         if (type == 0)
         {
             onFire();
@@ -87,13 +80,13 @@ void Zoo::checkForEvent()
             no_event = false;
         }
     }
-    event = randint(1, 100);
+    event = randInt(1, 100);
     if (event <= 20)
     {
         pests();
         no_event = false;
     }
-    event = randint(1, 100);
+    event = randInt(1, 100);
     if (event <= 10)
     {
         avariateMeat();
@@ -341,16 +334,31 @@ void Zoo::deleteCage(Cage *cage)
     }
 }
 
-// retrieve animals based on type & age (works with IAnimal type)
-vector<IAnimal *> Zoo::getAnimalListByAge(string type_name, int min_age, int max_age)
+//retrieve animals based on their type
+vector<IAnimal*> Zoo::getAnimalListByType(string type)
+{
+    vector<IAnimal*> result;
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            if (animal->getType()==type)
+            cout << "I'm in" << endl;
+            result.push_back(animal);
+        }
+    }
+    return result;
+}
+
+// retrieve animals based on max & min age
+vector<IAnimal *> Zoo::getAnimalListByAge(int min_age, int max_age)
 {
     vector<IAnimal *> result;
     for (auto cage : _cage_list)
     {
         for (auto animal : cage->getAnimalList())
         {
-            string animal_type = typeid(animal).name();
-            if (animal_type.find(type_name) && animal->getAge() >= min_age && animal->getAge() <= max_age)
+            if (animal->getAge() >= min_age && animal->getAge() <= max_age)
             {
                 cout << "I'm in" << endl;
                 result.push_back(animal);
@@ -361,14 +369,14 @@ vector<IAnimal *> Zoo::getAnimalListByAge(string type_name, int min_age, int max
 }
 
 // retrieve animals based on type & gender (work with IAnimal type)
-vector<IAnimal *> Zoo::getAnimalListByGender(string type_name, string gender)
+vector<IAnimal *> Zoo::getAnimalListByGender(string gender)
 {
     vector<IAnimal *> result;
     for (auto cage : _cage_list)
     {
         for (auto animal : cage->getAnimalList())
         {
-            if (typeid(animal).name() == type_name && animal->getGender() == gender)
+            if (animal->getGender() == gender)
             {
                 result.push_back(animal);
             }
@@ -520,15 +528,15 @@ vector<Cage *> Zoo::getCageList(string type, string status)
 void Zoo::onFire()
 {
     cout << ">> There was a fire in the zoo. (You lost 1 cage and all of its animals)" << endl;
-    int cage_lost = randint(0, _cage_list.size());
+    int cage_lost = randInt(0, _cage_list.size());
     deleteCage(_cage_list[cage_lost]);
 }
 
 // delete a random animal from a random cage
 void Zoo::stolenAnimal()
 {
-    vector<IAnimal *> openedCage = _cage_list[randint(0, _cage_list.size() - 1)]->getAnimalList();
-    IAnimal *stolenAnimal = openedCage[randint(0, openedCage.size())];
+    vector<IAnimal *> openedCage = _cage_list[randInt(0, _cage_list.size() - 1)]->getAnimalList();
+    IAnimal *stolenAnimal = openedCage[randInt(0, openedCage.size())];
     cout << ">> " << stolenAnimal->getName() << " has been stolen. You lost 1 animal" << endl;
     killAnimal(stolenAnimal);
 }
@@ -541,7 +549,7 @@ void Zoo::overcrowdSickness()
         if (cage->isOvercrowded())
         {
             cage->setOvercrowdSickness();
-            if (randint(0, 1))
+            if (randInt(0, 1))
             {
                 cage->setOvercrowdDeath(this);
             }

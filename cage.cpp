@@ -5,16 +5,9 @@
 #include "config.h"
 #include "cage.h"
 #include "ianimal.h"
+#include "functions.h"
 
 using namespace std;
-
-int randInt(int min, int max)
-{
-    random_device rd;  // obtain a random number from hardware
-    mt19937 gen(rd()); // seed the generator
-    uniform_int_distribution<> distr(min, max);
-    return distr(gen);
-}
 
 Cage::Cage(string type)
 {

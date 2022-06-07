@@ -11,6 +11,7 @@ class IAnimal
 {
 protected:
     string _name;
+    string _type;
     int _age;
     int _age_of_death;
     int _gender; // 1 for male, 2 for female
@@ -23,10 +24,11 @@ protected:
     bool _fresh_new; // true if animal has been created this month, can be replaced by an array of "new animals" reset every month
 
 public:
-    IAnimal(int age, int gender, int age_of_death);
+    IAnimal(string _type, int age, int gender, int age_of_death);
     ~IAnimal();
     void kill(Zoo *zoo);
     string getName();
+    string getType();
     string getGender();
     int getAge();
     void increaseAge(Zoo *zoo);

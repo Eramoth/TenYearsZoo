@@ -40,8 +40,9 @@ public:
     void killAnimal(IAnimal* animal);
     void deleteCage(Cage* cage);
     void deleteCage(Cage* cage, int cage_idx);
-    vector<IAnimal*> getAnimalListByAge(string type_name, int min_age, int max_age);
-    vector<IAnimal*> getAnimalListByGender(string type_name, string gender);
+    vector<IAnimal*> getAnimalListByType(string type);
+    vector<IAnimal*> getAnimalListByAge(int min_age, int max_age);
+    vector<IAnimal*> getAnimalListByGender(string gender);
     vector<Cage*> getCageList(string type, string status);
     void onFire();
     void stolenAnimal();

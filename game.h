@@ -21,7 +21,6 @@ public:
 
     void startGame();
     string parseDate();
-    int askInput();
     void newYear();
     void nextTurn();
     void menu();
@@ -32,7 +31,6 @@ public:
     void showAnimalToSell();
     void sellAnimalMenu();
     void sellCage();
-    int stringToInt(string s);
 };
 
 #endif
