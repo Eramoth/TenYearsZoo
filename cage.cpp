@@ -115,21 +115,21 @@ void Cage::setOvercrowdSickness()
     {
         if (_type == "Tiger")
         {
-            if (randInt(0, 100 / TIGER_OVERCROWD_SICKNESS))
+            if (!randInt(0, 100 / TIGER_OVERCROWD_SICKNESS-1))
             {
                 animal->getSick();
             }
         }
         else if (_type == "Eagle")
         {
-            if (randInt(0, 100 / EAGLE_OVERCROWD_SICKNESS))
+            if (!randInt(0, 100 / EAGLE_OVERCROWD_SICKNESS-1))
             {
                 animal->getSick();
             }
         }
         else if (_type == "Chicken")
         {
-            if (randInt(0, 100 / CHICKEN_OVERCROWD_SICKNESS))
+            if (!randInt(0, 100 / CHICKEN_OVERCROWD_SICKNESS-1))
             {
                 animal->getSick();
             }

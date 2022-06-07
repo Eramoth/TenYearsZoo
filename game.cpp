@@ -367,7 +367,7 @@ void Game::sellAnimalMenu()
         int price = 0;
         string type = "";
 
-        // ask wich type & age of animal
+        // ask wich type & age of animal, get animal list depending of said age
         int choice = askInput();
         switch (choice)
         {
@@ -420,7 +420,7 @@ void Game::sellAnimalMenu()
                  << endl;
             continue;
         }
-        // get animal from specific type
+        // get animal from said type
         for (auto animal : chosen_age_list)
         {
             if (animal->getType() == type)

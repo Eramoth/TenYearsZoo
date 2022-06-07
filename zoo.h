@@ -19,31 +19,38 @@ private:
 public:
     Zoo();
     ~Zoo();
-    void addCage(Cage* newCage);
-    void addAnimal(IAnimal* newAnimal);
-    void withdrawAnimal(IAnimal* w_animal);
-    void feedAnimals();
-    void checkForEvent();
-    void checkForDisease();
-    void checkDeathByAge();
-    void increaseAnimalAge();
+    // give private information
     int population();
+    vector<IAnimal*> getEveryAnimalList();
     vector<Cage*> getCageList();
-    void monthlyUpdate();
-    void showCageList();
-    void buyFood(int *money);
-    void showFoodStock();
-    void newSeedStock(int change);
-    void newMeatStock(int change);
-    void pests();
-    void avariateMeat();
-    void killAnimal(IAnimal* animal);
-    void deleteCage(Cage* cage);
-    void deleteCage(Cage* cage, int cage_idx);
+    vector<Cage*> getCageList(string type, string status);
     vector<IAnimal*> getAnimalListByType(string type);
     vector<IAnimal*> getAnimalListByAge(int min_age, int max_age);
     vector<IAnimal*> getAnimalListByGender(string gender);
-    vector<Cage*> getCageList(string type, string status);
+    // show private information
+    void showCageList();
+    void showFoodStock();
+    // modifying private var functions
+    void addCage(Cage* newCage);
+    void addAnimal(IAnimal* newAnimal);
+    void killAnimal(IAnimal* animal);
+    void increaseAnimalAge();
+    void withdrawAnimal(IAnimal* w_animal);
+    void buyFood(int *money);
+    void newSeedStock(int change);
+    void newMeatStock(int change);
+    void deleteCage(Cage* cage);
+    void deleteCage(Cage* cage, int cage_idx);
+    // event-related functions
+    void monthlyUpdate();
+    void feedAnimals();
+    void checkForEvent();
+    void checkForDisease();
+    void checkDeathByDisease();
+    void checkDeathByAge();
+    void checkForHealing();
+    void pests();
+    void avariateMeat();
     void onFire();
     void stolenAnimal();
     void overcrowdSickness();

@@ -25,11 +25,13 @@ Zoo::~Zoo()
 // structure and call everything that can happen between two month
 void Zoo::monthlyUpdate()
 {
-    increaseAnimalAge();
     checkForEvent();
-    checkForDisease();
+    increaseAnimalAge();
     feedAnimals();
+    checkForHealing();
+    checkForDisease();
     overcrowdSickness();
+    checkDeathByDisease();
     if (population() == 0)
     {
         cout << ">> There are no animals in your zoo" << endl;
@@ -39,8 +41,47 @@ void Zoo::monthlyUpdate()
         cout << ">> There are " << population() << " animal(s) in your zoo" << endl;
     }
     cout << "The zoo is up to date."
-         << "\n"
+         << endl
          << endl;
+}
+
+// check if animals have recovered from their past sickness
+void Zoo::checkForHealing()
+{
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            if (animal->isSick())
+            {
+                int not_healing = randInt(0, 100 / HEALING_PROBA - 1);
+                if (!not_healing)
+                {
+                    animal->getCured();
+                }
+            }
+        }
+    }
+}
+
+// check if animals have died from their sickness
+void Zoo::checkDeathByDisease()
+{
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            if (animal->isSick())
+            {
+                int staying_healthy = randInt(0, 100 / SICKNESS_MORTALITY - 1);
+                if (staying_healthy == 0)
+                {
+                    cout << animal->getName() << " died from its sickness. Maybe giving him alcohool to \"help him get better\" wasn't your brightest idea." << endl;
+                    animal->kill(this);
+                }
+            }
+        }
+    }
 }
 
 // increase age of each animal
@@ -99,10 +140,53 @@ void Zoo::checkForEvent()
     }
 }
 
-// check if new disease has spread
+// check if new diseases have spread
 void Zoo::checkForDisease()
 {
-    cout << ">> No new disease have been declared." << endl;
+    bool no_sickness = true;
+
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            if (animal->getType() == "Tiger")
+            {
+                int stay_healthy = randInt(0, 100 / TIGER_SICKNESS_PROBA - 1);
+                if (stay_healthy == 0)
+                {
+                    animal->getSick();
+                }
+                no_sickness = false;
+            }
+            else if (animal->getType() == "Eagle")
+            {
+                int stay_healthy = randInt(0, 100 / EAGLE_SICKNESS_PROBA - 1);
+                if (stay_healthy == 0)
+                {
+                    animal->getSick();
+                }
+                no_sickness = false;
+            }
+            else if (animal->getType() == "Chicken")
+            {
+                int stay_healthy = randInt(0, 100 / CHICKEN_SICKNESS_PROBA - 1);
+                if (stay_healthy == 0)
+                {
+                    animal->getSick();
+                }
+                no_sickness = false;
+            }
+            else
+            {
+                cout << "Type not supported." << endl;
+            }
+        }
+    }
+    // if no one get sick
+    if (no_sickness)
+    {
+        cout << ">> No new disease have been declared." << endl;
+    }
 }
 
 // add a cage to the zoo
@@ -266,7 +350,7 @@ void Zoo::newSeedStock(int change)
 // seed loss due to pests in the zoo
 void Zoo::pests()
 {
-    _seed_stock -= _seed_stock*SEED_LOSS;
+    _seed_stock -= _seed_stock * SEED_LOSS;
     cout << ">> There are some pests in your zoo. (You lost 10% of your seeds)" << endl
          << "New seed stock : " << _seed_stock << endl;
 }
@@ -280,7 +364,7 @@ void Zoo::newMeatStock(int change)
 // meat loss due to avariate meat
 void Zoo::avariateMeat()
 {
-    _meat_stock -= _meat_stock*MEAT_LOSS;
+    _meat_stock -= _meat_stock * MEAT_LOSS;
     cout << ">> The meat in your zoo has rotten. (You lost 20% of your meat)" << endl
          << "New meat stock : " << _meat_stock << endl;
 }
@@ -335,15 +419,15 @@ void Zoo::deleteCage(Cage *cage)
 }
 
 //retrieve animals based on their type
-vector<IAnimal*> Zoo::getAnimalListByType(string type)
+vector<IAnimal *> Zoo::getAnimalListByType(string type)
 {
-    vector<IAnimal*> result;
+    vector<IAnimal *> result;
     for (auto cage : _cage_list)
     {
         for (auto animal : cage->getAnimalList())
         {
-            if (animal->getType()==type)
-            cout << "I'm in" << endl;
+            if (animal->getType() == type)
+                cout << "I'm in" << endl;
             result.push_back(animal);
         }
     }
@@ -385,7 +469,27 @@ vector<IAnimal *> Zoo::getAnimalListByGender(string gender)
     return result;
 }
 
-// return a vector of Cage*, depending on their type and if they are empty or full ;
+// return a vector of all the animals in the cages of the zoo
+vector<IAnimal*> Zoo::getEveryAnimalList()
+{
+    vector<IAnimal*> result;
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            result.push_back(animal);
+        }
+    }
+    return result;
+}
+
+// return a vector of Cage*
+vector<Cage*> Zoo::getCageList()
+{
+    return _cage_list;
+}
+
+// return a vector of Cage*, depending on their type and if they are empty or full
 // pass "any" as parameters to get everything
 vector<Cage *> Zoo::getCageList(string type, string status)
 {
@@ -525,6 +629,7 @@ vector<Cage *> Zoo::getCageList(string type, string status)
     return result;
 }
 
+// delete a random cage and all of its animals
 void Zoo::onFire()
 {
     cout << ">> There was a fire in the zoo. (You lost 1 cage and all of its animals)" << endl;
@@ -556,5 +661,3 @@ void Zoo::overcrowdSickness()
         }
     }
 }
-
-

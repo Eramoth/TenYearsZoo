@@ -31,9 +31,11 @@ public:
     string getType();
     string getGender();
     int getAge();
+    bool isSick();
     void increaseAge(Zoo *zoo);
     void escape(Zoo *zoo); // will be virtual void
     void getSick();
+    void getCured();
     virtual void showAnimal() = 0;
     virtual bool canReproduce() = 0;
     // virtual void giveBirth() = 0;

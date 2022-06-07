@@ -60,6 +60,12 @@ int IAnimal::getAge()
     return _age;
 }
 
+// return true if sick, false if healthy
+bool IAnimal::isSick()
+{
+    return _is_sick;
+}
+
 //return gender of animal
 string IAnimal::getGender()
 {
@@ -95,9 +101,14 @@ void IAnimal::escape(Zoo *zoo)
 void IAnimal::getSick()
 {
     _is_sick = true;
+    cout << getName() << " got sick." << endl;
 }
 
-
+void IAnimal::getCured()
+{
+    _is_sick = false;
+    cout << getName() << "'s sickness got cured, and he even kept one of it's leg healthy !" << endl;
+}
 
 
 
