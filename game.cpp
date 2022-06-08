@@ -212,7 +212,7 @@ void Game::buyAnimal()
             break;
         case 9:
             cout << ">> Exited animal market."
-                 << "\n"
+                 << endl
                  << endl;
             return;
         default:
@@ -226,7 +226,7 @@ void Game::buyAnimal()
         if (_money < price)
         {
             cout << ">> You don't have enough money."
-                 << "\n"
+                 << endl
                  << endl;
             this_thread::sleep_for(std::chrono::seconds(1));
             continue;

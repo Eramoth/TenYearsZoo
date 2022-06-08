@@ -14,7 +14,7 @@ IAnimal::IAnimal(string type, int age, int gender, int age_of_death)
     cout << ">> New animal name : ";
     cin >> _name;
     cout << _name << " is waiting in the zoo."
-         << "\n"
+         << endl
          << endl;
     _type = type;
     _age = age;
@@ -49,7 +49,8 @@ string IAnimal::getType()
 {
     if (_type == "")
     {
-        return "No type found.";
+        cout << "No type found." << endl;
+        return "";
     }
     return _type;
 }
