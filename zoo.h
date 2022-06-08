@@ -29,36 +29,28 @@ public:
     vector<IAnimal*> getAnimalListByAge(int min_age, int max_age);
     vector<IAnimal*> getAnimalListByGender(string gender);
     // show private information
-    void showCageList();
+    void showCageList(int,int,int);
     void showFoodStock();
     // modify private var functions
     void addCage(Cage* newCage);
     void addAnimal(IAnimal* newAnimal);
-    void addSeeds(int);
-    void addMeats(int);
-    vector<Cage*> getCageListByType(string);
-
+    void killAnimal(IAnimal* animal);
+    void increaseAnimalAge();
     void withdrawAnimal(IAnimal* w_animal);
+    void newSeedStock(int change);
+    void newMeatStock(int change);
+    void deleteCage(Cage* cage);
+    void deleteCage(Cage* cage, int cage_idx);
+    // event-related functions
+    string monthlyUpdate();
     string feedAnimals();
     string checkForEvent();
     string checkForDisease();
-    void checkDeathByAge();
-    void increaseAnimalAge();
-    int population();
-    vector<Cage*> getCageList();
-    string monthlyUpdate();
-    void showCageList(int,int,int);
-    void showFoodStock();
-    void newSeedStock(int change);
-    void newMeatStock(int change);
+    string checkDeathByDisease();
+    string checkDeathByAge();
+    string checkForHealing();
     string pests();
     string avariateMeat();
-    void killAnimal(IAnimal* animal);
-    void deleteCage(Cage* cage);
-    void deleteCage(Cage* cage, int cage_idx);
-    vector<IAnimal*> getAnimalListByAge(string type_name, int min_age, int max_age);
-    vector<IAnimal*> getAnimalListByGender(string type_name, string gender);
-    vector<Cage*> getCageList(string type, string status);
     string onFire();
     string stolenAnimal();
     string overcrowdSickness();

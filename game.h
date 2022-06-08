@@ -27,7 +27,6 @@ public:
     void buyAnimal();
     void buyFood();
     void buyCage();
-    void buyFood();
     void showAnimalToBuy(int);
     void showAnimalToSell(int);
     void sellAnimalMenu();

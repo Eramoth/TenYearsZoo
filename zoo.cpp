@@ -54,7 +54,7 @@ string Zoo::monthlyUpdate()
 }
 
 // check if animals have recovered from their past sickness
-void Zoo::checkForHealing()
+string Zoo::checkForHealing()
 {
     for (auto cage : _cage_list)
     {
@@ -73,7 +73,7 @@ void Zoo::checkForHealing()
 }
 
 // check if animals have died from their sickness
-void Zoo::checkDeathByDisease()
+string Zoo::checkDeathByDisease()
 {
     for (auto cage : _cage_list)
     {
@@ -113,7 +113,7 @@ string Zoo::feedAnimals()
 // check if any accident happened
 string Zoo::checkForEvent()
 {
-    int event = randint(1, 100);
+    int event = randInt(1, 100);
     if (event <= 1)
     {
         int type = randInt(0, 1);
@@ -140,7 +140,7 @@ string Zoo::checkForEvent()
 }
 
 // check if new diseases have spread
-void Zoo::checkForDisease()
+string Zoo::checkForDisease()
 {
     bool no_sickness = true;
 
@@ -170,7 +170,7 @@ void Zoo::checkForDisease()
             if (stay_healthy == 0)
             {
                 animal->setSick();
-                cout << animal->getName() << " got sick." << endl;
+                return animal->getName() + " got sick.";
             }
             no_sickness = false;
         }
@@ -178,8 +178,9 @@ void Zoo::checkForDisease()
     // if no one get sick
     if (no_sickness)
     {
-        cout << ">> No new disease have been declared." << endl;
+        return ">> No new disease have been declared.";
     }
+    return "";
 }
 
 // add a cage to the zoo
@@ -263,29 +264,6 @@ void Zoo::addAnimal(IAnimal *newAnimal)
         // delete newAnimal;
         return;
     }
-}
-
-vector<Cage*> Zoo::getCageListByType(string type)
-{
-    vector<Cage*> res;
-    for (int i = 0; i < _cage_list.size(); i++)
-    {
-        if (_cage_list[i]->getType() == type)
-        {
-            res.push_back(_cage_list[i]);
-        }
-    }
-    return res;
-}
-
-void Zoo::addSeeds(int nb)
-{
-    _seed_stock += nb;
-}
-
-void Zoo::addMeats(int nb)
-{
-    _meat_stock += nb;
 }
 
 // return the number of animals in the zoo
@@ -634,7 +612,7 @@ vector<Cage *> Zoo::getCageList(string type, string status)
 
 string Zoo::onFire()
 {
-    int cage_lost = randint(0, _cage_list.size());
+    int cage_lost = randInt(0, _cage_list.size());
     deleteCage(_cage_list[cage_lost]);
     return ">> There was a fire in the zoo. (You lost 1 cage and all of its animals)";
 }
@@ -642,8 +620,8 @@ string Zoo::onFire()
 // delete a random animal from a random cage
 string Zoo::stolenAnimal()
 {
-    vector<IAnimal *> openedCage = _cage_list[randint(0, _cage_list.size() - 1)]->getAnimalList();
-    IAnimal *stolenAnimal = openedCage[randint(0, openedCage.size())];
+    vector<IAnimal *> openedCage = _cage_list[randInt(0, _cage_list.size() - 1)]->getAnimalList();
+    IAnimal *stolenAnimal = openedCage[randInt(0, openedCage.size())];
     killAnimal(stolenAnimal);
     return ">> " + stolenAnimal->getName() + " has been stolen. You lost 1 animal\n";
 }
@@ -657,7 +635,7 @@ string Zoo::overcrowdSickness()
         if (cage->isOvercrowded())
         {
             string += cage->setOvercrowdSickness() + "\n";
-            if (randint(0, 1))
+            if (randInt(0, 1))
             {
                 string += cage->setOvercrowdDeath(this) + "\n";
             }
