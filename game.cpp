@@ -291,7 +291,7 @@ void Game::buyAnimal()
         }
                 // if gender is not defined, define it (1 for male, 2 for female):
             int action2 = 0;
-            while (1)
+            while (action != 7 && action != 8)
             {
                 system("cls");
                 cout << "\n-- ANIMAL MARKET --" << endl;
@@ -335,16 +335,16 @@ void Game::buyAnimal()
                         Eagle *newAnimal = new Eagle(age, action2+1);
                         _zoo->addAnimal(newAnimal);
                     }
-                    else if (type == "Chicken")
-                    {
-                        Chicken *newAnimal = new Chicken(age, action2+1);
-                        _zoo->addAnimal(newAnimal);
-                    }
-                    cout << endl;
-                    this_thread::sleep_for(std::chrono::seconds(3));
                     break;
                 }
                 }
+                if (type == "Chicken")
+                {
+                    Chicken *newAnimal = new Chicken(age, action2+1);
+                    _zoo->addAnimal(newAnimal);
+                }
+                cout << endl;
+                this_thread::sleep_for(std::chrono::seconds(3));
             }
         }
 }
@@ -565,7 +565,7 @@ void Game::sellAnimalMenu()
         int key = _getch();
         if (key == 72)
         {
-            if (choice == 0) {continue;}
+            if (choice == 1) {continue;}
             else {choice -= 1;}
         }
 
