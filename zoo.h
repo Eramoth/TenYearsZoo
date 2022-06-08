@@ -20,6 +20,18 @@ private:
 public:
     Zoo();
     ~Zoo();
+    // give private information
+    int population();
+    vector<IAnimal*> getEveryAnimalList();
+    vector<Cage*> getCageList();
+    vector<Cage*> getCageList(string type, string status);
+    vector<IAnimal*> getAnimalListByType(string type);
+    vector<IAnimal*> getAnimalListByAge(int min_age, int max_age);
+    vector<IAnimal*> getAnimalListByGender(string gender);
+    // show private information
+    void showCageList();
+    void showFoodStock();
+    // modify private var functions
     void addCage(Cage* newCage);
     void addAnimal(IAnimal* newAnimal);
     void addSeeds(int);

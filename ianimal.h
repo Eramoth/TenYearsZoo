@@ -11,27 +11,32 @@ class IAnimal
 {
 protected:
     string _name;
+    string _type;
     int _age;
     int _age_of_death;
     int _gender; // 1 for male, 2 for female
     // string _diet; // pointless to keep here because of #define ?
-    // int _food_quantity; // pointless to keep here because of #define ?
     int _month_since_meal;
     bool _is_sick;
-    // int _child_by_birth; // _child_by_litter, probably useless with #define
     int _gestation_month;
     bool _fresh_new; // true if animal has been created this month, can be replaced by an array of "new animals" reset every month
 
 public:
-    IAnimal(int age, int gender, int age_of_death);
+    IAnimal(string _type, int age, int gender, int age_of_death);
     ~IAnimal();
     void kill(Zoo *zoo);
+    // give private information
     string getName();
+    string getType();
     string getGender();
     int getAge();
+    bool isSick();
+    // modify private information
     void increaseAge(Zoo *zoo);
     void escape(Zoo *zoo); // will be virtual void
-    void getSick();
+    void setSick();
+    void setCured();
+    // show private information
     virtual void showAnimal() = 0;
     virtual bool canReproduce() = 0;
     // virtual void giveBirth() = 0;

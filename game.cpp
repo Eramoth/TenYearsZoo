@@ -3,6 +3,7 @@
 #include <chrono>
 #include <thread>
 #include <conio.h>
+#include "functions.h"
 #include "game.h"
 #include "zoo.h"
 #include "config.h"
@@ -80,14 +81,6 @@ string Game::parseDate()
 
     date += ", YEAR " + to_string(_currentYear);
     return date;
-}
-
-//ask for input, return int
-int Game::askInput()
-{
-    string input;
-    cin >> input;
-    return stringToInt(input);
 }
 
 // happy new year !
@@ -573,6 +566,14 @@ void Game::sellAnimalMenu()
             if (choice == 1) {continue;}
             else {choice -= 1;}
         }
+        // get animal from said type
+        for (auto animal : chosen_age_list)
+        {
+            if (animal->getType() == type)
+            {
+                chosen_type_list.push_back(animal); 
+            }
+        }
 
         else if (key == 80)
         {
@@ -591,36 +592,44 @@ void Game::sellAnimalMenu()
             switch (choice)
             {
             case 1:
-                chosen_type_list = _zoo->getAnimalListByAge("Tiger", 0, 47);
+                chosen_age_list = _zoo->getAnimalListByAge(0, 47);
+                type = "Tiger";
                 price = YOUNG_TIGER_SELL_PRICE;
                 break;
             case 2:
-                chosen_type_list = _zoo->getAnimalListByAge("Tiger", 47, 167);
+                chosen_age_list = _zoo->getAnimalListByAge(47, 167);
+                type = "Tiger";
                 price = ADULT_TIGER_SELL_PRICE;
                 break;
             case 3:
-                chosen_type_list = _zoo->getAnimalListByAge("Tiger", 168, 999);
+                chosen_age_list = _zoo->getAnimalListByAge(168, 999);
+                type = "Tiger";
                 price = OLD_TIGER_SELL_PRICE;
                 break;
             case 4:
-                chosen_type_list = _zoo->getAnimalListByAge("Eagle", 0, 47);
+                chosen_age_list = _zoo->getAnimalListByAge(0, 47);
+                type = "Eagle";
                 price = YOUNG_EAGLE_SELL_PRICE;
                 break;
             case 5:
-                chosen_type_list = _zoo->getAnimalListByAge("Eagle", 47, 168);
+                chosen_age_list = _zoo->getAnimalListByAge(47, 168);
                 price = ADULT_EAGLE_SELL_PRICE;
+                type = "Eagle";
                 break;
             case 6:
-                chosen_type_list = _zoo->getAnimalListByAge("Eagle", 168, 999);
+                chosen_age_list = _zoo->getAnimalListByAge(168, 999);
                 price = OLD_EAGLE_SELL_PRICE;
+                type = "Eagle";
                 break;
             case 7:
-                chosen_type_list = _zoo->getAnimalListByGender("Chicken", "female");
+                chosen_age_list = _zoo->getAnimalListByGender("female");
                 price = YOUNG_HEN_BUY_PRICE;
+                type = "Chicken";
                 break;
             case 8:
-                chosen_type_list = _zoo->getAnimalListByGender("Chicken", "male");
+                chosen_age_list = _zoo->getAnimalListByGender("male");
                 price = YOUNG_ROOSTER_SELL_PRICE;
+                type = "Chicken";
                 break;
             case 9:
                 cout << "Exited animal market." << endl
@@ -629,7 +638,7 @@ void Game::sellAnimalMenu()
             default:
                 cout << "Wrong input, try again." << endl
                     << endl;
-                continue;
+            continue;
             }
 
         // if list is empty, continue
@@ -754,20 +763,6 @@ void Game::showAnimalToSell(int action)
     else {cout << "  Exit animal market" << endl;}
 }
 
-// check if string can be converted, then convert & return
-int Game::stringToInt(string s)
-{
-    try
-    {
-        int n = stoi(s);
-        return n;
-    }
-    catch (invalid_argument)
-    {
-        return -1;
-    }
-}
-
 // sell empty cages depending on player choice. Give money
 void Game::sellCage()
 {
@@ -837,6 +832,77 @@ void Game::sellCage()
             }
             cout << "You sold " << ncage_to_sell << " for " << price * ncage_to_sell << " $." << endl
                  << endl;
+        }
+    }
+}
+
+// buy food depending on the user's choice (type & quantity). Cost money
+void Game::buyFood()
+{
+    cout << "\n-- FOOD MARKET --\n"
+         << endl;
+    int quantity = 0;
+    int action = 0;
+
+    _zoo->showFoodStock();
+
+    cout << "1) Buy seeds" << endl
+         << "2) Buy meat" << endl
+         << "3) Exit" << endl
+         << endl;
+    while (action != 3)
+    {
+        cout << "Action ?" << endl;
+        cin >> action;
+        while (action < 1 || action > 3)
+        {
+            cout << "Wrong input. Try again : " << endl;
+            cin >> action;
+        }
+        if (action != 1 && action != 2)
+        {
+            cout << "Exited food market." << endl;
+            return;
+        }
+        cout << "How much ? " << endl;
+        cin >> quantity;
+        // error handler
+        while (quantity < 1)
+        {
+            cout << "Wrong input. Try again :" << endl;
+            cin >> quantity;
+        }
+        // if seed
+        if (action == 1)
+        {
+            int price = SEED_PRICE * quantity;
+            if (price > _money)
+            {
+                cout << "You don't have enough money." << endl;
+            }
+            else
+            {
+                _zoo->newSeedStock(quantity);
+                _money -= price;
+                cout << "You succesfully bought " << quantity << " kg of seed.\n"
+                     << endl;
+            }
+        }
+        // if meat
+        else
+        {
+            int price = MEAT_PRICE * quantity;
+            if (price > _money)
+            {
+                cout << "You don't have enough money." << endl;
+            }
+            else
+            {
+                _zoo->newMeatStock(quantity);
+                _money -= price;
+                cout << "You succesfully bought " << quantity << " kg of meat.\n"
+                     << endl;
+            }
         }
     }
 }

@@ -5,16 +5,9 @@
 #include "config.h"
 #include "cage.h"
 #include "ianimal.h"
+#include "functions.h"
 
 using namespace std;
-
-int randInt(int min, int max)
-{
-    random_device rd;  // obtain a random number from hardware
-    mt19937 gen(rd()); // seed the generator
-    uniform_int_distribution<> distr(min, max);
-    return distr(gen);
-}
 
 Cage::Cage(string type)
 {
@@ -122,23 +115,26 @@ string Cage::setOvercrowdSickness()
     {
         if (_type == "Tiger")
         {
-            if (randInt(0, 100 / TIGER_OVERCROWD_SICKNESS))
+            if (!randInt(0, 100 / TIGER_OVERCROWD_SICKNESS-1))
             {
-                animal->getSick();
+                animal->setSick();
+                cout << animal->getName() << " got sick." << endl;
             }
         }
         else if (_type == "Eagle")
         {
-            if (randInt(0, 100 / EAGLE_OVERCROWD_SICKNESS))
+            if (!randInt(0, 100 / EAGLE_OVERCROWD_SICKNESS-1))
             {
-                animal->getSick();
+                animal->setSick();
+                cout << animal->getName() << " got sick." << endl;
             }
         }
         else if (_type == "Chicken")
         {
-            if (randInt(0, 100 / CHICKEN_OVERCROWD_SICKNESS))
+            if (!randInt(0, 100 / CHICKEN_OVERCROWD_SICKNESS-1))
             {
-                animal->getSick();
+                animal->setSick();
+                cout << animal->getName() << " got sick." << endl;
             }
         }
         else

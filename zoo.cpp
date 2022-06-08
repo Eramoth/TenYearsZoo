@@ -1,22 +1,18 @@
+// THINGS TO CHANGE
+// L.470 : getCageList()
+
 #include <iostream>
 #include <vector>
 #include <conio.h>
 #include <typeinfo>
 #include <random>
+#include "functions.h"
 #include "zoo.h"
 #include "ianimal.h"
 #include "cage.h"
 #include "config.h"
 
 using namespace std;
-
-int randint(int min, int max)
-{
-    random_device rd;  // obtain a random number from hardware
-    mt19937 gen(rd()); // seed the generator
-    uniform_int_distribution<> distr(min, max);
-    return distr(gen);
-}
 
 Zoo::Zoo()
 {
@@ -42,7 +38,9 @@ string Zoo::monthlyUpdate()
         res += ">> There are " + to_string(population()) + " animal(s) in your zoo\n";
     }
     increaseAnimalAge();
+    checkForHealing();
     overcrowdSickness();
+    checkDeathByDisease();
     if (population() == 0)
     {
         cout << ">> There are no animals in your zoo" << endl;
@@ -53,6 +51,45 @@ string Zoo::monthlyUpdate()
     }
     res += "The zoo is up to date.\n";
     return res;
+}
+
+// check if animals have recovered from their past sickness
+void Zoo::checkForHealing()
+{
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            if (animal->isSick())
+            {
+                int not_healing = randInt(0, 100 / HEALING_PROBA - 1);
+                if (!not_healing)
+                {
+                    animal->setCured();
+                }
+            }
+        }
+    }
+}
+
+// check if animals have died from their sickness
+void Zoo::checkDeathByDisease()
+{
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            if (animal->isSick())
+            {
+                int staying_healthy = randInt(0, 100 / SICKNESS_MORTALITY - 1);
+                if (staying_healthy == 0)
+                {
+                    cout << animal->getName() << " died from its sickness. Maybe giving them alcohool to \"help them get better\" wasn't your brightest idea." << endl;
+                    animal->kill(this);
+                }
+            }
+        }
+    }
 }
 
 // increase age of each animal
@@ -79,7 +116,7 @@ string Zoo::checkForEvent()
     int event = randint(1, 100);
     if (event <= 1)
     {
-        int type = randint(0, 1);
+        int type = randInt(0, 1);
         if (type == 0)
         {
             return onFire();
@@ -89,12 +126,12 @@ string Zoo::checkForEvent()
             return stolenAnimal();
         }
     }
-    event = randint(1, 100);
+    event = randInt(1, 100);
     if (event <= 20)
     {
         return pests();
     }
-    event = randint(1, 100);
+    event = randInt(1, 100);
     if (event <= 10)
     {
         return avariateMeat();
@@ -102,10 +139,47 @@ string Zoo::checkForEvent()
     return ">> No event has occured this month.\n";
 }
 
-// check if new disease has spread
-string Zoo::checkForDisease()
+// check if new diseases have spread
+void Zoo::checkForDisease()
 {
-    return ">> No new disease have been declared.\n";
+    bool no_sickness = true;
+
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            int sickness_proba;
+            if (animal->getType() == "Tiger")
+            {
+                sickness_proba = TIGER_SICKNESS_PROBA;
+            }
+            else if (animal->getType() == "Eagle")
+            {
+                sickness_proba = EAGLE_SICKNESS_PROBA - 1;
+            }
+            else if (animal->getType() == "Chicken")
+            {
+                sickness_proba = CHICKEN_SICKNESS_PROBA - 1;
+            }
+            else
+            {
+                cout << "Type not supported." << endl;
+            }
+
+            int stay_healthy = randInt(0, 100 / sickness_proba - 1);
+            if (stay_healthy == 0)
+            {
+                animal->setSick();
+                cout << animal->getName() << " got sick." << endl;
+            }
+            no_sickness = false;
+        }
+    }
+    // if no one get sick
+    if (no_sickness)
+    {
+        cout << ">> No new disease have been declared." << endl;
+    }
 }
 
 // add a cage to the zoo
@@ -346,16 +420,31 @@ void Zoo::deleteCage(Cage *cage)
     }
 }
 
-// retrieve animals based on type & age (works with IAnimal type)
-vector<IAnimal *> Zoo::getAnimalListByAge(string type_name, int min_age, int max_age)
+//retrieve animals based on their type
+vector<IAnimal *> Zoo::getAnimalListByType(string type)
 {
     vector<IAnimal *> result;
     for (auto cage : _cage_list)
     {
         for (auto animal : cage->getAnimalList())
         {
-            string animal_type = typeid(animal).name();
-            if (animal_type.find(type_name) && animal->getAge() >= min_age && animal->getAge() <= max_age)
+            if (animal->getType() == type)
+                cout << "I'm in" << endl;
+            result.push_back(animal);
+        }
+    }
+    return result;
+}
+
+// retrieve animals based on max & min age
+vector<IAnimal *> Zoo::getAnimalListByAge(int min_age, int max_age)
+{
+    vector<IAnimal *> result;
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            if (animal->getAge() >= min_age && animal->getAge() <= max_age)
             {
                 cout << "I'm in" << endl;
                 result.push_back(animal);
@@ -366,14 +455,14 @@ vector<IAnimal *> Zoo::getAnimalListByAge(string type_name, int min_age, int max
 }
 
 // retrieve animals based on type & gender (work with IAnimal type)
-vector<IAnimal *> Zoo::getAnimalListByGender(string type_name, string gender)
+vector<IAnimal *> Zoo::getAnimalListByGender(string gender)
 {
     vector<IAnimal *> result;
     for (auto cage : _cage_list)
     {
         for (auto animal : cage->getAnimalList())
         {
-            if (typeid(animal).name() == type_name && animal->getGender() == gender)
+            if (animal->getGender() == gender)
             {
                 result.push_back(animal);
             }
@@ -382,8 +471,29 @@ vector<IAnimal *> Zoo::getAnimalListByGender(string type_name, string gender)
     return result;
 }
 
-// return a vector of Cage*, depending on their type and if they are empty or full ;
-// pass "any" as parameters to get everything
+// return a vector of all the animals in the cages of the zoo
+vector<IAnimal *> Zoo::getEveryAnimalList()
+{
+    vector<IAnimal *> result;
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            result.push_back(animal);
+        }
+    }
+    return result;
+}
+
+// return a vector of Cage*
+vector<Cage *> Zoo::getCageList()
+{
+    return _cage_list;
+}
+
+/* return a vector of Cage*, depending on their
+type and if they are empty or full
+pass "any" as parameters to get everything */
 vector<Cage *> Zoo::getCageList(string type, string status)
 {
     vector<Cage *> result;
@@ -555,5 +665,3 @@ string Zoo::overcrowdSickness()
     }
     return string;
 }
-
-
