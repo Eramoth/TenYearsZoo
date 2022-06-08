@@ -117,21 +117,24 @@ void Cage::setOvercrowdSickness()
         {
             if (!randInt(0, 100 / TIGER_OVERCROWD_SICKNESS-1))
             {
-                animal->getSick();
+                animal->setSick();
+                cout << animal->getName() << " got sick." << endl;
             }
         }
         else if (_type == "Eagle")
         {
             if (!randInt(0, 100 / EAGLE_OVERCROWD_SICKNESS-1))
             {
-                animal->getSick();
+                animal->setSick();
+                cout << animal->getName() << " got sick." << endl;
             }
         }
         else if (_type == "Chicken")
         {
             if (!randInt(0, 100 / CHICKEN_OVERCROWD_SICKNESS-1))
             {
-                animal->getSick();
+                animal->setSick();
+                cout << animal->getName() << " got sick." << endl;
             }
         }
         else

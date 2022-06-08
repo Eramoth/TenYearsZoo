@@ -18,6 +18,7 @@ private:
 public:
     Cage(string type);
     ~Cage();
+    // give private information
     int getCapacity();
     string getType();
     string getName();
@@ -25,6 +26,7 @@ public:
     bool isOvercrowded();
     int numberOfAnimal();
     vector<IAnimal*> getAnimalList();
+    // modify private information
     void addAnimal(IAnimal *newAnimal);
     void freeAnimal(IAnimal *animal);
     void setOvercrowdSickness();

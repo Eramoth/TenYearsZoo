@@ -98,13 +98,12 @@ void IAnimal::escape(Zoo *zoo)
 }
 
 // update sick statut
-void IAnimal::getSick()
+void IAnimal::setSick()
 {
     _is_sick = true;
-    cout << getName() << " got sick." << endl;
 }
 
-void IAnimal::getCured()
+void IAnimal::setCured()
 {
     _is_sick = false;
     cout << getName() << "'s sickness got cured, and he even kept one of it's leg healthy !" << endl;

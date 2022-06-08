@@ -1,3 +1,6 @@
+// THINGS TO CHANGE
+// L.470 : getCageList()
+
 #include <iostream>
 #include <vector>
 #include <typeinfo>
@@ -57,7 +60,7 @@ void Zoo::checkForHealing()
                 int not_healing = randInt(0, 100 / HEALING_PROBA - 1);
                 if (!not_healing)
                 {
-                    animal->getCured();
+                    animal->setCured();
                 }
             }
         }
@@ -76,7 +79,7 @@ void Zoo::checkDeathByDisease()
                 int staying_healthy = randInt(0, 100 / SICKNESS_MORTALITY - 1);
                 if (staying_healthy == 0)
                 {
-                    cout << animal->getName() << " died from its sickness. Maybe giving him alcohool to \"help him get better\" wasn't your brightest idea." << endl;
+                    cout << animal->getName() << " died from its sickness. Maybe giving them alcohool to \"help them get better\" wasn't your brightest idea." << endl;
                     animal->kill(this);
                 }
             }
@@ -149,37 +152,31 @@ void Zoo::checkForDisease()
     {
         for (auto animal : cage->getAnimalList())
         {
+            int sickness_proba;
             if (animal->getType() == "Tiger")
             {
-                int stay_healthy = randInt(0, 100 / TIGER_SICKNESS_PROBA - 1);
-                if (stay_healthy == 0)
-                {
-                    animal->getSick();
-                }
-                no_sickness = false;
+                sickness_proba = TIGER_SICKNESS_PROBA;
             }
             else if (animal->getType() == "Eagle")
             {
-                int stay_healthy = randInt(0, 100 / EAGLE_SICKNESS_PROBA - 1);
-                if (stay_healthy == 0)
-                {
-                    animal->getSick();
-                }
-                no_sickness = false;
+                sickness_proba = EAGLE_SICKNESS_PROBA - 1;
             }
             else if (animal->getType() == "Chicken")
             {
-                int stay_healthy = randInt(0, 100 / CHICKEN_SICKNESS_PROBA - 1);
-                if (stay_healthy == 0)
-                {
-                    animal->getSick();
-                }
-                no_sickness = false;
+                sickness_proba = CHICKEN_SICKNESS_PROBA - 1;
             }
             else
             {
                 cout << "Type not supported." << endl;
             }
+
+            int stay_healthy = randInt(0, 100 / sickness_proba - 1);
+            if (stay_healthy == 0)
+            {
+                animal->setSick();
+                cout << animal->getName() << " got sick." << endl;
+            }
+            no_sickness = false;
         }
     }
     // if no one get sick
@@ -257,77 +254,6 @@ void Zoo::showCageList()
     for (int i = 1; i <= _cage_list.size(); i++)
     {
         cout << i << ") " << _cage_list[i - 1]->getName() << " : " << _cage_list[i - 1]->numberOfAnimal() << "/" << _cage_list[i - 1]->getCapacity() << endl;
-    }
-}
-
-// buy food depending on the user's choice (type & quantity). Cost money
-void Zoo::buyFood(int *money)
-{
-    cout << "\n-- FOOD MARKET --\n"
-         << endl;
-    int quantity = 0;
-    int action = 0;
-
-    showFoodStock();
-
-    cout << "1) Buy seeds\n2) Buy meat\n3) Exit\n"
-         << endl;
-    while (action != 3)
-    {
-        cout << "Action ?" << endl;
-        cin >> action;
-        while (action < 1 || action > 3)
-        {
-            cout << "Wrong input. Try again : " << endl;
-            cin >> action;
-        }
-        if (action == 1 || action == 2)
-        {
-            cout << "How much ? " << endl;
-            cin >> quantity;
-            // error handler
-            while (quantity < 1)
-            {
-                cout << "Wrong input. Try again :" << endl;
-                cin >> quantity;
-            }
-            // if seed
-            if (action == 1)
-            {
-                int price = SEED_PRICE * quantity;
-                if (price > *money)
-                {
-                    cout << "You don't have enough money." << endl;
-                }
-                else
-                {
-                    _seed_stock += quantity;
-                    *money -= price;
-                    cout << "You succesfully bought " << quantity << " kg of seed.\n"
-                         << endl;
-                }
-            }
-            // if meat
-            else
-            {
-                int price = MEAT_PRICE * quantity;
-                if (price > *money)
-                {
-                    cout << "You don't have enough money." << endl;
-                }
-                else
-                {
-                    _meat_stock += quantity;
-                    *money -= price;
-                    cout << "You succesfully bought " << quantity << " kg of meat.\n"
-                         << endl;
-                }
-            }
-        }
-        else
-        {
-            return;
-        }
     }
 }
 
@@ -470,9 +396,9 @@ vector<IAnimal *> Zoo::getAnimalListByGender(string gender)
 }
 
 // return a vector of all the animals in the cages of the zoo
-vector<IAnimal*> Zoo::getEveryAnimalList()
+vector<IAnimal *> Zoo::getEveryAnimalList()
 {
-    vector<IAnimal*> result;
+    vector<IAnimal *> result;
     for (auto cage : _cage_list)
     {
         for (auto animal : cage->getAnimalList())
@@ -484,13 +410,14 @@ vector<IAnimal*> Zoo::getEveryAnimalList()
 }
 
 // return a vector of Cage*
-vector<Cage*> Zoo::getCageList()
+vector<Cage *> Zoo::getCageList()
 {
     return _cage_list;
 }
 
-// return a vector of Cage*, depending on their type and if they are empty or full
-// pass "any" as parameters to get everything
+/* return a vector of Cage*, depending on their
+type and if they are empty or full
+pass "any" as parameters to get everything */
 vector<Cage *> Zoo::getCageList(string type, string status)
 {
     vector<Cage *> result;
@@ -646,7 +573,7 @@ void Zoo::stolenAnimal()
     killAnimal(stolenAnimal);
 }
 
-// check if each cage is overcrowded, then check if sick
+// check if each cage is overcrowded, then check if sick or dead
 void Zoo::overcrowdSickness()
 {
     for (auto cage : _cage_list)

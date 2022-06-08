@@ -71,4 +71,9 @@ int main()
 
         game->nextTurn();
     }
+    cout << "Congratulations ! Your zoo didn't blew up ! Well done !" << endl
+    << "Do you wanna retry ?" << endl;
+    int retry;
+    cin >> retry;
+    // do something
 }

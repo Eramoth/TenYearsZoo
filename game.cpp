@@ -128,7 +128,7 @@ void Game::menu()
             sellAnimalMenu();
             break;
         case 3:
-            _zoo->buyFood( &_money);
+            buyFood();
             break;
         case 4:
             buyCage();
@@ -137,7 +137,7 @@ void Game::menu()
             sellCage();
             break;
         case 6:
-            cout << "Turn ended." << endl;
+            cout << ">> Turn ended." << endl;
             break;
         default:
             cout << ">>> Wrong input, try again." << endl;
@@ -270,6 +270,10 @@ void Game::buyAnimal()
         {
             Chicken *newAnimal = new Chicken(age, gender);
             _zoo->addAnimal(newAnimal);
+        }
+        else
+        {
+            cout << "Invalid animal type. Not good. No." << endl;
         }
         cout << endl;
         this_thread::sleep_for(std::chrono::seconds(3));
@@ -556,6 +560,77 @@ void Game::sellCage()
             }
             cout << "You sold " << ncage_to_sell << " for " << price * ncage_to_sell << " $." << endl
                  << endl;
+        }
+    }
+}
+
+// buy food depending on the user's choice (type & quantity). Cost money
+void Game::buyFood()
+{
+    cout << "\n-- FOOD MARKET --\n"
+         << endl;
+    int quantity = 0;
+    int action = 0;
+
+    _zoo->showFoodStock();
+
+    cout << "1) Buy seeds" << endl
+         << "2) Buy meat" << endl
+         << "3) Exit" << endl
+         << endl;
+    while (action != 3)
+    {
+        cout << "Action ?" << endl;
+        cin >> action;
+        while (action < 1 || action > 3)
+        {
+            cout << "Wrong input. Try again : " << endl;
+            cin >> action;
+        }
+        if (action != 1 && action != 2)
+        {
+            cout << "Exited food market." << endl;
+            return;
+        }
+        cout << "How much ? " << endl;
+        cin >> quantity;
+        // error handler
+        while (quantity < 1)
+        {
+            cout << "Wrong input. Try again :" << endl;
+            cin >> quantity;
+        }
+        // if seed
+        if (action == 1)
+        {
+            int price = SEED_PRICE * quantity;
+            if (price > _money)
+            {
+                cout << "You don't have enough money." << endl;
+            }
+            else
+            {
+                _zoo->newSeedStock(quantity);
+                _money -= price;
+                cout << "You succesfully bought " << quantity << " kg of seed.\n"
+                     << endl;
+            }
+        }
+        // if meat
+        else
+        {
+            int price = MEAT_PRICE * quantity;
+            if (price > _money)
+            {
+                cout << "You don't have enough money." << endl;
+            }
+            else
+            {
+                _zoo->newMeatStock(quantity);
+                _money -= price;
+                cout << "You succesfully bought " << quantity << " kg of meat.\n"
+                     << endl;
+            }
         }
     }
 }

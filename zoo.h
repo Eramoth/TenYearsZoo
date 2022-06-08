@@ -30,13 +30,12 @@ public:
     // show private information
     void showCageList();
     void showFoodStock();
-    // modifying private var functions
+    // modify private var functions
     void addCage(Cage* newCage);
     void addAnimal(IAnimal* newAnimal);
     void killAnimal(IAnimal* animal);
     void increaseAnimalAge();
     void withdrawAnimal(IAnimal* w_animal);
-    void buyFood(int *money);
     void newSeedStock(int change);
     void newMeatStock(int change);
     void deleteCage(Cage* cage);

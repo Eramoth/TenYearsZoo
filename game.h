@@ -25,6 +25,7 @@ public:
     void nextTurn();
     void menu();
     void buyAnimal();
+    void buyFood();
     void buyCage();
     // void buyFood();
     void showAnimalToBuy();
