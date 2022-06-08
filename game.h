@@ -23,13 +23,12 @@ public:
     string parseDate();
     void newYear();
     void nextTurn();
-    void menu();
+    void menu(string);
     void buyAnimal();
     void buyFood();
     void buyCage();
-    // void buyFood();
-    void showAnimalToBuy();
-    void showAnimalToSell();
+    void showAnimalToBuy(int);
+    void showAnimalToSell(int);
     void sellAnimalMenu();
     void sellCage();
 };

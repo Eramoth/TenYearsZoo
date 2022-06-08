@@ -55,19 +55,19 @@ int main()
 
     while (game->getMonth() + game->getYear() * 12 <= LAST_MONTH + LAST_YEAR * 12)
     {
-        cout << "\n----------------\n"
-             << game->parseDate() << "\n"
-             << endl;
+        cout << "\n----------------\n" << game->parseDate() << "\n" << endl;
+        string update;
         if (game->getMonth() == STARTING_MONTH && game->getYear() == STARTING_YEAR)
         {
             // initialization
         }
         else
         {
-            game->getZoo()->monthlyUpdate();
+            update = game->getZoo()->monthlyUpdate();
+            cout << update << endl;
             this_thread::sleep_for(chrono::seconds(3));
         }
-        game->menu();
+        game->menu(update);
 
         game->nextTurn();
     }

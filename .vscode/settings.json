@@ -4,6 +4,13 @@
         "iostream": "cpp",
         "random": "cpp",
         "chrono": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "xstring": "cpp",
+        "vector": "cpp",
+        "array": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "ranges": "cpp",
+        "utility": "cpp"
     }
 }

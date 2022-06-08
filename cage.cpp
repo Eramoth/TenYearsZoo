@@ -91,7 +91,7 @@ string Cage::getName()
     return _type + " cage";
 }
 
-vector<IAnimal *> Cage::getAnimalList()
+vector<IAnimal*> Cage::getAnimalList()
 {
     return _animal_list;
 }
@@ -109,7 +109,7 @@ void Cage::freeAnimal(IAnimal *animal)
 }
 
 // set overcrowd sickness depending on type and probability
-void Cage::setOvercrowdSickness()
+string Cage::setOvercrowdSickness()
 {
     for (auto animal : _animal_list)
     {
@@ -140,13 +140,13 @@ void Cage::setOvercrowdSickness()
         else
         {
             cout << "Invalid cage type." << endl;
-            return;
+            return "";
         }
     }
-    cout << ">> One of your cage is ovecrowded. Some animals got sick from it." << endl;
+    return ">> One of your cage is ovecrowded. Some animals got sick from it.";
 }
 
-void Cage::setOvercrowdDeath(Zoo *zoo)
+string Cage::setOvercrowdDeath(Zoo *zoo)
 {
     if (_type == "Tiger")
     {
@@ -172,7 +172,7 @@ void Cage::setOvercrowdDeath(Zoo *zoo)
     else
     {
         cout << "Invalid cage type." << endl;
-        return;
+        return "";
     }
-    cout << ">> One of your cage is ovecroded. Some animals have died from it." << endl;
+    return ">> One of your cage is ovecroded. Some animals have died from it.";
 }

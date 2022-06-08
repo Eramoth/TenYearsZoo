@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <vector>
+#include <conio.h>
 #include <typeinfo>
 #include <random>
 #include "functions.h"
@@ -26,13 +27,18 @@ Zoo::~Zoo()
 }
 
 // structure and call everything that can happen between two month
-void Zoo::monthlyUpdate()
+string Zoo::monthlyUpdate()
 {
-    checkForEvent();
+    string res = checkForEvent();
+    res += checkForDisease();
+    res += feedAnimals();
+    if (population() == 0) {
+        res += ">> There are no animals in your zoo\n";
+    } else {
+        res += ">> There are " + to_string(population()) + " animal(s) in your zoo\n";
+    }
     increaseAnimalAge();
-    feedAnimals();
     checkForHealing();
-    checkForDisease();
     overcrowdSickness();
     checkDeathByDisease();
     if (population() == 0)
@@ -43,13 +49,12 @@ void Zoo::monthlyUpdate()
     {
         cout << ">> There are " << population() << " animal(s) in your zoo" << endl;
     }
-    cout << "The zoo is up to date."
-         << endl
-         << endl;
+    res += "The zoo is up to date.\n";
+    return res;
 }
 
 // check if animals have recovered from their past sickness
-void Zoo::checkForHealing()
+string Zoo::checkForHealing()
 {
     for (auto cage : _cage_list)
     {
@@ -68,7 +73,7 @@ void Zoo::checkForHealing()
 }
 
 // check if animals have died from their sickness
-void Zoo::checkDeathByDisease()
+string Zoo::checkDeathByDisease()
 {
     for (auto cage : _cage_list)
     {
@@ -100,51 +105,42 @@ void Zoo::increaseAnimalAge()
 }
 
 // feed the animals
-void Zoo::feedAnimals()
+string Zoo::feedAnimals()
 {
-    cout << ">> Animals have been fed." << endl;
+    return ">> The animals are fed.\n";
 }
 
 // check if any accident happened
-void Zoo::checkForEvent()
+string Zoo::checkForEvent()
 {
-    bool no_event = true;
     int event = randInt(1, 100);
     if (event <= 1)
     {
         int type = randInt(0, 1);
         if (type == 0)
         {
-            onFire();
-            no_event = false;
+            return onFire();
         }
         else
         {
-            stolenAnimal();
-            no_event = false;
+            return stolenAnimal();
         }
     }
     event = randInt(1, 100);
     if (event <= 20)
     {
-        pests();
-        no_event = false;
+        return pests();
     }
     event = randInt(1, 100);
     if (event <= 10)
     {
-        avariateMeat();
-        no_event = false;
+        return avariateMeat();
     }
-
-    if (no_event)
-    {
-        cout << ">> No event has occured this month." << endl;
-    }
+    return ">> No event has occured this month.\n";
 }
 
 // check if new diseases have spread
-void Zoo::checkForDisease()
+string Zoo::checkForDisease()
 {
     bool no_sickness = true;
 
@@ -174,7 +170,7 @@ void Zoo::checkForDisease()
             if (stay_healthy == 0)
             {
                 animal->setSick();
-                cout << animal->getName() << " got sick." << endl;
+                return animal->getName() + " got sick.";
             }
             no_sickness = false;
         }
@@ -182,8 +178,9 @@ void Zoo::checkForDisease()
     // if no one get sick
     if (no_sickness)
     {
-        cout << ">> No new disease have been declared." << endl;
+        return ">> No new disease have been declared.";
     }
+    return "";
 }
 
 // add a cage to the zoo
@@ -195,14 +192,70 @@ void Zoo::addCage(Cage *newCage)
 // add the animal to a cage, depending on the user's choice
 void Zoo::addAnimal(IAnimal *newAnimal)
 {
-    cout << "In wich cage do you want to put it ?" << endl;
-    showCageList();
-
-    // if you have cages, you can choose to free it ; if you don't, it will escape
+    int choice = 1;
+    int alpha = 0;
     if (_cage_list.size() > 0)
-    {
-        cout << "You can also free it by typing \"0\"" << endl;
-    }
+        {
+            while(true)
+            {
+            int maxIndex = 10;
+            if (_cage_list.size() - alpha * 10 < 10)
+            {
+                maxIndex = _cage_list.size() - alpha * 10;
+            }
+                system("cls");
+                cout << "In wich cage do you want to put it ?" << endl;
+                showCageList(choice,alpha,maxIndex);
+                if (alpha * 10 + maxIndex >= _cage_list.size() && choice == maxIndex + 1){cout << "> Free animal" << endl;}
+                else if (choice == maxIndex + 2) {cout << "> Free animal" << endl;}
+                else {cout << "  Free animal" << endl;}
+
+                int key = _getch();
+                if (key == 72)
+                {
+                    if (alpha != 0 && choice == 0) {continue;}
+                    if (choice == 1 && alpha == 0) {continue;}
+                    else {choice -= 1;}
+                }
+
+                else if (key == 80)
+                {
+                    if (alpha * 10 + maxIndex >= _cage_list.size() && choice == maxIndex + 1) {continue;}
+                    if (choice == maxIndex + 2) {continue;}
+                    else {choice += 1;}
+                }
+
+                else if (key == 27)
+                {
+                    cout << ">>> You have quit the game." << endl;
+                    exit(0);
+                }
+
+                else if (key == 13)
+                {
+                    if (choice == maxIndex + 2 || (alpha * 10 + maxIndex >= _cage_list.size() && choice == maxIndex + 1))
+                    {
+                        newAnimal->escape(this);
+                        return;
+                    }
+                    if (choice == 0)
+                    {
+                        alpha -= 1;
+                        choice = 10;
+                        continue;
+                    }
+                    if (choice == maxIndex + 1)
+                    {
+                        alpha += 1;
+                        choice = 1;
+                        continue;
+                    }
+                    _cage_list[choice + alpha - 1]->addAnimal(newAnimal);
+                    return;
+                }
+            }
+        }
+    // if you have cages, you can choose to free it ; if you don't, it will escape
     else
     {
         cout << newAnimal->getName() << " ran away."
@@ -211,24 +264,6 @@ void Zoo::addAnimal(IAnimal *newAnimal)
         // delete newAnimal;
         return;
     }
-    // take input
-    int cage_index = -1;
-    cin >> cage_index;
-
-    // if it chose to free, kill it and break
-    if (cage_index == 0)
-    {
-        newAnimal->escape(this);
-        return;
-    }
-
-    // error handler
-    while (cage_index < 1 || cage_index > _cage_list.size())
-    {
-        cout << "Wrong input. Try again : " << endl;
-        cin >> cage_index;
-    }
-    _cage_list[cage_index - 1]->addAnimal(newAnimal);
 }
 
 // return the number of animals in the zoo
@@ -243,7 +278,7 @@ int Zoo::population()
 }
 
 // will print all the cage's name, number of animals and capacity
-void Zoo::showCageList()
+void Zoo::showCageList(int index,int alpha,int maxIndex)
 {
     if (_cage_list.size() <= 0)
     {
@@ -251,9 +286,24 @@ void Zoo::showCageList()
         return;
     }
 
-    for (int i = 1; i <= _cage_list.size(); i++)
+    if (alpha != 0)
     {
-        cout << i << ") " << _cage_list[i - 1]->getName() << " : " << _cage_list[i - 1]->numberOfAnimal() << "/" << _cage_list[i - 1]->getCapacity() << endl;
+        if (index == 0) {cout << "> See Less" << endl;}
+        else {cout << "  See Less" << endl;}
+    }
+    for (int i = 1; i <= maxIndex; i++)
+    {
+        if (index == i)
+        {
+            cout << "> " << _cage_list[alpha * 10 + i - 1]->getName() << " : " << _cage_list[alpha * 10 + i - 1]->numberOfAnimal() << "/" << _cage_list[alpha * 10 + i - 1]->getCapacity() << endl;
+        } else {
+            cout << "  " << _cage_list[alpha * 10 + i - 1]->getName() << " : " << _cage_list[alpha * 10 + i - 1]->numberOfAnimal() << "/" << _cage_list[alpha * 10 + i - 1]->getCapacity() << endl;
+        }
+    }
+    if (alpha * 10 + maxIndex < _cage_list.size())
+    {
+        if (index == maxIndex + 1) {cout << "> See More" << endl;}
+        else {cout << "  See More" << endl;}
     }
 }
 
@@ -274,11 +324,13 @@ void Zoo::newSeedStock(int change)
 }
 
 // seed loss due to pests in the zoo
-void Zoo::pests()
+string Zoo::pests()
 {
-    _seed_stock -= _seed_stock * SEED_LOSS;
-    cout << ">> There are some pests in your zoo. (You lost 10% of your seeds)" << endl
-         << "New seed stock : " << _seed_stock << endl;
+    _seed_stock -= _seed_stock*SEED_LOSS;
+    string string = ">> There are some pests in your zoo. (You lost 10% of your seeds)\nNew seed stock : ";
+    string += to_string(_seed_stock);
+    string += "\n";
+    return string;
 }
 
 // update meat stock
@@ -288,11 +340,13 @@ void Zoo::newMeatStock(int change)
 }
 
 // meat loss due to avariate meat
-void Zoo::avariateMeat()
+string Zoo::avariateMeat()
 {
-    _meat_stock -= _meat_stock * MEAT_LOSS;
-    cout << ">> The meat in your zoo has rotten. (You lost 20% of your meat)" << endl
-         << "New meat stock : " << _meat_stock << endl;
+    _meat_stock -= _meat_stock*MEAT_LOSS;
+    string string = ">> The meat in your zoo has rotten. (You lost 20% of your meat)\nNew meat stock : ";
+    string += to_string(_meat_stock);
+    string += "\n";
+    return string;
 }
 
 // find where the animal is in _cage_list and delete it from the zoo
@@ -556,35 +610,36 @@ vector<Cage *> Zoo::getCageList(string type, string status)
     return result;
 }
 
-// delete a random cage and all of its animals
-void Zoo::onFire()
+string Zoo::onFire()
 {
-    cout << ">> There was a fire in the zoo. (You lost 1 cage and all of its animals)" << endl;
     int cage_lost = randInt(0, _cage_list.size());
     deleteCage(_cage_list[cage_lost]);
+    return ">> There was a fire in the zoo. (You lost 1 cage and all of its animals)";
 }
 
 // delete a random animal from a random cage
-void Zoo::stolenAnimal()
+string Zoo::stolenAnimal()
 {
     vector<IAnimal *> openedCage = _cage_list[randInt(0, _cage_list.size() - 1)]->getAnimalList();
     IAnimal *stolenAnimal = openedCage[randInt(0, openedCage.size())];
-    cout << ">> " << stolenAnimal->getName() << " has been stolen. You lost 1 animal" << endl;
     killAnimal(stolenAnimal);
+    return ">> " + stolenAnimal->getName() + " has been stolen. You lost 1 animal\n";
 }
 
-// check if each cage is overcrowded, then check if sick or dead
-void Zoo::overcrowdSickness()
+// check if each cage is overcrowded, then check if sick
+string Zoo::overcrowdSickness()
 {
+    string string;
     for (auto cage : _cage_list)
     {
         if (cage->isOvercrowded())
         {
-            cage->setOvercrowdSickness();
+            string += cage->setOvercrowdSickness() + "\n";
             if (randInt(0, 1))
             {
-                cage->setOvercrowdDeath(this);
+                string += cage->setOvercrowdDeath(this) + "\n";
             }
         }
     }
+    return string;
 }

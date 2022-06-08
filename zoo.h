@@ -2,6 +2,7 @@
 #define ZOO_H
 
 #include <vector>
+#include <string>
 #include "ianimal.h"
 #include "cage.h"
 
@@ -28,7 +29,7 @@ public:
     vector<IAnimal*> getAnimalListByAge(int min_age, int max_age);
     vector<IAnimal*> getAnimalListByGender(string gender);
     // show private information
-    void showCageList();
+    void showCageList(int,int,int);
     void showFoodStock();
     // modify private var functions
     void addCage(Cage* newCage);
@@ -41,18 +42,18 @@ public:
     void deleteCage(Cage* cage);
     void deleteCage(Cage* cage, int cage_idx);
     // event-related functions
-    void monthlyUpdate();
-    void feedAnimals();
-    void checkForEvent();
-    void checkForDisease();
-    void checkDeathByDisease();
-    void checkDeathByAge();
-    void checkForHealing();
-    void pests();
-    void avariateMeat();
-    void onFire();
-    void stolenAnimal();
-    void overcrowdSickness();
+    string monthlyUpdate();
+    string feedAnimals();
+    string checkForEvent();
+    string checkForDisease();
+    string checkDeathByDisease();
+    string checkDeathByAge();
+    string checkForHealing();
+    string pests();
+    string avariateMeat();
+    string onFire();
+    string stolenAnimal();
+    string overcrowdSickness();
 };
 
 
