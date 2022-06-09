@@ -101,6 +101,17 @@ void Game::nextTurn()
     }
 }
 
+// update money
+void Game::setMoney(int change)
+{
+    _money+=change;
+}
+
+int Game::getMoney()
+{
+    return _money;
+}
+
 // player actions during turn. Loop untill skip turn
 void Game::menu(string update)
 {

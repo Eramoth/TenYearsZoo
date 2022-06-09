@@ -27,8 +27,9 @@ Zoo::~Zoo()
 }
 
 // structure and call everything that can happen between two month
-string Zoo::monthlyUpdate()
+string Zoo::monthlyUpdate(int month)
 {
+    string res = checkForTurism(month);
     string res = checkForEvent();
     res += checkForDisease();
     res += feedAnimals();
@@ -53,6 +54,62 @@ string Zoo::monthlyUpdate()
     return res;
 }
 
+// give money depending on how much turist came to your zoo
+string Zoo::checkForTurism(int month)
+{
+    // init
+    int tickets_number = 0;
+    vector<IAnimal*> animals = getEveryAnimalList();
+    bool high_season = false;
+    money = 0;
+    if (month >= HIGH_SEASON_START && month < LOW_SEASON_START)
+    {
+        high_season = true;
+    }
+    // get money
+    for (auto animal : animals)
+    {
+        if (animal->getType() == "Tiger")
+        {
+            if (high_season)
+            {
+                tickets_number += TIGER_HIGH_VISITOR;
+            }
+            else
+            {
+                tickets_number += TIGER_LOW_VISITOR;
+            }
+        }
+        else if (animal->getType() == "Eagle")
+        {
+            if (high_season)
+            {
+                tickets_number += EAGLE_HIGH_VISITOR;
+            }
+            else
+            {
+                tickets_number += EAGLE_LOW_VISITOR;
+            }
+        }
+        else if (animal->getType() == "Chicken")
+        {
+            if (high_season)
+            {
+                tickets_number += CHICKEN_HIGH_VISITOR;
+            }
+            else
+            {
+                tickets_number += CHICKEN_LOW_VISITOR;
+            }
+        }
+        else
+        {
+            cout << __LINE__ << "Invalid animal type." << endl;
+        }
+    }
+    money+=tickets_number*TICKET_PRICE;
+    return ">> Some turists came to your zoo, and where really happy !\n";
+}
 // check if animals have recovered from their past sickness
 string Zoo::checkForHealing()
 {

@@ -21,6 +21,8 @@
 #define EAGLE_CAGE_CAPACITY 4
 #define CHICKEN_CAGE_CAPACITY 10
 // visitor per month
+#define HIGH_SEASON_START 5 
+#define LOW_SEASON_START 10
 #define TIGER_HIGH_VISITOR 30
 #define TIGER_LOW_VISITOR 5
 #define EAGLE_HIGH_VISITOR 15
@@ -28,7 +30,7 @@
 #define CHICKEN_HIGH_VISITOR 2
 #define CHICKEN_LOW_VISITOR 0.5
 // ticket price
-#define FAMILY_PRICE 30
+#define TICKET_PRICE 30
 // event probability
 #define FIRE_RATE 1
 #define STEAL_RATE 1

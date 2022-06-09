@@ -63,7 +63,7 @@ int main()
         }
         else
         {
-            update = game->getZoo()->monthlyUpdate();
+            update = game->getZoo()->monthlyUpdate(game->getMonth());
             cout << update << endl;
             this_thread::sleep_for(chrono::seconds(3));
         }

@@ -17,7 +17,10 @@ class Game {
 public:
     int getMonth();
     int getYear();
+    int getMoney();
     Zoo* getZoo();
+
+    void setMoney(int change);
 
     void startGame();
     string parseDate();

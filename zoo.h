@@ -42,8 +42,9 @@ public:
     void deleteCage(Cage* cage);
     void deleteCage(Cage* cage, int cage_idx);
     // event-related functions
-    string monthlyUpdate();
+    string monthlyUpdate(int month);
     string feedAnimals();
+    string checkForTurism(int month);
     string checkForEvent();
     string checkForDisease();
     string checkDeathByDisease();
