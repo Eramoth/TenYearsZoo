@@ -38,9 +38,9 @@ string Zoo::monthlyUpdate()
         res += ">> There are " + to_string(population()) + " animal(s) in your zoo\n";
     }
     increaseAnimalAge();
-    checkForHealing();
-    overcrowdSickness();
-    checkDeathByDisease();
+    res += checkForHealing();
+    res += overcrowdSickness();
+    res += checkDeathByDisease();
     if (population() == 0)
     {
         cout << ">> There are no animals in your zoo" << endl;
@@ -56,6 +56,7 @@ string Zoo::monthlyUpdate()
 // check if animals have recovered from their past sickness
 string Zoo::checkForHealing()
 {
+    string res = "";
     for (auto cage : _cage_list)
     {
         for (auto animal : cage->getAnimalList())
@@ -65,16 +66,19 @@ string Zoo::checkForHealing()
                 int not_healing = randInt(0, 100 / HEALING_PROBA - 1);
                 if (!not_healing)
                 {
+                    res += ">> " + animal->getName() + " has been cured, and he even kept one of it's leg healthy !\n";
                     animal->setCured();
                 }
             }
         }
     }
+    return res;
 }
 
 // check if animals have died from their sickness
 string Zoo::checkDeathByDisease()
 {
+    string res = "";
     for (auto cage : _cage_list)
     {
         for (auto animal : cage->getAnimalList())
@@ -84,12 +88,13 @@ string Zoo::checkDeathByDisease()
                 int staying_healthy = randInt(0, 100 / SICKNESS_MORTALITY - 1);
                 if (staying_healthy == 0)
                 {
-                    cout << animal->getName() << " died from its sickness. Maybe giving them alcohool to \"help them get better\" wasn't your brightest idea." << endl;
+                    res += ">> " + animal->getName() + " died from its sickness. Maybe giving them alcohool to \"help them get better\" wasn't your brightest idea.\n";
                     animal->kill(this);
                 }
             }
         }
     }
+    return res;
 }
 
 // increase age of each animal
