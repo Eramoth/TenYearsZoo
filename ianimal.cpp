@@ -20,7 +20,7 @@ IAnimal::IAnimal(string type, int age, int gender, int age_of_death)
     _age = age;
     _age_of_death = age_of_death;
     _gender = gender;
-    _month_since_meal = 0;
+    _is_hungry = false;
     _gestation_month = 0;
     _is_sick = false;
     _fresh_new = true;
@@ -58,6 +58,7 @@ string IAnimal::getType()
 // return the age (month) of the animal
 int IAnimal::getAge()
 {
+    _fresh_new = false;
     return _age;
 }
 
@@ -78,6 +79,12 @@ string IAnimal::getGender()
     {
         return "female";
     }
+}
+
+// check if animal has been fed last month
+bool IAnimal::isHungry()
+{
+    return _is_hungry;
 }
 
 // add one month to animal age ; if too old, kill it
@@ -131,7 +138,7 @@ bool Tiger::canReproduce()
     // if male
     if (_gender == 1)
     {
-        if (_age >= MALE_TIGER_MATURITY && _age < MALE_TIGER_UNFERTILITY_AGE && !_is_sick)
+        if (_age >= MALE_TIGER_MATURITY && _age < MALE_TIGER_UNFERTILITY_AGE && !_is_sick && !_fresh_new)
         {
             return true;
         }
@@ -139,7 +146,7 @@ bool Tiger::canReproduce()
     // if female
     else if (_gender == 2)
     {
-        if (_age >= FEMALE_TIGER_MATURITY && _age < FEMALE_TIGER_UNFERTILITY_AGE && _gestation_month == 0 && !_is_sick)
+        if (_age >= FEMALE_TIGER_MATURITY && _age < FEMALE_TIGER_UNFERTILITY_AGE && _gestation_month == 0 && !_is_sick && !_fresh_new)
         {
             return true;
         }
@@ -162,7 +169,7 @@ bool Eagle::canReproduce()
     // if male
     if (_gender == 1)
     {
-        if (_age >= MALE_EAGLE_MATURITY && _age < MALE_EAGLE_UNFERTILITY_AGE && !_is_sick && !_is_sick)
+        if (_age >= MALE_EAGLE_MATURITY && _age < MALE_EAGLE_UNFERTILITY_AGE && !_is_sick && !_is_sick && !_fresh_new)
         {
             return true;
         }
@@ -170,7 +177,7 @@ bool Eagle::canReproduce()
     // if female
     else if (_gender == 2)
     {
-        if (_age >= FEMALE_EAGLE_MATURITY && _age < FEMALE_EAGLE_UNFERTILITY_AGE && _gestation_month == 0 && !_is_sick)
+        if (_age >= FEMALE_EAGLE_MATURITY && _age < FEMALE_EAGLE_UNFERTILITY_AGE && _gestation_month == 0 && !_is_sick && !_fresh_new)
         {
             return true;
         }
@@ -193,7 +200,7 @@ bool Chicken::canReproduce()
     // if male
     if (_gender == 1)
     {
-        if (_age >= ROOSTER_MATURITY && _age < ROOSTER_UNFERTILITY_AGE && !_is_sick)
+        if (_age >= ROOSTER_MATURITY && _age < ROOSTER_UNFERTILITY_AGE && !_is_sick && !_fresh_new)
         {
             return true;
         }
@@ -201,7 +208,7 @@ bool Chicken::canReproduce()
     // if female
     else if (_gender == 2)
     {
-        if (_age >= HEN_MATURITY && _age < HEN_UNFERTILITY_AGE && _gestation_month == 0 && !_is_sick)
+        if (_age >= HEN_MATURITY && _age < HEN_UNFERTILITY_AGE && _gestation_month == 0 && !_is_sick && !_fresh_new)
         {
             return true;
         }
