@@ -21,7 +21,7 @@ IAnimal::IAnimal(string type, int age, int gender, int age_of_death)
     _age_of_death = age_of_death;
     _gender = gender;
     _is_hungry = false;
-    _gestation_month = 0;
+    _gestation_month;
     _is_sick = false;
     _fresh_new = true;
 }
@@ -74,7 +74,7 @@ bool IAnimal::isSick()
 
 bool IAnimal::isPregnant()
 {
-    return _gestation_month > 0;
+    return _gestation_month >= 0;
 }
 
 //return gender of animal
@@ -101,6 +101,10 @@ void IAnimal::increaseAge(Zoo *zoo)
 {
     _age++;
     _fresh_new = false;
+    if (isPregnant())
+    {
+        _gestation_month++;
+    }
     if (_age >= _age_of_death)
     {
         cout << "<< " <<  _name << " died after a long life." << endl;

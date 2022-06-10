@@ -29,7 +29,6 @@ Zoo::~Zoo()
 // structure and call everything that can happen between two month
 void Zoo::monthlyUpdate(string* story, int month, int* money)
 {
-    increaseAnimalAge();
     checkForEvent(story);
     checkForDisease(story);
     overcrowdSickness(story);
@@ -39,6 +38,7 @@ void Zoo::monthlyUpdate(string* story, int month, int* money)
     checkForTurism(story, month, money);
     feedAnimals(story);
     checkForHealing(story);
+    increaseAnimalAge();
     if (population() == 0) {
         *story += ">> There are no animals in your zoo\n";
     } else {
@@ -262,7 +262,7 @@ void Zoo::checkForDisease(string* story)
             if (stay_healthy == 0)
             {
                 animal->setSick();
-                *story += animal->getName() + " got sick.\n";
+                *story += ">> " + animal->getName() + " got sick.\n";
             }
             no_sickness = false;
         }
@@ -286,7 +286,7 @@ void Zoo::checkForBirths(string* story)
     {
         for (auto animal : cage->getAnimalList())
         {
-            if (animal->isPregnant() && animal->getGestationMonth() == TIGER_GESTATION && animal->getType() == "Tiger")
+            if (animal->isPregnant() && animal->getGestationMonth() >= TIGER_GESTATION && animal->getType() == "Tiger")
             {
                 int odd = randInt(0, 100);
                 if (odd <= TIGER_CHILD_MORTALITY)
