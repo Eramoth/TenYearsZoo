@@ -50,14 +50,13 @@ int main()
     // initialization
     Game* game = new Game();
     game->startGame();
-    string story = "";
 
     // turn loop
 
     while (game->getMonth() + game->getYear() * 12 <= LAST_MONTH + LAST_YEAR * 12)
     {
+        string story = "";
         cout << "\n----------------\n" << game->parseDate() << "\n" << endl;
-        string update;
         if (game->getMonth() == STARTING_MONTH && game->getYear() == STARTING_YEAR)
         {
             // initialization
@@ -69,7 +68,7 @@ int main()
             cout << story << endl;
             this_thread::sleep_for(chrono::seconds(3));
         }
-        game->menu(update);
+        game->menu(story);
 
         game->nextTurn();
     }
