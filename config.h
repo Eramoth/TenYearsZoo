@@ -94,8 +94,8 @@
 #define ROOSTER_UNFERTILITY_AGE 8
 // gestation time (month)
 #define TIGER_GESTATION 3
-#define EAGLE_GESTATION_ 1.5
-#define CHICKEN_GESTATION 0.66
+#define EAGLE_GESTATION_ 2
+#define CHICKEN_GESTATION 1
 // food price
 #define MEAT_PRICE 5
 #define SEED_PRICE 2.5
