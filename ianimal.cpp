@@ -86,7 +86,7 @@ void IAnimal::increaseAge(Zoo *zoo)
     _age++;
     if (_age >= _age_of_death)
     {
-        cout << _name << " died after a long life." << endl;
+        cout << "<< " <<  _name << " died after a long life." << endl;
         kill(zoo);
     }
 }
@@ -131,7 +131,7 @@ bool Tiger::canReproduce()
     // if male
     if (_gender == 1)
     {
-        if (_age >= MALE_TIGER_MATURITY && _age < MALE_TIGER_UNFERTILITY_AGE)
+        if (_age >= MALE_TIGER_MATURITY && _age < MALE_TIGER_UNFERTILITY_AGE && !_is_sick)
         {
             return true;
         }
@@ -139,7 +139,7 @@ bool Tiger::canReproduce()
     // if female
     else if (_gender == 2)
     {
-        if (_age >= FEMALE_TIGER_MATURITY && _age < FEMALE_TIGER_UNFERTILITY_AGE && _gestation_month == 0)
+        if (_age >= FEMALE_TIGER_MATURITY && _age < FEMALE_TIGER_UNFERTILITY_AGE && _gestation_month == 0 && !_is_sick)
         {
             return true;
         }
@@ -162,7 +162,7 @@ bool Eagle::canReproduce()
     // if male
     if (_gender == 1)
     {
-        if (_age >= MALE_EAGLE_MATURITY && _age < MALE_EAGLE_UNFERTILITY_AGE)
+        if (_age >= MALE_EAGLE_MATURITY && _age < MALE_EAGLE_UNFERTILITY_AGE && !_is_sick && !_is_sick)
         {
             return true;
         }
@@ -170,7 +170,7 @@ bool Eagle::canReproduce()
     // if female
     else if (_gender == 2)
     {
-        if (_age >= FEMALE_EAGLE_MATURITY && _age < FEMALE_EAGLE_UNFERTILITY_AGE && _gestation_month == 0)
+        if (_age >= FEMALE_EAGLE_MATURITY && _age < FEMALE_EAGLE_UNFERTILITY_AGE && _gestation_month == 0 && !_is_sick)
         {
             return true;
         }
@@ -193,7 +193,7 @@ bool Chicken::canReproduce()
     // if male
     if (_gender == 1)
     {
-        if (_age >= ROOSTER_MATURITY && _age < ROOSTER_UNFERTILITY_AGE)
+        if (_age >= ROOSTER_MATURITY && _age < ROOSTER_UNFERTILITY_AGE && !_is_sick)
         {
             return true;
         }
@@ -201,7 +201,7 @@ bool Chicken::canReproduce()
     // if female
     else if (_gender == 2)
     {
-        if (_age >= HEN_MATURITY && _age < HEN_UNFERTILITY_AGE && _gestation_month == 0)
+        if (_age >= HEN_MATURITY && _age < HEN_UNFERTILITY_AGE && _gestation_month == 0 && !_is_sick)
         {
             return true;
         }
