@@ -43,7 +43,7 @@
 #include "zoo.h"
 
 using namespace std;
-
+string story = "";
 int main()
 {
     system("cls");
@@ -55,7 +55,6 @@ int main()
 
     while (game->getMonth() + game->getYear() * 12 <= LAST_MONTH + LAST_YEAR * 12)
     {
-        string story = "";
         cout << "\n----------------\n" << game->parseDate() << "\n" << endl;
         if (game->getMonth() == STARTING_MONTH && game->getYear() == STARTING_YEAR)
         {
@@ -66,7 +65,7 @@ int main()
             // update = game->getZoo()->monthlyUpdate(game->getMonth());
             game->monthlyUpdate(&story);
             cout << story << endl;
-            this_thread::sleep_for(chrono::seconds(3));
+            this_thread::sleep_for(chrono::seconds(5));
         }
         game->menu(story);
 

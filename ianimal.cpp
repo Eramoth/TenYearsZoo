@@ -58,7 +58,6 @@ string IAnimal::getType()
 // return the age (month) of the animal
 int IAnimal::getAge()
 {
-    _fresh_new = false;
     return _age;
 }
 
@@ -101,6 +100,7 @@ bool IAnimal::isHungry()
 void IAnimal::increaseAge(Zoo *zoo)
 {
     _age++;
+    _fresh_new = false;
     if (_age >= _age_of_death)
     {
         cout << "<< " <<  _name << " died after a long life." << endl;
@@ -140,6 +140,16 @@ void IAnimal::setCured()
     cout << getName() << "'s sickness got cured, and he even kept one of it's leg healthy !" << endl;
 }
 
+void IAnimal::setPartner(IAnimal* partner)
+{
+    _partner = partner;
+}
+
+IAnimal* IAnimal::getPartner()
+{
+    return _partner;
+}
+
 // ----- TIGER -----
 Tiger::Tiger(int age, int gender) : IAnimal("Tiger", age, gender, TIGER_LIFESPAWN) {}
 
@@ -155,7 +165,7 @@ bool Tiger::canReproduce()
     // if male
     if (_gender == 1)
     {
-        if (_age >= MALE_TIGER_MATURITY && _age < MALE_TIGER_UNFERTILITY_AGE && !_is_sick && !_fresh_new)
+        if (_age >= MALE_TIGER_MATURITY * 12 && _age < MALE_TIGER_UNFERTILITY_AGE * 12 && !_is_sick && !_fresh_new)
         {
             return true;
         }
@@ -163,7 +173,7 @@ bool Tiger::canReproduce()
     // if female
     else if (_gender == 2)
     {
-        if (_age >= FEMALE_TIGER_MATURITY && _age < FEMALE_TIGER_UNFERTILITY_AGE && _gestation_month == 0 && !_is_sick && !_fresh_new)
+        if (_age >= FEMALE_TIGER_MATURITY * 12 && _age < FEMALE_TIGER_UNFERTILITY_AGE * 12 && !isPregnant() && !_is_sick && !_fresh_new)
         {
             return true;
         }

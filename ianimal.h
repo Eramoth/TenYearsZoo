@@ -10,6 +10,7 @@ class Zoo;
 class IAnimal
 {
 protected:
+    IAnimal* _partner;
     string _name;
     string _type;
     int _age;
@@ -29,6 +30,7 @@ public:
     string getName();
     string getType();
     string getGender();
+    IAnimal* getPartner();
     int getGestationMonth();
     int getAge();
     bool isPregnant();
@@ -40,6 +42,7 @@ public:
     void setSick();
     void setPregnancy(bool);
     void setCured();
+    void setPartner(IAnimal*);
     // show private information
     virtual void showAnimal() = 0;
     virtual bool canReproduce() = 0;
@@ -51,8 +54,6 @@ public:
 // tiger
 class Tiger:public IAnimal
 {
-private:
-    string _partner;
 public:
     Tiger(int age, int gender);
     ~Tiger();
@@ -63,8 +64,6 @@ public:
 // eagle
 class Eagle:public IAnimal
 {
-private:
-    string _partner;
 public:
     Eagle(int age, int gender);
     ~Eagle();
@@ -75,8 +74,6 @@ public:
 // chicken
 class Chicken:public IAnimal
 {
-private:
-    string _partner;
 public:
     Chicken(int age, int gender);
     ~Chicken();

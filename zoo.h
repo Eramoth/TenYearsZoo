@@ -43,6 +43,7 @@ public:
     void deleteCage(Cage* cage, int cage_idx);
     // event-related functions
     void monthlyUpdate(string* story, int month, int* money);
+    void massReproduce(string* story);
     void feedAnimals(string* story);
     void checkForTurism(string* story, int month, int* money);
     void checkForEvent(string* story);
