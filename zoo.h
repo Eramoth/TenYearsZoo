@@ -14,8 +14,8 @@ class Cage;
 class Zoo {
 private:
     vector<Cage*> _cage_list;
-    int _meat_stock;
-    int _seed_stock;
+    float _meat_stock;
+    float _seed_stock;
     // int money; // a décommenter + modif le code avec money
 public:
     Zoo();
@@ -28,6 +28,8 @@ public:
     vector<IAnimal*> getAnimalListByType(string type);
     vector<IAnimal*> getAnimalListByAge(int min_age, int max_age);
     vector<IAnimal*> getAnimalListByGender(string gender);
+    float getMeatStock();
+    float getSeedStock();
     // show private information
     void showCageList(int,int,int);
     void showFoodStock();
@@ -37,8 +39,8 @@ public:
     void killAnimal(IAnimal* animal);
     void increaseAnimalAge();
     void withdrawAnimal(IAnimal* w_animal);
-    void newSeedStock(int change);
-    void newMeatStock(int change);
+    void newSeedStock(float change);
+    void newMeatStock(float change);
     void deleteCage(Cage* cage);
     void deleteCage(Cage* cage, int cage_idx);
     // event-related functions

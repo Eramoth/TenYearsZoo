@@ -100,12 +100,12 @@
 #define MEAT_PRICE 5
 #define SEED_PRICE 2.5
 // food per animal
-#define MALE_TIGER_MEAL 12
-#define FEMALE_TIGER_MEAL 10
-#define MALE_EAGLE_MEAL 0.25
-#define FEMALE_EAGLE_MEAL 0.3
-#define HEN_MEAL 0.15
-#define ROOSTER_MEAL 0.18
+#define MALE_TIGER_MEAL 180
+#define FEMALE_TIGER_MEAL 150
+#define MALE_EAGLE_MEAL 0.75
+#define FEMALE_EAGLE_MEAL 1
+#define HEN_MEAL 4.5
+#define ROOSTER_MEAL 2.7
 // month before hunger
 #define MALE_TIGER_HUNGDAY 2
 #define FEMALE_TIGER_HUNGDAY 2

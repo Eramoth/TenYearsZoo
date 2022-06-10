@@ -63,6 +63,35 @@ bool Cage::isOvercrowded()
     }
 }
 
+
+// return index of first chicken ; -1 if no chicken
+int Cage::hasChicken()
+{
+    for (int i = 0 ; i < _animal_list.size(); i++)
+    {
+        if (_animal_list[i]->getType() == "Chicken" && !_animal_list[i]->isDead())
+        {
+            return i;
+        }
+    }
+    // no one found :
+    return -1;
+}
+
+// return index of first eagle ; -1 if no eagle
+int Cage::hasEagle()
+{
+    for (int i = 0 ; i < _animal_list.size(); i++)
+    {
+        if (_animal_list[i]->getType() == "Eagle" && !_animal_list[i]->isDead())
+        {
+            return i;
+        }
+    }
+    // no one found :
+    return -1;
+}
+
 // add an animal to the cage
 void Cage::addAnimal(IAnimal *newAnimal)
 {

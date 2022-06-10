@@ -68,6 +68,18 @@ bool IAnimal::isSick()
     return _is_sick;
 }
 
+// return true if dead, false if alive
+bool IAnimal::isDead()
+{
+    return _is_dead;
+}
+
+// set death tag
+void IAnimal::setDeathTag()
+{
+    _is_dead = true;
+}
+
 //return gender of animal
 string IAnimal::getGender()
 {
@@ -154,6 +166,59 @@ bool Tiger::canReproduce()
     return false;
 }
 
+// feed the animals depending on if there are pray in the cage and if they ahev enough to eat
+void Tiger::feedAnimal(Cage* cage, Zoo* zoo)
+{
+    // if there are pray in the cage, eat it
+    if (cage->hasChicken() != -1)
+    {
+        int index = cage->hasChicken();
+        vector<IAnimal*> animals = cage->getAnimalList();
+        animals[index]->setDeathTag();
+        _is_hungry = false;
+        return;
+    }
+    else if (cage->hasEagle() != -1)
+    {
+        int index = cage->hasEagle();
+        vector<IAnimal*> animals = cage->getAnimalList();
+        animals[index]->setDeathTag();
+        _is_hungry = false;
+        return;
+    }
+
+    // else, check how much food is needed
+    float food_to_eat;
+    if (_gender == 1)
+    {
+        food_to_eat = MALE_TIGER_MEAL;
+    }
+    else
+    {
+        food_to_eat = FEMALE_TIGER_MEAL;
+    }
+    // check if zoo has enough food, then update
+    if (food_to_eat <= zoo->getMeatStock())
+    {
+        _is_hungry = false;
+        zoo->newMeatStock(-food_to_eat);
+        return;
+    }
+    else
+    {
+        zoo->newMeatStock(-zoo->getMeatStock());
+        if (_is_hungry)
+        {
+            kill(zoo);
+            return;
+        }
+        else
+        {
+            _is_hungry = true;
+        }
+    }
+}
+
 // ----- EAGLE -----
 Eagle::Eagle(int age, int gender) : IAnimal("Eagle", age, gender, EAGLE_LIFESPAWN) {}
 
@@ -185,6 +250,49 @@ bool Eagle::canReproduce()
     return false;
 }
 
+void Eagle::feedAnimal(Cage* cage, Zoo* zoo)
+{
+    // if there are pray in the cage, eat it
+    if (cage->hasChicken() != -1)
+    {
+        int index = cage->hasChicken();
+        vector<IAnimal*> animals = cage->getAnimalList();
+        animals[index]->setDeathTag();
+        _is_hungry = false;
+        return;
+    }
+
+    // else, check how much food is needed
+    float food_to_eat;
+    if (_gender == 1)
+    {
+        food_to_eat = MALE_EAGLE_MEAL;
+    }
+    else
+    {
+        food_to_eat = FEMALE_EAGLE_MEAL;
+    }
+    // check if zoo has enough food
+    if (food_to_eat <= zoo->getMeatStock())
+    {
+        _is_hungry = false;
+        zoo->newMeatStock(-food_to_eat);
+        return;
+    }
+    else
+    {
+        zoo->newMeatStock(-zoo->getMeatStock());
+        if (_is_hungry)
+        {
+            kill(zoo);
+        }
+        else
+        {
+            _is_hungry = true;
+        }
+    }
+}
+
 // ----- CHICKEN ------
 Chicken::Chicken(int age, int gender) : IAnimal("Chicken", age, gender, CHICKEN_LIFESPAWN) {}
 
@@ -214,4 +322,39 @@ bool Chicken::canReproduce()
         }
     }
     return false;
+}
+
+void Chicken::feedAnimal(Cage* cage, Zoo* zoo)
+{
+    // else, check how much food is needed
+    float food_to_eat;
+    if (_gender == 1)
+    {
+        food_to_eat = ROOSTER_MEAL;
+    }
+    else
+    {
+        food_to_eat = HEN_MEAL;
+    }
+    // check if zoo has enough food
+    if (food_to_eat <= zoo->getSeedStock())
+    {
+        _is_hungry = false;
+        zoo->newSeedStock(-food_to_eat);
+        return;
+    }
+    // if not, animal is hungry, and if it was already, kill it
+    else
+    {
+        zoo->newMeatStock(-zoo->getSeedStock());
+        if (_is_hungry)
+        {
+            kill(zoo);
+            return;
+        }
+        else
+        {
+            _is_hungry = true;
+        }
+    }
 }

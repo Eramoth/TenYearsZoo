@@ -2,10 +2,12 @@
 #define IANIMAL_H
 #include <string>
 #include "zoo.h"
+#include "cage.h"
 
 using namespace std;
 
 class Zoo;
+class Cage;
 
 class IAnimal
 {
@@ -18,6 +20,7 @@ protected:
     // string _diet; // pointless to keep here because of #define ?
     bool _is_hungry;
     bool _is_sick;
+    bool _is_dead = false;
     int _gestation_month;
     bool _fresh_new; // true if animal has been created this month, can be replaced by an array of "new animals" reset every month
 
@@ -32,11 +35,14 @@ public:
     int getAge();
     bool isSick();
     bool isHungry();
+    bool isDead();
     // modify private information
     void increaseAge(Zoo *zoo);
     void escape(Zoo *zoo); // will be virtual void
     void setSick();
     void setCured();
+    void setDeathTag();
+    virtual void feedAnimal(Cage *cage, Zoo *zoo) = 0;
     // show private information
     virtual void showAnimal() = 0;
     virtual bool canReproduce() = 0;
@@ -46,39 +52,45 @@ public:
 };
 
 // tiger
-class Tiger:public IAnimal
+class Tiger : public IAnimal
 {
 private:
     string _partner;
+
 public:
     Tiger(int age, int gender);
     ~Tiger();
     virtual void showAnimal();
     virtual bool canReproduce();
+    virtual void feedAnimal(Cage *cage, Zoo *zoo);
 };
 
 // eagle
-class Eagle:public IAnimal
+class Eagle : public IAnimal
 {
 private:
     string _partner;
+
 public:
     Eagle(int age, int gender);
     ~Eagle();
     virtual void showAnimal();
     virtual bool canReproduce();
+    virtual void feedAnimal(Cage *cage, Zoo *zoo);
 };
 
 // chicken
-class Chicken:public IAnimal
+class Chicken : public IAnimal
 {
 private:
     string _partner;
+
 public:
     Chicken(int age, int gender);
     ~Chicken();
     virtual void showAnimal();
     virtual bool canReproduce();
+    virtual void feedAnimal(Cage *cage, Zoo *zoo);
 };
 
 #endif

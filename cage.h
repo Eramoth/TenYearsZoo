@@ -4,10 +4,12 @@
 #include <string>
 #include <vector>
 #include "ianimal.h"
+#include "zoo.h"
 
 using namespace std;
 
 class IAnimal;
+class Zoo;
 
 class Cage
 {
@@ -25,6 +27,8 @@ public:
     bool isEmpty();
     bool isOvercrowded();
     int numberOfAnimal();
+    int hasChicken();
+    int hasEagle();
     vector<IAnimal*> getAnimalList();
     // modify private information
     void addAnimal(IAnimal *newAnimal);
