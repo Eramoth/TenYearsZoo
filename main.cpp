@@ -50,6 +50,7 @@ int main()
     // initialization
     Game* game = new Game();
     game->startGame();
+    string story = "";
 
     // turn loop
 
@@ -64,8 +65,8 @@ int main()
         else
         {
             // update = game->getZoo()->monthlyUpdate(game->getMonth());
-            update = game->monthlyUpdate();
-            cout << update << endl;
+            game->monthlyUpdate(&story);
+            cout << story << endl;
             this_thread::sleep_for(chrono::seconds(3));
         }
         game->menu(update);

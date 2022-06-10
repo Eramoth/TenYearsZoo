@@ -84,9 +84,9 @@ string Game::parseDate()
 }
 
 // update the zoo
-string Game::monthlyUpdate()
+void Game::monthlyUpdate(string* story)
 {
-    return _zoo->monthlyUpdate(_currentMonth, &_money);
+    _zoo->monthlyUpdate(story,_currentMonth, &_money);
 }
 
 // happy new year !

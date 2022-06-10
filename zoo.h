@@ -42,20 +42,20 @@ public:
     void deleteCage(Cage* cage);
     void deleteCage(Cage* cage, int cage_idx);
     // event-related functions
-    string monthlyUpdate(int month, int* money);
-    string feedAnimals();
-    string checkForTurism(int month, int* money);
-    string checkForEvent();
-    string checkForDisease();
-    string checkForBirths();
-    string checkDeathByDisease();
-    string checkDeathByAge();
-    string checkForHealing();
-    string pests();
-    string avariateMeat();
-    string onFire();
-    string stolenAnimal();
-    string overcrowdSickness();
+    void monthlyUpdate(string* story, int month, int* money);
+    void feedAnimals(string* story);
+    void checkForTurism(string* story, int month, int* money);
+    void checkForEvent(string* story);
+    void checkForDisease(string* story);
+    void checkForBirths(string* story);
+    void checkDeathByDisease(string* story);
+    void checkDeathByAge(string* story);
+    void checkForHealing(string* story);
+    void pests(string* story);
+    void avariateMeat(string* story);
+    void onFire(string* story);
+    void stolenAnimal(string* story);
+    void overcrowdSickness(string* story);
 };
 
 
