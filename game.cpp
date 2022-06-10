@@ -83,6 +83,12 @@ string Game::parseDate()
     return date;
 }
 
+// update the zoo
+string Game::monthlyUpdate()
+{
+    return _zoo->monthlyUpdate(_currentMonth, &_money);
+}
+
 // happy new year !
 void Game::newYear()
 {

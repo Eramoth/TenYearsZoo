@@ -15,6 +15,7 @@ class Game {
     int _currentYear=STARTING_YEAR;
     Zoo* _zoo;
 public:
+    string monthlyUpdate();
     int getMonth();
     int getYear();
     int getMoney();
