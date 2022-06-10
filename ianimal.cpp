@@ -61,10 +61,20 @@ int IAnimal::getAge()
     return _age;
 }
 
+int IAnimal::getGestationMonth()
+{
+    return _gestation_month;
+}
+
 // return true if sick, false if healthy
 bool IAnimal::isSick()
 {
     return _is_sick;
+}
+
+bool IAnimal::isPregnant()
+{
+    return _gestation_month > 0;
 }
 
 //return gender of animal
@@ -104,17 +114,24 @@ void IAnimal::setSick()
     _is_sick = true;
 }
 
+void IAnimal::setPregnancy(bool is_pregnant)
+{
+    if (is_pregnant)
+    {
+        _gestation_month = 0;
+    }
+    else
+    {
+        _gestation_month = -1;
+    }
+}
+
+
 void IAnimal::setCured()
 {
     _is_sick = false;
     cout << getName() << "'s sickness got cured, and he even kept one of it's leg healthy !" << endl;
 }
-
-
-
-
-
-
 
 // ----- TIGER -----
 Tiger::Tiger(int age, int gender) : IAnimal("Tiger", age, gender, TIGER_LIFESPAWN) {}

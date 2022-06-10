@@ -47,6 +47,7 @@ public:
     string checkForTurism(int month, int* money);
     string checkForEvent();
     string checkForDisease();
+    string checkForBirths();
     string checkDeathByDisease();
     string checkDeathByAge();
     string checkForHealing();

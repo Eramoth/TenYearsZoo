@@ -18,7 +18,7 @@ protected:
     // string _diet; // pointless to keep here because of #define ?
     int _month_since_meal;
     bool _is_sick;
-    int _gestation_month;
+    int _gestation_month = -1;
     bool _fresh_new; // true if animal has been created this month, can be replaced by an array of "new animals" reset every month
 
 public:
@@ -29,12 +29,15 @@ public:
     string getName();
     string getType();
     string getGender();
+    int getGestationMonth();
     int getAge();
+    bool isPregnant();
     bool isSick();
     // modify private information
     void increaseAge(Zoo *zoo);
     void escape(Zoo *zoo); // will be virtual void
     void setSick();
+    void setPregnancy(bool);
     void setCured();
     // show private information
     virtual void showAnimal() = 0;

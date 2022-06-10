@@ -32,6 +32,7 @@ string Zoo::monthlyUpdate(int month, int* money)
     string res = checkForTurism(month, money);
     res += checkForEvent();
     res += checkForDisease();
+    res += checkForBirths();
     res += feedAnimals();
     if (population() == 0) {
         res += ">> There are no animals in your zoo\n";
@@ -242,6 +243,90 @@ string Zoo::checkForDisease()
         return ">> No new disease have been declared.";
     }
     return "";
+}
+
+string Zoo::checkForBirths()
+{
+    string res = "";
+    int tigerBirths = 0;
+    int eagleBirths = 0;
+    int chickenBirths = 0;
+    int tigerMortality = 0;
+    int eagleMortality = 0;
+    int chickenMortality = 0;
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            if (animal->isPregnant() && animal->getGestationMonth() == TIGER_GESTATION && animal->getType() == "Tiger")
+            {
+                int odd = randInt(0, 100);
+                if (odd <= TIGER_CHILD_MORTALITY)
+                {
+                    tigerMortality++;
+                }
+                else
+                {
+                    animal->setPregnancy(false);
+                    int sex = randInt(0,1);
+                    Tiger *newAnimal = new Tiger(0, sex+1);
+                    addAnimal(newAnimal);
+                    tigerBirths++;
+                }
+            }
+            if (animal->isPregnant() && animal->getGestationMonth() == EAGLE_GESTATION_ && animal->getType() == "Eagle")
+            {
+                int odd = randInt(0, 100);
+                if (odd <= EAGLE_CHILD_MORTALITY)
+                {
+                    eagleMortality++;
+                }
+                else
+                {
+                    animal->setPregnancy(false);
+                    int sex = randInt(0,1);
+                    Eagle *newAnimal = new Eagle(0,sex+1);
+                    addAnimal(newAnimal);
+                    eagleBirths++;
+                }
+            }
+            if (animal->isPregnant() && animal->getGestationMonth() == CHICKEN_GESTATION && animal->getType() == "Chicken")
+            {
+                int odd = randInt(0, 100);
+                if (odd <= CHICKEN_CHILD_MORTALITY)
+                {
+                    chickenMortality++;
+                }
+                else
+                {
+                    animal->setPregnancy(false);
+                    int sex = randInt(0,1);
+                    Chicken *newAnimal = new Chicken(0,sex+1);
+                    addAnimal(newAnimal);
+                    chickenBirths++;
+                }
+            }
+        }
+    }
+    if (tigerBirths != 0) {
+        res += ">> " + to_string(tigerBirths) + " tigers was born this month.\n";
+    }
+    if (eagleBirths != 0) {
+        res += ">> " + to_string(eagleBirths) + " eagles was born this month.\n";
+    }
+    if (chickenBirths != 0) {
+        res += ">> " + to_string(chickenBirths) + " chickens was born this month.\n";
+    }
+    if (tigerMortality != 0) {
+        res += ">> " + to_string(tigerMortality) + " tigers was born this month. Wait... Nevermind they didn't make it\n";
+    }
+    if (eagleMortality != 0) {
+        res += ">> " + to_string(eagleMortality) + " eagles was born this month. Wait... Nevermind they didn't make it\n";
+    }
+    if (chickenMortality != 0) {
+        res += ">> " + to_string(chickenMortality) + " chickens was born this month. Wait... Nevermind they didn't make it\n";
+    }
+    return res;
 }
 
 // add a cage to the zoo
