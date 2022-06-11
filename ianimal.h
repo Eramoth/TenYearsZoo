@@ -23,6 +23,7 @@ protected:
     bool _is_sick;
     bool _is_dead = false;
     int _gestation_month = -1;
+    int _gestation_cooldown = 0;
     bool _fresh_new; // true if animal has been created this month, can be replaced by an array of "new animals" reset every month
 
 public:
@@ -36,6 +37,7 @@ public:
     IAnimal* getPartner();
     int getGestationMonth();
     int getAge();
+    int getGestationCooldown();
     bool isPregnant();
     bool isSick();
     bool isHungry();
@@ -44,6 +46,7 @@ public:
     void increaseAge(Zoo *zoo);
     void escape(Zoo *zoo); // will be virtual void
     void setSick();
+    void setGestationCooldown(int cooldown);
     void setPregnancy(bool);
     void setCured();
     void setDeathTag();
@@ -51,7 +54,7 @@ public:
     void setPartner(IAnimal*);
     // show private information
     virtual void showAnimal() = 0;
-    virtual bool canReproduce() = 0;
+    virtual bool canReproduce(int) = 0;
     // virtual void giveBirth() = 0;
     // virtual bool isHungy() = 0;
     // virtual void feed() = 0; // will update _month_since_meal
@@ -67,7 +70,7 @@ public:
     Tiger(int age, int gender);
     ~Tiger();
     virtual void showAnimal();
-    virtual bool canReproduce();
+    virtual bool canReproduce(int);
     virtual void feedAnimal(Cage *cage, Zoo *zoo);
 };
 
@@ -81,7 +84,7 @@ public:
     Eagle(int age, int gender);
     ~Eagle();
     virtual void showAnimal();
-    virtual bool canReproduce();
+    virtual bool canReproduce(int);
     virtual void feedAnimal(Cage *cage, Zoo *zoo);
 };
 
@@ -95,7 +98,7 @@ public:
     Chicken(int age, int gender);
     ~Chicken();
     virtual void showAnimal();
-    virtual bool canReproduce();
+    virtual bool canReproduce(int);
     virtual void feedAnimal(Cage *cage, Zoo *zoo);
 };
 

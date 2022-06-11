@@ -88,6 +88,16 @@ bool IAnimal::isPregnant()
     return _gestation_month >= 0;
 }
 
+int IAnimal::getGestationCooldown()
+{
+    return _gestation_cooldown;
+}
+
+void IAnimal::setGestationCooldown(int cooldown)
+{
+    _gestation_cooldown = cooldown;
+}
+
 //return gender of animal
 string IAnimal::getGender()
 {
@@ -115,6 +125,10 @@ void IAnimal::increaseAge(Zoo *zoo)
     if (isPregnant())
     {
         _gestation_month++;
+    }
+    if (getGestationCooldown() > 0)
+    {
+        _gestation_cooldown--;
     }
     if (_age >= _age_of_death)
     {
@@ -174,7 +188,7 @@ void Tiger::showAnimal()
 }
 
 // return true if animal is up for reproduction, false if not
-bool Tiger::canReproduce()
+bool Tiger::canReproduce(int month)
 {
     // if male
     if (_gender == 1)
@@ -187,7 +201,7 @@ bool Tiger::canReproduce()
     // if female
     else if (_gender == 2)
     {
-        if (_age >= FEMALE_TIGER_MATURITY * 12 && _age < FEMALE_TIGER_UNFERTILITY_AGE * 12 && !isPregnant() && !_is_sick && !_fresh_new)
+        if (_age >= FEMALE_TIGER_MATURITY * 12 && _age < FEMALE_TIGER_UNFERTILITY_AGE * 12 && !isPregnant() && !_is_sick && !_fresh_new && getGestationCooldown() <= 0)
         {
             return true;
         }
@@ -258,7 +272,7 @@ void Eagle::showAnimal()
 }
 
 // return true if animal is up for reproduction, false if not
-bool Eagle::canReproduce()
+bool Eagle::canReproduce(int month)
 {
     // if male
     if (_gender == 1)
@@ -271,7 +285,7 @@ bool Eagle::canReproduce()
     // if female
     else if (_gender == 2)
     {
-        if (_age >= FEMALE_EAGLE_MATURITY * 12 && _age < FEMALE_EAGLE_UNFERTILITY_AGE * 12 && !isPregnant() && !_is_sick && !_fresh_new)
+        if (_age >= FEMALE_EAGLE_MATURITY * 12 && _age < FEMALE_EAGLE_UNFERTILITY_AGE * 12 && !isPregnant() && !_is_sick && !_fresh_new && month == 3)
         {
             return true;
         }
@@ -332,7 +346,7 @@ void Chicken::showAnimal()
 }
 
 // return true if animal is up for reproduction, false if not
-bool Chicken::canReproduce()
+bool Chicken::canReproduce(int month)
 {
     // if male
     if (_gender == 1)

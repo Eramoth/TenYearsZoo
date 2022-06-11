@@ -96,6 +96,8 @@
 #define TIGER_GESTATION 3
 #define EAGLE_GESTATION_ 2
 #define CHICKEN_GESTATION 1
+// gestaiton cd (month)
+#define TIGER_GESTATION_CD 20
 // food price
 #define MEAT_PRICE 5
 #define SEED_PRICE 2.5

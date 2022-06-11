@@ -33,7 +33,7 @@ void Zoo::monthlyUpdate(string* story, int month, int* money)
     checkForDisease(story);
     overcrowdSickness(story);
     checkDeathByDisease(story);
-    massReproduce(story);
+    massReproduce(story,month);
     checkForBirths(story);
     checkForTurism(story, month, money);
     feedAnimals(story);
@@ -154,15 +154,15 @@ void Zoo::increaseAnimalAge()
     }
 }
 
-void Zoo::massReproduce(string* story)
+void Zoo::massReproduce(string* story,int month)
 {
     int count = 0;
     for (auto cage : _cage_list)
     {
         for (auto animal : cage->getAnimalList())
         {
-            cout << animal->getGender() << ":" << animal->canReproduce() << endl;
-            if (animal->getGender() == "male" && animal->canReproduce())
+            cout << animal->getGender() << ":" << animal->canReproduce(month) << endl;
+            if (animal->getGender() == "male" && animal->canReproduce(month))
             {
                 for (auto animal2 : cage->getAnimalList())
                 {
@@ -170,14 +170,14 @@ void Zoo::massReproduce(string* story)
                     {
                         continue;
                     }
-                    if (animal2->getGender() == "female" && animal2->canReproduce() && animal->getType() == animal2->getType() && animal->getType() == "Eagle" && animal2->getPartner() == animal)
+                    if (animal2->getGender() == "female" && animal2->canReproduce(month) && animal->getType() == animal2->getType() && animal->getType() == "Eagle" && animal2->getPartner() == animal)
                     {
                         cout << animal2->getPartner()->getName() << endl;
                         animal2->setPregnancy(true);
                         count++;
                         continue;
                     }
-                    if (animal2->getGender() == "female" && animal2->canReproduce() && animal->getType() == animal2->getType() && animal->getType() == "Eagle" && animal2->getPartner() == nullptr && animal->getPartner() == nullptr)
+                    if (animal2->getGender() == "female" && animal2->canReproduce(month) && animal->getType() == animal2->getType() && animal->getType() == "Eagle" && animal2->getPartner() == nullptr && animal->getPartner() == nullptr)
                     {
                         animal2->setPregnancy(true);
                         animal->setPartner(animal2);
@@ -187,7 +187,7 @@ void Zoo::massReproduce(string* story)
                         count++;
                         continue;
                     }
-                    if (animal2->getGender() == "female" && animal2->canReproduce() && animal->getType() == animal2->getType() && animal->getType() != "Eagle")
+                    if (animal2->getGender() == "female" && animal2->canReproduce(month) && animal->getType() == animal2->getType() && animal->getType() != "Eagle")
                     {
                         animal2->setPregnancy(true);
                         count++;
@@ -308,15 +308,16 @@ void Zoo::checkForBirths(string* story)
         {
             if (animal->isPregnant() && animal->getGestationMonth() >= TIGER_GESTATION && animal->getType() == "Tiger")
             {
-                int odd = randInt(0, 100);
-                if (odd <= TIGER_CHILD_MORTALITY)
+                animal->setPregnancy(false);
+                animal->setGestationCooldown(TIGER_GESTATION_CD);
+                for(int i = 0; i < 3; i++)
                 {
-                    tigerMortality++;
-                }
-                else
-                {
-                    animal->setPregnancy(false);
-                    for(int i = 0; i < 3; i++)
+                    int odd = randInt(1, 100);
+                    if (odd <= TIGER_CHILD_MORTALITY)
+                    {
+                        tigerMortality++;
+                    }
+                    else
                     {
                         int sex = randInt(0,1);
                         Tiger *newAnimal = new Tiger(0, sex+1);
@@ -327,15 +328,15 @@ void Zoo::checkForBirths(string* story)
             }
             if (animal->isPregnant() && animal->getGestationMonth() == EAGLE_GESTATION_ && animal->getType() == "Eagle")
             {
-                int odd = randInt(0, 100);
-                if (odd <= EAGLE_CHILD_MORTALITY)
+                animal->setPregnancy(false);
+                for(int i = 0;i < 2;i++)
                 {
-                    eagleMortality++;
-                }
-                else
-                {
-                    animal->setPregnancy(false);
-                    for(int i = 0;i < 2;i++)
+                    int odd = randInt(1, 100);
+                    if (odd <= EAGLE_CHILD_MORTALITY)
+                    {
+                        eagleMortality++;
+                    }
+                    else
                     {
                         int sex = randInt(0,1);
                         Eagle *newAnimal = new Eagle(0,sex+1);
@@ -346,15 +347,15 @@ void Zoo::checkForBirths(string* story)
             }
             if (animal->isPregnant() && animal->getGestationMonth() == CHICKEN_GESTATION && animal->getType() == "Chicken")
             {
-                int odd = randInt(0, 100);
-                if (odd <= CHICKEN_CHILD_MORTALITY)
+                animal->setPregnancy(false);
+                for(int i = 0;i < 33;i++)
                 {
-                    chickenMortality++;
-                }
-                else
-                {
-                    animal->setPregnancy(false);
-                    for(int i = 0;i < 33;i++)
+                    int odd = randInt(1, 100);
+                    if (odd <= CHICKEN_CHILD_MORTALITY)
+                    {
+                        chickenMortality++;
+                    }
+                    else
                     {
                         int sex = randInt(0,1);
                         Chicken *newAnimal = new Chicken(0,sex+1);
