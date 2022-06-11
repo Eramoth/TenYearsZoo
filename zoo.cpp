@@ -199,7 +199,23 @@ void Zoo::massReproduce(string* story)
 // feed the animals
 void Zoo::feedAnimals(string* story)
 {
-    *story += ">> The animals are fed.\n";
+        for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            if (!animal->isDead()) {animal->feedAnimal(cage, this);}
+        }
+    }
+    // if some animals has been eaten, delete them
+    for (auto animal : getEveryAnimalList())
+    {
+        if (animal->isDead())
+        {
+            *story+= ">> " + animal->getName() + " has been eaten. Maybe next time you wnon't try to help them make friend with their natural predator\n";
+            animal->kill(this);
+        }
+    }
+    *story += ">> Animals have been fed.\n";
 }
 
 // check if any accident happened
@@ -606,6 +622,16 @@ void Zoo::deleteCage(Cage *cage)
     }
 }
 
+// return meat stock
+float Zoo::getMeatStock()
+{
+    return _meat_stock;
+}
+
+float Zoo::getSeedStock()
+{
+    return _seed_stock;
+}
 // retrieve animals based on their type
 vector<IAnimal *> Zoo::getAnimalListByType(string type)
 {

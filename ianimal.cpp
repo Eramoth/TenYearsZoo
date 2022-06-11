@@ -152,7 +152,6 @@ void IAnimal::setPregnancy(bool is_pregnant)
 void IAnimal::setCured()
 {
     _is_sick = false;
-    cout << getName() << "'s sickness got cured, and he even kept one of it's leg healthy !" << endl;
 }
 
 void IAnimal::setPartner(IAnimal* partner)

@@ -35,6 +35,36 @@ void Game::startGame()
     this_thread::sleep_for(std::chrono::seconds(2));
 }
 
+// set up some starter
+void Game::setScenario()
+{
+    // add cages
+    for (int i = 0; i<4; i++)
+    {
+        _zoo->addCage(new Cage("Tiger"));
+        _zoo->addCage(new Cage("Eagle"));
+        _zoo->addCage(new Cage("Chicken"));
+    }
+    // add tigers
+    for (int i = 0; i<1; i++)
+    {
+        _zoo->addAnimal(new Tiger(60, 1));
+        _zoo->addAnimal(new Tiger(60, 2));
+    }
+    // add eagles
+    for (int i = 0; i<1; i++)
+    {
+        _zoo->addAnimal(new Eagle(60, 1));
+        _zoo->addAnimal(new Eagle(60, 2));
+    }
+    // add chickens
+    for (int i = 0; i<4; i++)
+    {
+        _zoo->addAnimal(new Chicken(50, 1));
+        _zoo->addAnimal(new Chicken(50, 2));
+    }
+}
+
 // date in full letters
 string Game::parseDate()
 {
@@ -357,7 +387,7 @@ void Game::buyAnimal()
                 }
                 if (type == "Chicken")
                 {
-                    Chicken *newAnimal = new Chicken(age, action2+1);
+                    Chicken *newAnimal = new Chicken(age, gender);
                     _zoo->addAnimal(newAnimal);
                 }
                 cout << endl;
