@@ -263,7 +263,7 @@ bool Eagle::canReproduce()
     // if male
     if (_gender == 1)
     {
-        if (_age >= MALE_EAGLE_MATURITY && _age < MALE_EAGLE_UNFERTILITY_AGE && !_is_sick && !_is_sick && !_fresh_new)
+        if (_age >= MALE_EAGLE_MATURITY * 12 && _age < MALE_EAGLE_UNFERTILITY_AGE * 12 && !_is_sick && !_fresh_new)
         {
             return true;
         }
@@ -271,7 +271,7 @@ bool Eagle::canReproduce()
     // if female
     else if (_gender == 2)
     {
-        if (_age >= FEMALE_EAGLE_MATURITY && _age < FEMALE_EAGLE_UNFERTILITY_AGE && _gestation_month == 0 && !_is_sick && !_fresh_new)
+        if (_age >= FEMALE_EAGLE_MATURITY * 12 && _age < FEMALE_EAGLE_UNFERTILITY_AGE * 12 && !isPregnant() && !_is_sick && !_fresh_new)
         {
             return true;
         }
@@ -337,7 +337,7 @@ bool Chicken::canReproduce()
     // if male
     if (_gender == 1)
     {
-        if (_age >= ROOSTER_MATURITY && _age < ROOSTER_UNFERTILITY_AGE && !_is_sick && !_fresh_new)
+        if (_age >= ROOSTER_MATURITY * 12 && _age < ROOSTER_UNFERTILITY_AGE * 12 && !_is_sick && !_fresh_new)
         {
             return true;
         }
@@ -345,7 +345,7 @@ bool Chicken::canReproduce()
     // if female
     else if (_gender == 2)
     {
-        if (_age >= HEN_MATURITY && _age < HEN_UNFERTILITY_AGE && _gestation_month == 0 && !_is_sick && !_fresh_new)
+        if (_age >= HEN_MATURITY * 12 && _age < HEN_UNFERTILITY_AGE * 12 && !isPregnant() && !_is_sick && !_fresh_new)
         {
             return true;
         }

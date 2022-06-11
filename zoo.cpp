@@ -161,6 +161,7 @@ void Zoo::massReproduce(string* story)
     {
         for (auto animal : cage->getAnimalList())
         {
+            cout << animal->getGender() << ":" << animal->canReproduce() << endl;
             if (animal->getGender() == "male" && animal->canReproduce())
             {
                 for (auto animal2 : cage->getAnimalList())
@@ -171,19 +172,22 @@ void Zoo::massReproduce(string* story)
                     }
                     if (animal2->getGender() == "female" && animal2->canReproduce() && animal->getType() == animal2->getType() && animal->getType() == "Eagle" && animal2->getPartner() == animal)
                     {
+                        cout << animal2->getPartner()->getName() << endl;
                         animal2->setPregnancy(true);
                         count++;
                         continue;
                     }
-                    if (animal2->getGender() == "female" && animal2->canReproduce() && animal->getType() == animal2->getType() && animal->getType() == "Eagle" && animal2->getPartner() == NULL && animal->getPartner() == NULL)
+                    if (animal2->getGender() == "female" && animal2->canReproduce() && animal->getType() == animal2->getType() && animal->getType() == "Eagle" && animal2->getPartner() == nullptr && animal->getPartner() == nullptr)
                     {
                         animal2->setPregnancy(true);
                         animal->setPartner(animal2);
                         animal2->setPartner(animal);
+                        cout << animal2->getPartner()->getName() << endl;
+                        cout << animal->getPartner()->getName() << endl;
                         count++;
                         continue;
                     }
-                    if (animal2->getGender() == "female" && animal2->canReproduce() && animal->getType() == animal2->getType())
+                    if (animal2->getGender() == "female" && animal2->canReproduce() && animal->getType() == animal2->getType() && animal->getType() != "Eagle")
                     {
                         animal2->setPregnancy(true);
                         count++;
@@ -312,10 +316,13 @@ void Zoo::checkForBirths(string* story)
                 else
                 {
                     animal->setPregnancy(false);
-                    int sex = randInt(0,1);
-                    Tiger *newAnimal = new Tiger(0, sex+1);
-                    addAnimal(newAnimal);
-                    tigerBirths++;
+                    for(int i = 0; i < 3; i++)
+                    {
+                        int sex = randInt(0,1);
+                        Tiger *newAnimal = new Tiger(0, sex+1);
+                        addAnimal(newAnimal);
+                        tigerBirths++;
+                    }
                 }
             }
             if (animal->isPregnant() && animal->getGestationMonth() == EAGLE_GESTATION_ && animal->getType() == "Eagle")
@@ -328,10 +335,13 @@ void Zoo::checkForBirths(string* story)
                 else
                 {
                     animal->setPregnancy(false);
-                    int sex = randInt(0,1);
-                    Eagle *newAnimal = new Eagle(0,sex+1);
-                    addAnimal(newAnimal);
-                    eagleBirths++;
+                    for(int i = 0;i < 2;i++)
+                    {
+                        int sex = randInt(0,1);
+                        Eagle *newAnimal = new Eagle(0,sex+1);
+                        addAnimal(newAnimal);
+                        eagleBirths++;
+                    }
                 }
             }
             if (animal->isPregnant() && animal->getGestationMonth() == CHICKEN_GESTATION && animal->getType() == "Chicken")
@@ -344,10 +354,13 @@ void Zoo::checkForBirths(string* story)
                 else
                 {
                     animal->setPregnancy(false);
-                    int sex = randInt(0,1);
-                    Chicken *newAnimal = new Chicken(0,sex+1);
-                    addAnimal(newAnimal);
-                    chickenBirths++;
+                    for(int i = 0;i < 33;i++)
+                    {
+                        int sex = randInt(0,1);
+                        Chicken *newAnimal = new Chicken(0,sex+1);
+                        addAnimal(newAnimal);
+                        chickenBirths++;
+                    }
                 }
             }
         }

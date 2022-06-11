@@ -12,7 +12,7 @@ class Cage;
 class IAnimal
 {
 protected:
-    IAnimal* _partner;
+    IAnimal* _partner = nullptr;
     string _name;
     string _type;
     int _age;
