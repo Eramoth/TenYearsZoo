@@ -493,9 +493,9 @@ void Game::buyFood()
         cout << "** Your Money : " << _money << " **\n" << endl;
         _zoo->showFoodStock();
         if (choice == 0) {cout << "> Buy seeds" << endl;}
-        else {cout << "  Buy seeds : " << endl;}
+        else {cout << "  Buy seeds" << endl;}
         if (choice == 1) {cout << "> Buy meat" << endl;}
-        else {cout << "  Buy meat : " << endl;}
+        else {cout << "  Buy meat" << endl;}
         if (choice == 2) {cout << "> Exit" << endl;}
         else {cout << "  Exit" << endl;}
 
