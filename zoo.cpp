@@ -27,38 +27,28 @@ Zoo::~Zoo()
 }
 
 // structure and call everything that can happen between two month
-string Zoo::monthlyUpdate(int month, int *money)
+void Zoo::monthlyUpdate(string* story, int month, int* money)
 {
-    string res = checkForTurism(month, money);
-    res += checkForEvent();
-    res += checkForDisease();
-    res += feedAnimals();
-    if (population() == 0)
-    {
-        res += ">> There are no animals in your zoo\n";
-    }
-    else
-    {
-        res += ">> There are " + to_string(population()) + " animal(s) in your zoo\n";
-    }
+    checkForEvent(story);
+    checkForDisease(story);
+    overcrowdSickness(story);
+    checkDeathByDisease(story);
+    massReproduce(story);
+    checkForBirths(story);
+    checkForTurism(story, month, money);
+    feedAnimals(story);
+    checkForHealing(story);
     increaseAnimalAge();
-    res += checkForHealing();
-    res += overcrowdSickness();
-    res += checkDeathByDisease();
-    if (population() == 0)
-    {
-        cout << ">> There are no animals in your zoo" << endl;
+    if (population() == 0) {
+        *story += ">> There are no animals in your zoo\n";
+    } else {
+        *story += ">> There are " + to_string(population()) + " animal(s) in your zoo\n";
     }
-    else
-    {
-        cout << ">> There are " << population() << " animal(s) in your zoo" << endl;
-    }
-    res += "The zoo is up to date.\n";
-    return res;
+    *story += "The zoo is up to date.\n";
 }
 
 // give money depending on how much turist came to your zoo
-string Zoo::checkForTurism(int month, int *money)
+void Zoo::checkForTurism(string* story, int month, int *money)
 {
     // init
     int tickets_number = 0;
@@ -109,13 +99,12 @@ string Zoo::checkForTurism(int month, int *money)
             cout << __LINE__ << "Invalid animal type." << endl;
         }
     }
-    *money += tickets_number * TICKET_PRICE;
-    return ">> Some turists came to your zoo, and where really happy !\n";
+    *money+=tickets_number*TICKET_PRICE;
+    *story += ">> Some turists came to your zoo, and where really happy !\n";
 }
 // check if animals have recovered from their past sickness
-string Zoo::checkForHealing()
+void Zoo::checkForHealing(string* story)
 {
-    string res = "";
     for (auto cage : _cage_list)
     {
         for (auto animal : cage->getAnimalList())
@@ -125,19 +114,17 @@ string Zoo::checkForHealing()
                 int not_healing = randInt(0, 100 / HEALING_PROBA - 1);
                 if (!not_healing)
                 {
-                    res += ">> " + animal->getName() + " has been cured, and he even kept one of it's leg healthy !\n";
+                    *story += ">> " + animal->getName() + " has been cured, and he even kept one of it's leg healthy !\n";
                     animal->setCured();
                 }
             }
         }
     }
-    return res;
 }
 
 // check if animals have died from their sickness
-string Zoo::checkDeathByDisease()
+void Zoo::checkDeathByDisease(string* story)
 {
-    string res = "";
     for (auto cage : _cage_list)
     {
         for (auto animal : cage->getAnimalList())
@@ -147,13 +134,12 @@ string Zoo::checkDeathByDisease()
                 int staying_healthy = randInt(0, 100 / SICKNESS_MORTALITY - 1);
                 if (staying_healthy == 0)
                 {
-                    res += ">> " + animal->getName() + " died from its sickness. Maybe giving them alcohool to \"help them get better\" wasn't your brightest idea.\n";
+                    *story += ">> " + animal->getName() + " died from its sickness. Maybe giving them alcohool to \"help them get better\" wasn't your brightest idea.\n";
                     animal->kill(this);
                 }
             }
         }
     }
-    return res;
 }
 
 // increase age of each animal
@@ -168,31 +154,56 @@ void Zoo::increaseAnimalAge()
     }
 }
 
-// feed the animals
-string Zoo::feedAnimals()
+void Zoo::massReproduce(string* story)
 {
-    string res;
+    int count = 0;
     for (auto cage : _cage_list)
     {
         for (auto animal : cage->getAnimalList())
         {
-            if (!animal->isDead()) {animal->feedAnimal(cage, this);}
+            if (animal->getGender() == "male" && animal->canReproduce())
+            {
+                for (auto animal2 : cage->getAnimalList())
+                {
+                    if (animal == animal2)
+                    {
+                        continue;
+                    }
+                    if (animal2->getGender() == "female" && animal2->canReproduce() && animal->getType() == animal2->getType() && animal->getType() == "Eagle" && animal2->getPartner() == animal)
+                    {
+                        animal2->setPregnancy(true);
+                        count++;
+                        continue;
+                    }
+                    if (animal2->getGender() == "female" && animal2->canReproduce() && animal->getType() == animal2->getType() && animal->getType() == "Eagle" && animal2->getPartner() == NULL && animal->getPartner() == NULL)
+                    {
+                        animal2->setPregnancy(true);
+                        animal->setPartner(animal2);
+                        animal2->setPartner(animal);
+                        count++;
+                        continue;
+                    }
+                    if (animal2->getGender() == "female" && animal2->canReproduce() && animal->getType() == animal2->getType())
+                    {
+                        animal2->setPregnancy(true);
+                        count++;
+                        continue;
+                    }
+                }
+            }
         }
     }
-    // if some animals has been eaten, delete them
-    for (auto animal : getEveryAnimalList())
-    {
-        if (animal->isDead())
-        {
-            res+= ">> " + animal->getName() + " has been eaten.\n";
-            animal->kill(this);
-        }
-    }
-    return res + ">> The animals are fed.\n";
+    *story += ">> " + to_string(count) + " animals got pregnant\n";
+}
+
+// feed the animals
+void Zoo::feedAnimals(string* story)
+{
+    *story += ">> The animals are fed.\n";
 }
 
 // check if any accident happened
-string Zoo::checkForEvent()
+void Zoo::checkForEvent(string* story)
 {
     int event = randInt(1, 100);
     if (event <= 1)
@@ -200,28 +211,28 @@ string Zoo::checkForEvent()
         int type = randInt(0, 1);
         if (type == 0)
         {
-            return onFire();
+            onFire(story);
         }
         else
         {
-            return stolenAnimal();
+            stolenAnimal(story);
         }
     }
     event = randInt(1, 100);
     if (event <= 20)
     {
-        return pests();
+        pests(story);
     }
     event = randInt(1, 100);
     if (event <= 10)
     {
-        return avariateMeat();
+        avariateMeat(story);
     }
-    return ">> No event has occured this month.\n";
+    *story += ">> No event has occured this month.\n";
 }
 
 // check if new diseases have spread
-string Zoo::checkForDisease()
+void Zoo::checkForDisease(string* story)
 {
     bool no_sickness = true;
 
@@ -251,7 +262,7 @@ string Zoo::checkForDisease()
             if (stay_healthy == 0)
             {
                 animal->setSick();
-                return animal->getName() + " got sick.";
+                *story += ">> " + animal->getName() + " got sick.\n";
             }
             no_sickness = false;
         }
@@ -259,9 +270,90 @@ string Zoo::checkForDisease()
     // if no one get sick
     if (no_sickness)
     {
-        return ">> No new disease have been declared.";
+        *story += ">> No new disease have been declared.\n";
     }
-    return "";
+}
+
+void Zoo::checkForBirths(string* story)
+{
+    int tigerBirths = 0;
+    int eagleBirths = 0;
+    int chickenBirths = 0;
+    int tigerMortality = 0;
+    int eagleMortality = 0;
+    int chickenMortality = 0;
+    for (auto cage : _cage_list)
+    {
+        for (auto animal : cage->getAnimalList())
+        {
+            if (animal->isPregnant() && animal->getGestationMonth() >= TIGER_GESTATION && animal->getType() == "Tiger")
+            {
+                int odd = randInt(0, 100);
+                if (odd <= TIGER_CHILD_MORTALITY)
+                {
+                    tigerMortality++;
+                }
+                else
+                {
+                    animal->setPregnancy(false);
+                    int sex = randInt(0,1);
+                    Tiger *newAnimal = new Tiger(0, sex+1);
+                    addAnimal(newAnimal);
+                    tigerBirths++;
+                }
+            }
+            if (animal->isPregnant() && animal->getGestationMonth() == EAGLE_GESTATION_ && animal->getType() == "Eagle")
+            {
+                int odd = randInt(0, 100);
+                if (odd <= EAGLE_CHILD_MORTALITY)
+                {
+                    eagleMortality++;
+                }
+                else
+                {
+                    animal->setPregnancy(false);
+                    int sex = randInt(0,1);
+                    Eagle *newAnimal = new Eagle(0,sex+1);
+                    addAnimal(newAnimal);
+                    eagleBirths++;
+                }
+            }
+            if (animal->isPregnant() && animal->getGestationMonth() == CHICKEN_GESTATION && animal->getType() == "Chicken")
+            {
+                int odd = randInt(0, 100);
+                if (odd <= CHICKEN_CHILD_MORTALITY)
+                {
+                    chickenMortality++;
+                }
+                else
+                {
+                    animal->setPregnancy(false);
+                    int sex = randInt(0,1);
+                    Chicken *newAnimal = new Chicken(0,sex+1);
+                    addAnimal(newAnimal);
+                    chickenBirths++;
+                }
+            }
+        }
+    }
+    if (tigerBirths != 0) {
+        *story += ">> " + to_string(tigerBirths) + " tigers was born this month.\n";
+    }
+    if (eagleBirths != 0) {
+        *story += ">> " + to_string(eagleBirths) + " eagles was born this month.\n";
+    }
+    if (chickenBirths != 0) {
+        *story += ">> " + to_string(chickenBirths) + " chickens was born this month.\n";
+    }
+    if (tigerMortality != 0) {
+        *story += ">> " + to_string(tigerMortality) + " tigers was born this month. Wait... Nevermind they didn't make it\n";
+    }
+    if (eagleMortality != 0) {
+        *story += ">> " + to_string(eagleMortality) + " eagles was born this month. Wait... Nevermind they didn't make it\n";
+    }
+    if (chickenMortality != 0) {
+        *story += ">> " + to_string(chickenMortality) + " chickens was born this month. Wait... Nevermind they didn't make it\n";
+    }
 }
 
 // add a cage to the zoo
@@ -446,13 +538,10 @@ void Zoo::newSeedStock(float change)
 }
 
 // seed loss due to pests in the zoo
-string Zoo::pests()
+void Zoo::pests(string* story)
 {
-    _seed_stock -= _seed_stock * SEED_LOSS;
-    string string = ">> There are some pests in your zoo. (You lost 10% of your seeds)\nNew seed stock : ";
-    string += to_string(_seed_stock);
-    string += "\n";
-    return string;
+    _seed_stock -= _seed_stock*SEED_LOSS;
+    *story += ">> There are some pests in your zoo. (You lost 10% of your seeds)\nNew seed stock : " + to_string(_seed_stock) + "Kg \n";
 }
 
 // update meat stock
@@ -462,13 +551,10 @@ void Zoo::newMeatStock(float change)
 }
 
 // meat loss due to avariate meat
-string Zoo::avariateMeat()
+void Zoo::avariateMeat(string* story)
 {
-    _meat_stock -= _meat_stock * MEAT_LOSS;
-    string string = ">> The meat in your zoo has rotten. (You lost 20% of your meat)\nNew meat stock : ";
-    string += to_string(_meat_stock);
-    string += "\n";
-    return string;
+    _meat_stock -= _meat_stock*MEAT_LOSS;
+    *story += ">> The meat in your zoo has rotten. (You lost 20% of your meat)\nNew meat stock : " +to_string(_meat_stock)+ "Kg \n";
 }
 
 // find where the animal is in _cage_list and delete it from the zoo
@@ -732,36 +818,26 @@ vector<Cage *> Zoo::getCageList(string type, string status)
     return result;
 }
 
-float Zoo::getMeatStock()
-{
-    return _meat_stock;
-}
-
-float Zoo::getSeedStock()
-{
-    return _seed_stock;
-}
-
-string Zoo::onFire()
+void Zoo::onFire(string* story)
 {
     int cage_lost = randInt(0, _cage_list.size());
     deleteCage(_cage_list[cage_lost]);
-    return ">> There was a fire in the zoo. (You lost 1 cage and all of its animals)";
+    *story += ">> There was a fire in the zoo. (You lost 1 cage and all of its animals)\n";
 }
 
 // delete a random animal from a random cage
-string Zoo::stolenAnimal()
+void Zoo::stolenAnimal(string* story)
 {
     vector<IAnimal *> openedCage = _cage_list[randInt(0, _cage_list.size() - 1)]->getAnimalList();
     IAnimal *stolenAnimal = openedCage[randInt(0, openedCage.size())];
     killAnimal(stolenAnimal);
-    return ">> " + stolenAnimal->getName() + " has been stolen. You lost 1 animal\n";
+    *story += ">> " + stolenAnimal->getName() + " has been stolen. You lost 1 animal\n";
 }
 
 // check if each cage is overcrowded, then check if sick
-string Zoo::overcrowdSickness()
+void Zoo::overcrowdSickness(string* story)
 {
-    string string;
+    string string = "";
     for (auto cage : _cage_list)
     {
         if (cage->isOvercrowded())
@@ -773,5 +849,5 @@ string Zoo::overcrowdSickness()
             }
         }
     }
-    return string;
+    *story += string;
 }

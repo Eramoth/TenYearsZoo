@@ -1,5 +1,5 @@
 // scenario
-#define BUDGET 80000
+#define BUDGET 800000000
 #define STARTING_YEAR 1
 #define STARTING_MONTH 1
 #define LAST_YEAR 10

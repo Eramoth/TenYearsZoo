@@ -12,6 +12,7 @@ class Cage;
 class IAnimal
 {
 protected:
+    IAnimal* _partner;
     string _name;
     string _type;
     int _age;
@@ -21,7 +22,7 @@ protected:
     bool _is_hungry;
     bool _is_sick;
     bool _is_dead = false;
-    int _gestation_month;
+    int _gestation_month = -1;
     bool _fresh_new; // true if animal has been created this month, can be replaced by an array of "new animals" reset every month
 
 public:
@@ -32,7 +33,10 @@ public:
     string getName();
     string getType();
     string getGender();
+    IAnimal* getPartner();
+    int getGestationMonth();
     int getAge();
+    bool isPregnant();
     bool isSick();
     bool isHungry();
     bool isDead();
@@ -40,9 +44,11 @@ public:
     void increaseAge(Zoo *zoo);
     void escape(Zoo *zoo); // will be virtual void
     void setSick();
+    void setPregnancy(bool);
     void setCured();
     void setDeathTag();
     virtual void feedAnimal(Cage *cage, Zoo *zoo) = 0;
+    void setPartner(IAnimal*);
     // show private information
     virtual void showAnimal() = 0;
     virtual bool canReproduce() = 0;
