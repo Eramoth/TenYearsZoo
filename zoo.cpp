@@ -38,7 +38,7 @@ void Zoo::monthlyUpdate(string *story, int month, int *money)
     checkForTurism(story, month, money);
     feedAnimals(story);
     checkForHealing(story);
-    increaseAnimalAge();
+    increaseAnimalAge(story);
     if (population() == 0)
     {
         *story += ">> There are no animals in your zoo\n";
@@ -103,7 +103,7 @@ void Zoo::checkForTurism(string *story, int month, int *money)
         }
     }
     *money += tickets_number * TICKET_PRICE;
-    *story += ">> Some turists came to your zoo, and where really happy !\n";
+    *story += ">> Some turists came to your zoo. You earned some money.\n";
 }
 // check if animals have recovered from their past sickness
 void Zoo::checkForHealing(string *story)
@@ -146,13 +146,13 @@ void Zoo::checkDeathByDisease(string *story)
 }
 
 // increase age of each animal
-void Zoo::increaseAnimalAge()
+void Zoo::increaseAnimalAge(string *story)
 {
     for (auto cage : _cage_list)
     {
         for (auto animal : cage->getAnimalList())
         {
-            animal->increaseAge(this);
+            animal->increaseAge(story, this);
         }
     }
 }
@@ -209,7 +209,7 @@ void Zoo::feedAnimals(string *story)
         {
             if (!animal->isDead())
             {
-                animal->feedAnimal(cage, this);
+                animal->feedAnimal(story, cage, this);
             }
         }
     }

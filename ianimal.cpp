@@ -115,7 +115,7 @@ bool IAnimal::isHungry()
 }
 
 // add one month to animal age ; if too old, kill it
-void IAnimal::increaseAge(Zoo *zoo)
+void IAnimal::increaseAge(string *story, Zoo *zoo)
 {
     _age++;
     _fresh_new = false;
@@ -129,7 +129,7 @@ void IAnimal::increaseAge(Zoo *zoo)
     }
     if (_age >= _age_of_death)
     {
-        cout << "<< " <<  _name << " died after a long life." << endl;
+        *story += "<< " +  _name + " died after a long life.\n";
         kill(zoo);
     }
 }
@@ -207,7 +207,7 @@ bool Tiger::canReproduce(int month)
 }
 
 // feed the animals depending on if there are pray in the cage and if they ahev enough to eat
-void Tiger::feedAnimal(Cage* cage, Zoo* zoo)
+void Tiger::feedAnimal(string *story, Cage* cage, Zoo* zoo)
 {
     // if there are pray in the cage, eat it
     if (cage->hasChicken() != -1)
@@ -249,11 +249,13 @@ void Tiger::feedAnimal(Cage* cage, Zoo* zoo)
         zoo->newMeatStock(-zoo->getMeatStock());
         if (_is_hungry)
         {
+            *story += ">> " + getName() + " (" + getType() + ") died from hunger. You should have bought more food.\n";
             kill(zoo);
             return;
         }
         else
         {
+            *story += ">> " + getName() + " (" + getType() + ") didn't had enough to eat. He may die next month if you don't feed him next time.\n";
             _is_hungry = true;
         }
     }
@@ -290,7 +292,7 @@ bool Eagle::canReproduce(int month)
     return false;
 }
 
-void Eagle::feedAnimal(Cage* cage, Zoo* zoo)
+void Eagle::feedAnimal(string *story, Cage* cage, Zoo* zoo)
 {
     // if there are pray in the cage, eat it
     if (cage->hasChicken() != -1)
@@ -324,10 +326,12 @@ void Eagle::feedAnimal(Cage* cage, Zoo* zoo)
         zoo->newMeatStock(-zoo->getMeatStock());
         if (_is_hungry)
         {
+            *story += ">> " + getName() + " (" + getType() + ") died from hunger. You should have bought more food.\n";
             kill(zoo);
         }
         else
         {
+            *story += ">> " + getName() + " (" + getType() + ") didn't had enough to eat. He may die next month if you don't feed him next time.\n";
             _is_hungry = true;
         }
     }
@@ -364,7 +368,7 @@ bool Chicken::canReproduce(int month)
     return false;
 }
 
-void Chicken::feedAnimal(Cage* cage, Zoo* zoo)
+void Chicken::feedAnimal(string *story, Cage* cage, Zoo* zoo)
 {
     // else, check how much food is needed
     float food_to_eat;
@@ -389,11 +393,13 @@ void Chicken::feedAnimal(Cage* cage, Zoo* zoo)
         zoo->newMeatStock(-zoo->getSeedStock());
         if (_is_hungry)
         {
+            *story += ">> " + getName() + " (" + getType() + ") died from hunger. You should have bought more food.\n";
             kill(zoo);
             return;
         }
         else
         {
+            *story += ">> " + getName() + " (" + getType() + ") didn't had enough to eat. He may die next month if you don't feed him next time.\n";
             _is_hungry = true;
         }
     }

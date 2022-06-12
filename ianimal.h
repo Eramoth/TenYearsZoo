@@ -43,14 +43,14 @@ public:
     bool isHungry();
     bool isDead();
     // modify private information
-    void increaseAge(Zoo *zoo);
+    void increaseAge(string *story, Zoo *zoo);
     void escape(Zoo *zoo); // will be virtual void
     void setSick();
     void setGestationCooldown(int cooldown);
     void setPregnancy(bool);
     void setCured();
     void setDeathTag();
-    virtual void feedAnimal(Cage *cage, Zoo *zoo) = 0;
+    virtual void feedAnimal(string *story, Cage *cage, Zoo *zoo) = 0;
     void setPartner(IAnimal*);
     // show private information
     virtual void showAnimal() = 0;
@@ -71,7 +71,7 @@ public:
     ~Tiger();
     virtual void showAnimal();
     virtual bool canReproduce(int);
-    virtual void feedAnimal(Cage *cage, Zoo *zoo);
+    virtual void feedAnimal(string *story, Cage *cage, Zoo *zoo);
 };
 
 // eagle
@@ -85,7 +85,7 @@ public:
     ~Eagle();
     virtual void showAnimal();
     virtual bool canReproduce(int);
-    virtual void feedAnimal(Cage *cage, Zoo *zoo);
+    virtual void feedAnimal(string *story, Cage *cage, Zoo *zoo);
 };
 
 // chicken
@@ -99,7 +99,7 @@ public:
     ~Chicken();
     virtual void showAnimal();
     virtual bool canReproduce(int);
-    virtual void feedAnimal(Cage *cage, Zoo *zoo);
+    virtual void feedAnimal(string *story, Cage *cage, Zoo *zoo);
 };
 
 #endif
