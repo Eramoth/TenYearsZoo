@@ -124,21 +124,39 @@ void Game::monthlyUpdate(string* story)
     _zoo->monthlyUpdate(story,_currentMonth, &_money);
 }
 
-// happy new year !
-void Game::newYear()
+// happy new year ! Obtain some money from tiger & eagle subvention
+void Game::newYear(string *story)
 {
     _currentMonth = 1;
     _currentYear += 1;
-    cout << "Hapy New Year !" << endl;
+    *story += "Hapy New Year !\n";
+    int subvention = 0;
+    vector<IAnimal*> animal_list = _zoo->getEveryAnimalList();
+    for (auto animal : animal_list)
+    {
+        if (animal->getType() == "Tiger")
+        {
+            subvention+= TIGER_BONUS;
+        }
+        else if (animal->getType() == "Eagle")
+        {
+            subvention += EAGLE_BONUS;
+        }
+    }
+    if (subvention !=0)
+    {
+        *story += ">> WWF sent some money to help you keep your endangered species safe !\n";
+        _money += subvention;
+    }
 }
 
 // go to next month
-void Game::nextTurn()
+void Game::nextTurn(string *story)
 {
     _currentMonth += 1;
     if (_currentMonth > 12)
     {
-        newYear();
+        newYear(story);
     }
 }
 

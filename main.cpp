@@ -70,7 +70,7 @@ int main()
         }
         game->menu(story);
 
-        game->nextTurn();
+        game->nextTurn(&story);
     }
     cout << "Congratulations ! Your zoo didn't blew up ! Well done !" << endl
     << "Do you wanna retry ?" << endl;

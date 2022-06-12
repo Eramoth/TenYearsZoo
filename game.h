@@ -26,8 +26,8 @@ public:
 
     void startGame();
     string parseDate();
-    void newYear();
-    void nextTurn();
+    void newYear(string *story);
+    void nextTurn(string *story);
     void menu(string);
     void buyAnimal();
     void buyFood();
