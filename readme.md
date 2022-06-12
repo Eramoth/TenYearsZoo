@@ -15,7 +15,7 @@ g++ *.cpp -o ZooSimulator3000
 
 ## Consigne
 
-Le but etais de créer un simulateurr de gestion de zoo sur 10 ans qui se joue en tour par tour (chaque tour représentant 1 mois.)
+Le but etais de créer un simulateur de gestion de zoo sur 10 ans qui se joue en tour par tour (chaque tour représentant 1 mois.)
 
 Chaque mois le joueur peut effectuer 6 actions :
 - 1. Acheter un animal

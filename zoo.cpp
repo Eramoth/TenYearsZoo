@@ -255,7 +255,7 @@ void Zoo::checkForEvent(string *story)
     }
     if (no_event)
     {
-        *story += ">> No event has occured this month.\n";
+        *story += ">> No special event has occured this month.\n";
     }
 }
 
