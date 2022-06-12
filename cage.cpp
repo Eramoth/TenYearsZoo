@@ -30,13 +30,9 @@ Cage::Cage(string type)
     //     ~Cage();
     //     break;
     // }
-    cout << "New cage created !" << endl;
 }
 
-Cage::~Cage()
-{
-    cout << "This cage has been removed from your zoo" << endl;
-}
+Cage::~Cage() {}
 
 // return true or false if empty
 bool Cage::isEmpty()

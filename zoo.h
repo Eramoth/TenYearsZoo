@@ -37,7 +37,7 @@ public:
     void addCage(Cage* newCage);
     void addAnimal(IAnimal* newAnimal);
     void killAnimal(IAnimal* animal);
-    void increaseAnimalAge();
+    void increaseAnimalAge(string *story);
     void withdrawAnimal(IAnimal* w_animal);
     void newSeedStock(float change);
     void newMeatStock(float change);

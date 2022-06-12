@@ -38,7 +38,7 @@ void Zoo::monthlyUpdate(string *story, int month, int *money)
     checkForTurism(story, month, money);
     feedAnimals(story);
     checkForHealing(story);
-    increaseAnimalAge();
+    increaseAnimalAge(story);
     if (population() == 0)
     {
         *story += ">> There are no animals in your zoo\n";
@@ -103,7 +103,7 @@ void Zoo::checkForTurism(string *story, int month, int *money)
         }
     }
     *money += tickets_number * TICKET_PRICE;
-    *story += ">> Some turists came to your zoo, and where really happy !\n";
+    *story += ">> Some turists came to your zoo. You earned some money.\n";
 }
 // check if animals have recovered from their past sickness
 void Zoo::checkForHealing(string *story)
@@ -146,13 +146,13 @@ void Zoo::checkDeathByDisease(string *story)
 }
 
 // increase age of each animal
-void Zoo::increaseAnimalAge()
+void Zoo::increaseAnimalAge(string *story)
 {
     for (auto cage : _cage_list)
     {
         for (auto animal : cage->getAnimalList())
         {
-            animal->increaseAge(this);
+            animal->increaseAge(story, this);
         }
     }
 }
@@ -209,7 +209,7 @@ void Zoo::feedAnimals(string *story)
         {
             if (!animal->isDead())
             {
-                animal->feedAnimal(cage, this);
+                animal->feedAnimal(story, cage, this);
             }
         }
     }
@@ -369,7 +369,7 @@ void Zoo::checkForBirths(string *story)
             if (animal->isPregnant() && animal->getGestationMonth() == CHICKEN_GESTATION && animal->getType() == "Chicken")
             {
                 animal->setPregnancy(false);
-                for (int i = 0; i < 33; i++)
+                for (int i = 0; i < 2; i++)
                 {
                     int odd = randInt(1, 100);
                     if (odd <= CHICKEN_CHILD_MORTALITY)
@@ -383,7 +383,7 @@ void Zoo::checkForBirths(string *story)
                         {
                             cout << "Woaw! Look at this, a new hen" << endl;
                         } else {
-                            cout << "Woaw! Look at this, a new chicken" << endl;
+                            cout << "Woaw! Look at this, a new rooster" << endl;
                         }
                         Chicken *newAnimal = new Chicken(0, sex + 1);
                         addAnimal(newAnimal);
@@ -395,27 +395,27 @@ void Zoo::checkForBirths(string *story)
     }
     if (tigerBirths != 0)
     {
-        *story += ">> " + to_string(tigerBirths) + " tigers was born this month.\n";
+        *story += ">> " + to_string(tigerBirths) + " tigers were born this month.\n";
     }
     if (eagleBirths != 0)
     {
-        *story += ">> " + to_string(eagleBirths) + " eagles was born this month.\n";
+        *story += ">> " + to_string(eagleBirths) + " eagles were born this month.\n";
     }
     if (chickenBirths != 0)
     {
-        *story += ">> " + to_string(chickenBirths) + " chickens was born this month.\n";
+        *story += ">> " + to_string(chickenBirths) + " chickens wwere born this month.\n";
     }
     if (tigerMortality != 0)
     {
-        *story += ">> " + to_string(tigerMortality) + " tigers was born this month. Wait... Nevermind they didn't make it\n";
+        *story += ">> " + to_string(tigerMortality) + " tigers were bor... Nevermind, they didn't make it\n";
     }
     if (eagleMortality != 0)
     {
-        *story += ">> " + to_string(eagleMortality) + " eagles was born this month. Wait... Nevermind they didn't make it\n";
+        *story += ">> " + to_string(eagleMortality) + " eagles were bor... Nevermind, they didn't make it\n";
     }
     if (chickenMortality != 0)
     {
-        *story += ">> " + to_string(chickenMortality) + " chickens was born this month. Wait... Nevermind they didn't make it\n";
+        *story += ">> " + to_string(chickenMortality) + " chickens were bor... Nevermind, they didn't make it\n";
     }
 }
 
