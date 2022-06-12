@@ -39,28 +39,33 @@ void Game::startGame()
 void Game::setScenario()
 {
     // add cages
-    for (int i = 0; i<4; i++)
+    for (int i = 0; i<2; i++)
     {
         _zoo->addCage(new Cage("Tiger"));
         _zoo->addCage(new Cage("Eagle"));
         _zoo->addCage(new Cage("Chicken"));
     }
     // add tigers
-    for (int i = 0; i<1; i++)
+    cout << ">> Let's put some tigers in your zoo ! (male/female/male/female)" << endl;
+    for (int i = 0; i<2; i++)
     {
         _zoo->addAnimal(new Tiger(60, 1));
         _zoo->addAnimal(new Tiger(60, 2));
     }
+
     // add eagles
-    for (int i = 0; i<1; i++)
+    cout << ">> And now, some eagles (male/female/male/female)" << endl;
+    for (int i = 0; i<2; i++)
     {
         _zoo->addAnimal(new Eagle(60, 1));
         _zoo->addAnimal(new Eagle(60, 2));
     }
+
     // add chickens
-    for (int i = 0; i<4; i++)
+    cout << ">> You wouldn't pass on some chickens, would you ? (1 rooster / 10 hens)" << endl;
+    _zoo->addAnimal(new Chicken(50, 1));
+    for (int i = 0; i<10; i++)
     {
-        _zoo->addAnimal(new Chicken(50, 1));
         _zoo->addAnimal(new Chicken(50, 2));
     }
 }

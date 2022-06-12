@@ -59,7 +59,7 @@ int main()
         if (game->getMonth() == STARTING_MONTH && game->getYear() == STARTING_YEAR)
         {
             // initialization
-            // game->setScenario();
+            game->setScenario();
         }
         else
         {

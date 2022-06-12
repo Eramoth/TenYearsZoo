@@ -26,10 +26,7 @@ IAnimal::IAnimal(string type, int age, int gender, int age_of_death)
     _fresh_new = true;
 }
 
-IAnimal::~IAnimal()
-{
-    cout << _name << " has been deleted." << endl;
-}
+IAnimal::~IAnimal() {}
 
 // will delete the animal from the zoo, then erase it from memory
 void IAnimal::kill(Zoo *zoo)
