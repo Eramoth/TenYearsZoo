@@ -1,7 +1,4 @@
-# REPOSITORY
-https://git.ytrack.learn.ynov.com/AREFYTON/TenYearsZoo.git
-
-# Zoo Simulator 3000
+#  Zoo Simulator 3000
 Axelle Refeyton & Yohan Velay
 
 ## Comment lancer le jeu
