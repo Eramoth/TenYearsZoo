@@ -92,7 +92,7 @@ int Cage::hasEagle()
 void Cage::addAnimal(IAnimal *newAnimal)
 {
     _animal_list.push_back(newAnimal);
-    cout << newAnimal->getName() << " has been added to " << getName() << endl;
+    cout << newAnimal->getName() << " has been added to " << getName() << endl << endl;
 }
 
 // return the number of animals in the cage
