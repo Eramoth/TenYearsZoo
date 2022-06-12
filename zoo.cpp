@@ -328,6 +328,12 @@ void Zoo::checkForBirths(string *story)
                     else
                     {
                         int sex = randInt(0, 1);
+                        if (sex == 0)
+                        {
+                            cout << "Woaw! Look at this, a new male tiger" << endl;
+                        } else {
+                            cout << "Woaw! Look at this, a new female tiger" << endl;
+                        }
                         Tiger *newAnimal = new Tiger(0, sex + 1);
                         addAnimal(newAnimal);
                         tigerBirths++;
@@ -346,7 +352,14 @@ void Zoo::checkForBirths(string *story)
                     }
                     else
                     {
+
                         int sex = randInt(0, 1);
+                        if (sex == 0)
+                        {
+                            cout << "Woaw! Look at this, a new male eagle" << endl;
+                        } else {
+                            cout << "Woaw! Look at this, a new female eagle" << endl;
+                        }
                         Eagle *newAnimal = new Eagle(0, sex + 1);
                         addAnimal(newAnimal);
                         eagleBirths++;
@@ -366,6 +379,12 @@ void Zoo::checkForBirths(string *story)
                     else
                     {
                         int sex = randInt(0, 1);
+                        if (sex == 0)
+                        {
+                            cout << "Woaw! Look at this, a new hen" << endl;
+                        } else {
+                            cout << "Woaw! Look at this, a new chicken" << endl;
+                        }
                         Chicken *newAnimal = new Chicken(0, sex + 1);
                         addAnimal(newAnimal);
                         chickenBirths++;
