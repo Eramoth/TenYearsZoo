@@ -395,27 +395,27 @@ void Zoo::checkForBirths(string *story)
     }
     if (tigerBirths != 0)
     {
-        *story += ">> " + to_string(tigerBirths) + " tigers was born this month.\n";
+        *story += ">> " + to_string(tigerBirths) + " tigers were born this month.\n";
     }
     if (eagleBirths != 0)
     {
-        *story += ">> " + to_string(eagleBirths) + " eagles was born this month.\n";
+        *story += ">> " + to_string(eagleBirths) + " eagles were born this month.\n";
     }
     if (chickenBirths != 0)
     {
-        *story += ">> " + to_string(chickenBirths) + " chickens was/were born this month.\n";
+        *story += ">> " + to_string(chickenBirths) + " chickens wwere born this month.\n";
     }
     if (tigerMortality != 0)
     {
-        *story += ">> " + to_string(tigerMortality) + " tigers was/were bor... Nevermind, they didn't make it\n";
+        *story += ">> " + to_string(tigerMortality) + " tigers were bor... Nevermind, they didn't make it\n";
     }
     if (eagleMortality != 0)
     {
-        *story += ">> " + to_string(eagleMortality) + " eagles was/were bor... Nevermind, they didn't make it\n";
+        *story += ">> " + to_string(eagleMortality) + " eagles were bor... Nevermind, they didn't make it\n";
     }
     if (chickenMortality != 0)
     {
-        *story += ">> " + to_string(chickenMortality) + " chickens was/were bor... Nevermind, they didn't make it\n";
+        *story += ">> " + to_string(chickenMortality) + " chickens were bor... Nevermind, they didn't make it\n";
     }
 }
 
